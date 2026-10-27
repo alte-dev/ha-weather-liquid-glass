@@ -1,0 +1,43 @@
+{
+  "name": "weather-liquid-glass-card",
+  "version": "1.0.0",
+  "description": "Ultra-modern frosted Liquid Glass Weather Card for Home Assistant Lovelace with interactive Condition, Precipitation, and Wind views.",
+  "keywords": [
+    "home-assistant",
+    "homeassistant",
+    "hass",
+    "lovelace",
+    "custom-card",
+    "weather",
+    "ios",
+    "ios27",
+    "apple-weather"
+  ],
+  "main": "weather-liquid-glass-card.js",
+  "module": "weather-liquid-glass-card.js",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/alte-dev/ha-weather-liquid-glass"
+  },
+  "license": "MIT",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build && node -e \"require('fs').copyFileSync('dist/weather-liquid-glass-card.js', 'weather-liquid-glass-card.js')\"",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@lit/context": "^1.1.6",
+    "custom-card-helpers": "^2.0.0",
+    "lit": "^3.3.3",
+    "luxon": "^3.7.2"
+  },
+  "devDependencies": {
+    "@types/luxon": "^3.7.6",
+    "@types/node": "^22.0.0",
+    "puppeteer-core": "^25.16.0",
+    "terser": "^5.39.0",
+    "typescript": "^5.8.0",
+    "vite": "^6.2.0"
+  }
+}

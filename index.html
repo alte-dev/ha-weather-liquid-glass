@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Liquid Glass Weather Card - Preview & Testbed</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 30px 16px;
+      background: #0b1120;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      box-sizing: border-box;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+    .preview-wrapper {
+      width: 100%;
+      max-width: 400px;
+      display: flex;
+      justify-content: center;
+    }
+    .preview-wrapper.is-square {
+      max-width: 360px;
+    }
+    .controls-panel {
+      width: 100%;
+      max-width: 420px;
+      margin-bottom: 20px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 16px;
+      padding: 16px;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      box-sizing: border-box;
+    }
+    .controls-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .controls-row select, .controls-row button {
+      background: rgba(255, 255, 255, 0.15);
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 8px;
+      padding: 6px 10px;
+      font-size: 13px;
+      cursor: pointer;
+    }
+    .controls-row button:hover {
+      background: rgba(255, 255, 255, 0.25);
+    }
+  </style>
+</head>
+<body>
+  <div class="controls-panel">
+    <div class="controls-row">
+      <label><strong>Theme / Condition:</strong></label>
+      <select id="condition-picker">
+        <option value="cloudy">Cloudy (Kırklareli)</option>
+        <option value="sunny">Sunny</option>
+        <option value="rainy">Rainy</option>
+        <option value="snowy">Snowy</option>
+        <option value="thunderstorm">Thunderstorm</option>
+        <option value="clear-night">Clear Night</option>
+      </select>
+    </div>
+
+    <div class="controls-row">
+      <label><strong>Language / Dil:</strong></label>
+      <select id="lang-picker">
+        <option value="en">English</option>
+        <option value="tr">Türkçe</option>
+        <option value="de">Deutsch</option>
+        <option value="es">Español</option>
+        <option value="fr">Français</option>
+      </select>
+    </div>
+
+    <div class="controls-row">
+      <label><strong>Layout Shape:</strong></label>
+      <select id="layout-picker">
+        <option value="default">Default (Full Phone)</option>
+        <option value="square-scroll">Square (Scrollable 1:1)</option>
+        <option value="square-fit">Square (Fitted 1:1 Widget)</option>
+        <option value="compact">Compact (Horizontal)</option>
+        <option value="mini">Mini (Minimal Widget)</option>
+      </select>
+    </div>
+
+    <div class="controls-row">
+      <label><strong>View Mode:</strong></label>
+      <div style="display: flex; gap: 6px;">
+        <button id="btn-condition">⛅ Condition</button>
+        <button id="btn-rain">💧 Rain</button>
+        <button id="btn-wind">💨 Wind</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="preview-wrapper" id="preview-wrapper">
+    <weather-liquid-glass-card id="test-card"></weather-liquid-glass-card>
+  </div>
+
+  <script type="module" src="/src/ios27-weather-card.ts"></script>
+  <script>
+    const mockHourly = [
+      { datetime: new Date(Date.now() + 3600000 * 1).toISOString(), condition: 'partlycloudy', temperature: 23, precipitation: 0, precipitation_probability: 0, wind_speed: 8 },
+      { datetime: new Date(Date.now() + 3600000 * 2).toISOString(), condition: 'rainy', temperature: 22, precipitation: 0.4, precipitation_probability: 35, wind_speed: 7 },
+      { datetime: new Date(Date.now() + 3600000 * 3).toISOString(), condition: 'rainy', temperature: 21, precipitation: 0.8, precipitation_probability: 45, wind_speed: 5 },
+      { datetime: new Date(Date.now() + 3600000 * 4).toISOString(), condition: 'cloudy', temperature: 20, precipitation: 0, precipitation_probability: 0, wind_speed: 4 },
+      { datetime: new Date(Date.now() + 3600000 * 5).toISOString(), condition: 'rainy', temperature: 19, precipitation: 1.2, precipitation_probability: 50, wind_speed: 3 },
+      { datetime: new Date(Date.now() + 3600000 * 6).toISOString(), condition: 'rainy', temperature: 19, precipitation: 1.0, precipitation_probability: 50, wind_speed: 3 },
+      { datetime: new Date(Date.now() + 3600000 * 7).toISOString(), condition: 'cloudy', temperature: 18, precipitation: 0, precipitation_probability: 10, wind_speed: 4 }
+    ];
+
+    const mockDaily = [
+      { datetime: new Date().toISOString(), condition: 'rainy', temperature: 20, templow: 15, precipitation: 2.8, precipitation_probability: 0, wind_speed: 12, wind_gust_speed: 18 },
+      { datetime: new Date(Date.now() + 86400000 * 1).toISOString(), condition: 'rainy', temperature: 14, templow: 10, precipitation: 18.5, precipitation_probability: 0, wind_speed: 14, wind_gust_speed: 22 },
+      { datetime: new Date(Date.now() + 86400000 * 2).toISOString(), condition: 'cloudy', temperature: 18, templow: 8, precipitation: 0, precipitation_probability: 0, wind_speed: 8, wind_gust_speed: 12 },
+      { datetime: new Date(Date.now() + 86400000 * 3).toISOString(), condition: 'rainy', temperature: 15, templow: 12, precipitation: 21.5, precipitation_probability: 0, wind_speed: 15, wind_gust_speed: 24 },
+      { datetime: new Date(Date.now() + 86400000 * 4).toISOString(), condition: 'rainy', temperature: 14, templow: 12, precipitation: 17.3, precipitation_probability: 0, wind_speed: 11, wind_gust_speed: 16 },
+      { datetime: new Date(Date.now() + 86400000 * 5).toISOString(), condition: 'rainy', temperature: 12, templow: 11, precipitation: 4.9, precipitation_probability: 0, wind_speed: 9, wind_gust_speed: 13 },
+      { datetime: new Date(Date.now() + 86400000 * 6).toISOString(), condition: 'clear', temperature: 16, templow: 9, precipitation: 0, precipitation_probability: 0, wind_speed: 6, wind_gust_speed: 9 }
+    ];
+
+    const urlParams = new URLSearchParams(window.location.search);
+    let currentLang = urlParams.get('lang') || 'tr';
+    let currentLayout = urlParams.get('layout') || 'default';
+    let currentCondition = urlParams.get('condition') || 'cloudy';
+    let currentView = urlParams.get('view') || 'condition';
+
+    if (urlParams.get('hideControls') === 'true') {
+      const style = document.createElement('style');
+      style.innerHTML = `
+        .controls-panel { display: none !important; }
+        body {
+          margin: 0 !important;
+          padding: 24px !important;
+          background: #0b1120 !important;
+          display: flex !important;
+          flex-direction: column !important;
+          align-items: center !important;
+          justify-content: flex-start !important;
+          min-height: auto !important;
+        }
+        .preview-wrapper {
+          display: flex !important;
+          justify-content: center !important;
+          width: 100% !important;
+          margin: 0 auto !important;
+        }
+        #test-card {
+          display: block !important;
+          width: 100% !important;
+        }
+      `;
+      document.head.appendChild(style);
+    }
+
+    function createMockHass(condition = 'rainy', isNight = false, lang = 'tr') {
+      let temp = 20;
+      let templow = 14;
+      let temphigh = 22;
+
+      if (condition === 'snowy' || condition.includes('snow')) {
+        temp = -2;
+        templow = -6;
+        temphigh = 1;
+      } else if (condition === 'sunny' || (condition.includes('clear') && !isNight)) {
+        temp = 27;
+        templow = 17;
+        temphigh = 29;
+      } else if (condition === 'rainy' || condition.includes('rain')) {
+        temp = 16;
+        templow = 12;
+        temphigh = 18;
+      } else if (condition === 'thunderstorm') {
+        temp = 19;
+        templow = 14;
+        temphigh = 21;
+      } else if (isNight) {
+        temp = 14;
+        templow = 9;
+        temphigh = 18;
+      }
+
+      const themedHourly = mockHourly.map((h, i) => ({
+        ...h,
+        condition: isNight ? (i % 2 === 0 ? 'clear-night' : 'cloudy') : condition,
+        temperature: temp - Math.round(i * 0.7),
+        precipitation_probability: condition.includes('rain') || condition === 'thunderstorm' ? 70 : condition === 'snowy' ? 60 : 0,
+        precipitation: condition.includes('rain') ? 2.4 : condition === 'snowy' ? 1.5 : 0
+      }));
+
+      const themedDaily = mockDaily.map((d, i) => ({
+        ...d,
+        condition: i === 0 ? condition : d.condition,
+        temperature: temphigh - (i % 3),
+        templow: templow - (i % 2),
+      }));
+
+      return {
+        states: {
+          'weather.home': {
+            entity_id: 'weather.home',
+            state: condition,
+            attributes: {
+              friendly_name: 'Forecast Home',
+              temperature: temp,
+              temperature_unit: '°C',
+              wind_speed_unit: 'km/h',
+              precipitation_unit: 'mm',
+            }
+          },
+          'sun.sun': {
+            state: isNight ? 'below_horizon' : 'above_horizon',
+            attributes: {
+              latitude: 41.735,
+              longitude: 27.225,
+              next_setting: new Date(Date.now() + 3600000 * 2.2).toISOString(),
+              next_rising: new Date(Date.now() + 3600000 * 14.5).toISOString(),
+            }
+          }
+        },
+        connection: {
+          subscribeMessage: (cb, msg) => {
+            setTimeout(() => {
+              if (msg.forecast_type === 'hourly') cb({ forecast: themedHourly });
+              if (msg.forecast_type === 'daily') cb({ forecast: themedDaily });
+            }, 50);
+            return () => {};
+          }
+        },
+        locale: { language: lang },
+        language: lang,
+        config: {
+          latitude: 41.735,
+          longitude: 27.225,
+          location_name: 'Kırklareli',
+          unit_system: { length: 'km', temperature: '°C' }
+        }
+      };
+    }
+
+    customElements.whenDefined('ios27-weather-card').then(() => {
+      const card = document.getElementById('test-card');
+
+      function updateCard() {
+        card.setConfig({
+          type: 'custom:ios27-weather-card',
+          entity: 'weather.home',
+          name: 'Kırklareli',
+          default_view: currentView,
+          card_layout: currentLayout,
+          locale: currentLang,
+          show_highlights: true,
+          show_bottom_bar: true,
+          animated_background: true,
+        });
+
+        const isNight = currentCondition === 'clear-night' || currentCondition.includes('night');
+        card.hass = createMockHass(currentCondition, isNight, currentLang);
+
+        const wrapper = document.getElementById('preview-wrapper');
+        wrapper.className = 'preview-wrapper layout-' + currentLayout;
+        if (currentLayout === 'square-scroll' || currentLayout === 'square-fit') {
+          wrapper.style.maxWidth = '360px';
+        } else if (currentLayout === 'compact') {
+          wrapper.style.maxWidth = '460px';
+        } else if (currentLayout === 'mini') {
+          wrapper.style.maxWidth = '380px';
+        } else {
+          wrapper.style.maxWidth = '400px';
+        }
+      }
+
+      updateCard();
+
+      document.getElementById('condition-picker').addEventListener('change', (e) => {
+        currentCondition = e.target.value;
+        updateCard();
+      });
+
+      document.getElementById('lang-picker').addEventListener('change', (e) => {
+        currentLang = e.target.value;
+        updateCard();
+      });
+
+      document.getElementById('layout-picker').addEventListener('change', (e) => {
+        currentLayout = e.target.value;
+        updateCard();
+      });
+
+      function switchMode(view) {
+        const forecastCard = card.shadowRoot?.querySelector('ios27-forecast-card');
+        if (forecastCard) {
+          forecastCard.activeMode = view;
+          forecastCard.requestUpdate();
+        }
+      }
+
+      document.getElementById('btn-condition').addEventListener('click', () => switchMode('condition'));
+      document.getElementById('btn-rain').addEventListener('click', () => switchMode('precipitation'));
+      document.getElementById('btn-wind').addEventListener('click', () => switchMode('wind'));
+    });
+  </script>
+</body>
+</html>
