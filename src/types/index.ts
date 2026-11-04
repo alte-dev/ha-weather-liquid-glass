@@ -23,6 +23,7 @@ export type CardLayout = 'default' | 'square-scroll' | 'square-fit' | 'compact' 
 export interface WeatherLocationConfig {
   entity: string;
   name?: string;
+  reverse_geocode?: boolean;
   temp_sensor?: string;
 }
 
@@ -30,6 +31,7 @@ export interface Ios27WeatherCardConfig {
   type: string;
   entity: string;
   name?: string;
+  reverse_geocode?: boolean;
   temp_sensor?: string;
   entities?: Array<string | WeatherLocationConfig>;
   locations?: Array<string | WeatherLocationConfig>;

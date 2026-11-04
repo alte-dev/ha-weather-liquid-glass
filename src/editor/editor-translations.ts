@@ -36,6 +36,8 @@ export interface EditorTranslations {
   show_bottom_bar: string;
   animated_background: string;
   transparent_background: string;
+  reverse_geocode: string;
+  reverse_geocode_desc: string;
 }
 
 export const editorTranslations: Record<string, EditorTranslations> = {
@@ -43,7 +45,7 @@ export const editorTranslations: Record<string, EditorTranslations> = {
     weather_entity: 'Hava Durumu Varlığı (Entity) *',
     select_weather_entity: 'Hava durumu varlığı seçin...',
     custom_location_name: 'Özel Şehir / Konum Adı (İsteğe bağlı)',
-    location_placeholder: 'Örn. Kırklareli',
+    location_placeholder: 'Örn. Ev, Kadıköy',
     additional_locations_title: '🌍 Diğer Konumlar / Şehirler (Çoklu Konum)',
     additional_locations_desc: 'Kart üzerinde sağa/sola kaydırarak veya alt noktalarla geçiş yapılabilecek diğer hava durumu konumları.',
     add_location_placeholder: '+ Yeni Konum / Şehir Ekle...',
@@ -77,12 +79,14 @@ export const editorTranslations: Record<string, EditorTranslations> = {
     show_bottom_bar: 'iOS Alt Menü Çubuğunu Göster (Sadece 2+ konumda görünür)',
     animated_background: 'Dinamik Atmosferik Gökyüzü Arka Planı (Yağmur, Kar, Şimşek, Güneş Işıltısı)',
     transparent_background: 'Şeffaf Arka Plan (Home Assistant panosuyla harmanla)',
+    reverse_geocode: 'Konum Adını Otomatik Çözümle (İsteğe Bağlı)',
+    reverse_geocode_desc: 'Şehir adını koordinatlarla harici servis (BigDataCloud) üzerinden sorgular. Gizlilik için varsayılan olarak kapalıdır.',
   },
   en: {
     weather_entity: 'Weather Entity *',
     select_weather_entity: 'Select weather entity...',
     custom_location_name: 'Custom Location Name (Optional)',
-    location_placeholder: 'e.g. Kırklareli',
+    location_placeholder: 'e.g. Cupertino, Home',
     additional_locations_title: '🌍 Additional Locations (Multi-Location)',
     additional_locations_desc: 'Additional weather locations switchable by swiping left/right or tapping bottom dots.',
     add_location_placeholder: '+ Add New Location / City...',
@@ -116,12 +120,14 @@ export const editorTranslations: Record<string, EditorTranslations> = {
     show_bottom_bar: 'Show iOS Bottom Bar (Visible only when 2+ locations configured)',
     animated_background: 'Dynamic Weather Sky Background (Rain, Snow, Thunder, Sunlight)',
     transparent_background: 'Transparent Background (Blend with HA theme)',
+    reverse_geocode: 'Enable Reverse Geocoding (Opt-in)',
+    reverse_geocode_desc: 'Look up city name using coordinates via third-party service (BigDataCloud). Disabled by default for privacy.',
   },
   de: {
     weather_entity: 'Wetter-Entität *',
     select_weather_entity: 'Wetter-Entität auswählen...',
     custom_location_name: 'Benutzerdefinierter Standortname (Optional)',
-    location_placeholder: 'z. B. Berlin',
+    location_placeholder: 'z. B. Berlin, Zuhause',
     additional_locations_title: '🌍 Weitere Standorte (Multi-Standort)',
     additional_locations_desc: 'Weitere Standorte, zwischen denen durch Wischen oder Tippen auf die unteren Punkte gewechselt werden kann.',
     add_location_placeholder: '+ Neuen Standort hinzufügen...',
@@ -155,12 +161,14 @@ export const editorTranslations: Record<string, EditorTranslations> = {
     show_bottom_bar: 'iOS-Untenleiste anzeigen (Nur sichtbar bei 2+ Standorten)',
     animated_background: 'Dynamischer Himmelshintergrund (Regen, Schnee, Gewitter)',
     transparent_background: 'Transparenter Hintergrund (Mit HA-Dashboard verschmelzen)',
+    reverse_geocode: 'Reverse-Geocoding aktivieren (Opt-in)',
+    reverse_geocode_desc: 'Ermittelt den Ortsnamen über Drittanbieter (BigDataCloud) anhand der Koordinaten. Aus Datenschutzgründen standardmäßig deaktiviert.',
   },
   es: {
     weather_entity: 'Entidad meteorológica *',
     select_weather_entity: 'Seleccionar entidad meteorológica...',
     custom_location_name: 'Nombre de ubicación personalizado (Opcional)',
-    location_placeholder: 'ej. Madrid',
+    location_placeholder: 'p. ej. Madrid, Casa',
     additional_locations_title: '🌍 Ubicaciones adicionales (Multi-ubicación)',
     additional_locations_desc: 'Ubicaciones adicionales intercambiables deslizando o tocando los puntos inferiores.',
     add_location_placeholder: '+ Añadir nueva ubicación...',
@@ -194,12 +202,14 @@ export const editorTranslations: Record<string, EditorTranslations> = {
     show_bottom_bar: 'Mostrar barra inferior de iOS (Visible solo con 2+ ubicaciones)',
     animated_background: 'Fondo de cielo dinámico (Lluvia, Nieve, Tormenta)',
     transparent_background: 'Fondo transparente (Combinar con el tema de HA)',
+    reverse_geocode: 'Activar geocodificación inversa (Opcional)',
+    reverse_geocode_desc: 'Obtiene el nombre de la ciudad mediante coordenadas con BigDataCloud. Desactivado por defecto por privacidad.',
   },
   fr: {
     weather_entity: 'Entité météo *',
     select_weather_entity: 'Sélectionner une entité météo...',
     custom_location_name: 'Nom de localisation personnalisé (Optionnel)',
-    location_placeholder: 'ex. Paris',
+    location_placeholder: 'p. ex. Paris, Maison',
     additional_locations_title: '🌍 Emplacements supplémentaires (Multi-emplacement)',
     additional_locations_desc: 'Emplacements météo supplémentaires accessibles par balayage ou via les points inférieurs.',
     add_location_placeholder: '+ Ajouter un nouvel emplacement...',
@@ -233,6 +243,8 @@ export const editorTranslations: Record<string, EditorTranslations> = {
     show_bottom_bar: 'Afficher la barre inférieure iOS (Visible uniquement avec 2+ emplacements)',
     animated_background: 'Arrière-plan céleste dynamique (Pluie, Neige, Orage)',
     transparent_background: 'Arrière-plan transparent (Fusionner avec le thème HA)',
+    reverse_geocode: 'Activer le géocodage inversé (Optionnel)',
+    reverse_geocode_desc: 'Recherche le nom de la ville via un service tiers (BigDataCloud) à l\'aide des coordonnées. Désactivé par défaut pour la confidentialité.',
   },
 };
 

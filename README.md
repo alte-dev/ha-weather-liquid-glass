@@ -148,6 +148,7 @@ temp_sensor: sensor.outdoor_temperature  # Optional high-precision sensor overri
 | :--- | :---: | :---: | :--- |
 | `entity` | `string` | **Required** | Weather entity ID (e.g. `weather.forecast_home` or `weather.home`). |
 | `name` | `string` | Entity Name | Custom location title displayed at the top (e.g. `Cupertino`). |
+| `reverse_geocode` | `boolean` | `false` | **Opt-in** reverse geocoding via BigDataCloud API using coordinates to resolve place name when `name` is omitted. Disabled by default to protect user privacy. |
 | `card_layout` | `string` | `default` | Layout shape: `default` (full), `compact` (rectangle), or `square` (1:1 widget). |
 | `default_view` | `string` | `condition` | Initial active tab: `condition`, `precipitation`, or `wind`. |
 | `locale` | `string` | `auto` | Card language: `auto` (from Home Assistant), `en`, `tr`, `de`, `es`, `fr`. |
@@ -171,9 +172,22 @@ You can configure all options directly through Home Assistant's visual UI card p
 
 ---
 
+## 🔒 Privacy & Geolocation
+
+Privacy is a fundamental consideration:
+- **No external coordinate sharing by default:** `reverse_geocode` is disabled (`false`) by default. The card does **not** share your coordinates with third-party services.
+- **Local name resolution:** The card resolves location names strictly locally in this priority order:
+  1. User-configured `name` on the card / location.
+  2. The weather entity's `friendly_name` in Home Assistant.
+  3. Your Home Assistant instance's configured name (`hass.config.location_name`).
+  4. Entity ID.
+- **Opt-in Reverse Geocoding (`reverse_geocode: true`):** If explicitly enabled and no custom `name` is set, the card queries BigDataCloud's reverse-geocoding API (`api.bigdatacloud.net`) using approximate coordinates (rounded to 3 decimal places) to look up a district or city name.
+
+---
+
 ## 🤝 Attribution & Credits
 
-- Portions of the service layer and forecast subscription concepts are adapted and inspired by the excellent work of **Patrick Kissling** in [clock-weather-card](https://github.com/pkissling/clock-weather-card) (MIT License).
+- Portions of the service layer and forecast subscription concepts are adapted and inspired by the work of **Patrick Kissling** in [clock-weather-card](https://github.com/pkissling/clock-weather-card) (MIT License, copyright notice included in [LICENSE](LICENSE)).
 - UI and UX concept inspired by **Apple iOS Weather**.
 
 ---

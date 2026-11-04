@@ -114,6 +114,20 @@ Der einfachste Weg ist ein Klick auf die folgende My Home Assistant-Schaltfläch
 
 ---
 
+## 🔒 Datenschutz
+
+- **Standardmäßig keine Weitergabe von Koordinaten:** `reverse_geocode` ist standardmäßig deaktiviert (`false`). Die Karte sendet keine Koordinaten an Drittanbieter.
+- **Lokale Namensauflösung:** Ortsnamen werden rein lokal aus der Konfiguration (`name`), dem `friendly_name` der Wetter-Entität oder `hass.config.location_name` ermittelt.
+- **Opt-in Reverse Geocoding (`reverse_geocode: true`):** Nur wenn explizit aktiviert und kein benutzerdefinierter Name gesetzt ist, wird der Ortsname über BigDataCloud abgefragt.
+
+---
+
+## 🤝 Danksagung & Credits
+
+- Teile der Serviceschicht und Abonnements basieren auf der Arbeit von **Patrick Kissling** in [clock-weather-card](https://github.com/pkissling/clock-weather-card) (MIT-Lizenz, Urheberrechtshinweis in [LICENSE](LICENSE) enthalten).
+
+---
+
 ## 📄 Lizenz
 
 Dieses Projekt ist unter der **MIT-Lizenz** lizenziert - siehe [LICENSE](LICENSE) für Details.

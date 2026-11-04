@@ -114,6 +114,20 @@ La forma más sencilla es hacer clic en el botón de My Home Assistant a continu
 
 ---
 
+## 🔒 Privacidad
+
+- **Sin envío de coordenadas por defecto:** `reverse_geocode` está desactivado (`false`) por defecto. La tarjeta no comparte coordenadas con terceros.
+- **Resolución local del nombre:** Se obtiene localmente de la configuración (`name`), del `friendly_name` de la entidad meteorológica o de `hass.config.location_name`.
+- **Geocodificación inversa opcional (`reverse_geocode: true`):** Solo si se activa expresamente y no se ha fijado un nombre, se consulta la API de BigDataCloud.
+
+---
+
+## 🤝 Créditos y Agradecimientos
+
+- Partes de la capa de servicio y suscripciones están adaptadas del trabajo de **Patrick Kissling** en [clock-weather-card](https://github.com/pkissling/clock-weather-card) (Licencia MIT, aviso de copyright incluido en [LICENSE](LICENSE)).
+
+---
+
 ## 📄 Licencia
 
 Este proyecto está bajo la **Licencia MIT** - consulte [LICENSE](LICENSE) para más detalles.

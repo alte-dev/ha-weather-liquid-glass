@@ -146,6 +146,7 @@ temp_sensor: sensor.outdoor_temperature  # İsteğe bağlı harici sıcaklık se
 | :--- | :---: | :---: | :--- |
 | `entity` | `string` | **Zorunlu** | Hava durumu entity ID'si (örn. `weather.home`). |
 | `name` | `string` | Entity İsmi | Başlıkta gösterilecek özel konum ismi (örn. `İstanbul`, `Cupertino`). |
+| `reverse_geocode` | `boolean` | `false` | **İsteğe bağlı** otomatik ters coğrafi kodlama (BigDataCloud API). Koordinatlar üzerinden şehir adı bulur. Kullanıcı gizliliği için varsayılan olarak kapalıdır. |
 | `card_layout` | `string` | `default` | Kart şekli: `default` (tam dikey), `compact` (dikdörtgen) veya `square` (kare widget). |
 | `default_view` | `string` | `condition` | Varsayılan açık sekme: `condition`, `precipitation` veya `wind`. |
 | `locale` | `string` | `auto` | Kart dili: `auto` (HA dilinden), `tr`, `en`, `de`, `es`, `fr`. |
@@ -160,9 +161,22 @@ temp_sensor: sensor.outdoor_temperature  # İsteğe bağlı harici sıcaklık se
 
 ---
 
+## 🔒 Gizlilik ve Coğrafi Konum
+
+Kullanıcı gizliliği temel önceliktir:
+- **Varsayılan olarak koordinat paylaşılmaz:** `reverse_geocode` ayarı varsayılan olarak kapalıdır (`false`). Kart hiçbir üçüncü taraf servise evinizin veya sisteminizin koordinatlarını göndermez.
+- **Yerel isim çözümleme:** Şehir/konum başlığı öncelik sırasıyla tamamen yerel olarak belirlenir:
+  1. Kart yapılandırmasında kullanıcının girdiği özel `name`.
+  2. Home Assistant içerisindeki weather entity'sinin `friendly_name` değeri.
+  3. Home Assistant sistem konumu adı (`hass.config.location_name`).
+  4. Entity ID.
+- **İsteğe Bağlı Ters Coğrafi Kodlama (`reverse_geocode: true`):** Eğer bu seçenek açıkça `true` yapılırsa ve özel bir `name` girilmemişse, kart BigDataCloud API'sini (`api.bigdatacloud.net`) yaklaşık koordinatlarla (3 ondalık basamağa yuvarlanarak) sorgulayarak ilçe veya şehir adını bulur.
+
+---
+
 ## 🤝 Kaynak & Teşekkür
 
-- Tahmin abonelikleri ve servis altyapısının temel kavramları için **Patrick Kissling**'in [clock-weather-card](https://github.com/pkissling/clock-weather-card) (MIT Lisansı) projesinden esinlenilmiştir.
+- Tahmin abonelikleri ve servis altyapısının temel kavramları için **Patrick Kissling**'in [clock-weather-card](https://github.com/pkissling/clock-weather-card) (MIT Lisansı, telif hakkı bildirimi [LICENSE](LICENSE) dosyasına eklenmiştir) projesinden esinlenilmiştir.
 - Arayüz ve kullanıcı deneyimi **Apple iOS Weather** uygulamasından esinlenilmiştir.
 
 ---

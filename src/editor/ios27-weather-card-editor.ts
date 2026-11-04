@@ -2,7 +2,6 @@ import { css, html, LitElement, type TemplateResult } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import type { HomeAssistant } from 'custom-card-helpers';
 import type { Ios27WeatherCardConfig } from '@/types';
-import locationService from '@/services/location-service';
 import { getEditorTranslation } from './editor-translations';
 
 @customElement('weather-liquid-glass-card-editor')
@@ -90,17 +89,10 @@ export class Ios27WeatherCardEditor extends LitElement {
 
   public connectedCallback(): void {
     super.connectedCallback();
-    if (this.hass) {
-      locationService.resolveLocationName(this.hass).then(() => this.requestUpdate());
-    }
   }
 
   public setConfig(config: Ios27WeatherCardConfig): void {
     const cleanConfig = { ...config };
-    const generic = ['cupertino', 'forecast home', 'home', 'ev'];
-    if (cleanConfig.name && generic.includes(cleanConfig.name.trim().toLowerCase())) {
-      delete cleanConfig.name;
-    }
     if (!cleanConfig.card_layout) {
       cleanConfig.card_layout = 'square-scroll';
     }
@@ -150,8 +142,8 @@ export class Ios27WeatherCardEditor extends LitElement {
           <input
             type="text"
             class="form-input"
-            .placeholder=${locationService.getCachedLocation() || t.location_placeholder}
-            .value=${this._config.name && !['cupertino', 'forecast home', 'home', 'ev'].includes(this._config.name.toLowerCase()) ? this._config.name : ''}
+            .placeholder=${t.location_placeholder}
+            .value=${this._config.name || ''}
             @input=${(e: Event) => this._valueChanged('name', (e.target as HTMLInputElement).value)}
           />
         </div>
@@ -368,6 +360,20 @@ export class Ios27WeatherCardEditor extends LitElement {
           />
           <label for="transparent_background" class="form-label">${t.transparent_background}</label>
         </div>
+
+        <!-- Opt-in Reverse Geocoding -->
+        <div class="checkbox-row">
+          <input
+            type="checkbox"
+            id="reverse_geocode"
+            ?checked=${this._config.reverse_geocode === true}
+            @change=${(e: Event) => this._valueChanged('reverse_geocode', (e.target as HTMLInputElement).checked)}
+          />
+          <label for="reverse_geocode" class="form-label">${t.reverse_geocode}</label>
+        </div>
+        <div style="font-size: 11px; opacity: 0.65; margin: -6px 0 12px 24px; line-height: 1.3;">
+          ${t.reverse_geocode_desc}
+        </div>
       </div>
     `;
   }
@@ -375,8 +381,7 @@ export class Ios27WeatherCardEditor extends LitElement {
   private _valueChanged(key: keyof Ios27WeatherCardConfig, value: any): void {
     if (!this._config) return;
     const newConfig = { ...this._config };
-    const generic = ['cupertino', 'forecast home', 'home', 'ev'];
-    if (value === '' || value === undefined || (key === 'name' && typeof value === 'string' && generic.includes(value.trim().toLowerCase()))) {
+    if (value === '' || value === undefined) {
       delete newConfig[key];
     } else {
       newConfig[key] = value;

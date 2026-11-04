@@ -9706,13 +9706,10 @@ class LocationService {
     this._fetchPromise = null;
   }
   /**
-   * Automatically resolves the district, city, or town name from Home Assistant's
-   * coordinates (reverse geocoding) or geocoded companion app sensors.
+   * Resolves location name locally from companion app sensors without any external network calls.
    */
-  async resolveLocationName(hass, locale = "tr") {
-    if (this._cachedLocation) {
-      return this._cachedLocation;
-    }
+  resolveFromSensors(hass) {
+    if (!hass?.states) return null;
     const geocodedSensors = Object.keys(hass.states).filter(
       (id) => id.startsWith("sensor.") && (id.includes("geocoded_location") || id.includes("geo_location"))
     );
@@ -9721,24 +9718,39 @@ class LocationService {
       if (stateObj?.attributes) {
         const locality = stateObj.attributes.Locality || stateObj.attributes.locality || stateObj.attributes.City || stateObj.attributes.city;
         if (locality && typeof locality === "string" && locality.trim()) {
-          this._cachedLocation = locality.trim();
-          return this._cachedLocation;
+          return locality.trim();
         }
       }
       if (stateObj?.state && stateObj.state !== "unknown" && stateObj.state !== "unavailable") {
         const parts = stateObj.state.split(",");
         if (parts.length > 0 && parts[0].trim().length > 1) {
-          this._cachedLocation = parts[0].trim();
-          return this._cachedLocation;
+          return parts[0].trim();
         }
       }
     }
-    const lat = hass.config?.latitude ?? hass.states["zone.home"]?.attributes?.latitude;
-    const lon = hass.config?.longitude ?? hass.states["zone.home"]?.attributes?.longitude;
-    if (!lat || !lon) {
+    return null;
+  }
+  /**
+   * Opt-in reverse geocoding using BigDataCloud API.
+   * MUST ONLY be called when reverse_geocode is explicitly enabled by the user in card configuration.
+   */
+  async reverseGeocode(hass, locale = "en") {
+    if (this._cachedLocation) {
+      return this._cachedLocation;
+    }
+    const sensorLoc = this.resolveFromSensors(hass);
+    if (sensorLoc) {
+      this._cachedLocation = sensorLoc;
+      return sensorLoc;
+    }
+    const rawLat = hass.config?.latitude ?? hass.states?.["zone.home"]?.attributes?.latitude;
+    const rawLon = hass.config?.longitude ?? hass.states?.["zone.home"]?.attributes?.longitude;
+    if (rawLat === void 0 || rawLon === void 0 || rawLat === null || rawLon === null) {
       return null;
     }
-    const cacheKey = `ios27_geo_${lat.toFixed(3)}_${lon.toFixed(3)}_${locale}`;
+    const lat = Number(rawLat).toFixed(3);
+    const lon = Number(rawLon).toFixed(3);
+    const cacheKey = `ios27_geo_${lat}_${lon}_${locale}`;
     try {
       const cached = localStorage.getItem(cacheKey);
       if (cached && cached.trim()) {
@@ -9768,7 +9780,7 @@ class LocationService {
           }
         }
       } catch (err) {
-        console.warn("iOS 27 Weather: Reverse geocoding failed", err);
+        console.warn("Weather Liquid Glass: Reverse geocoding request failed", err);
       } finally {
         this._fetchPromise = null;
       }
@@ -9777,10 +9789,19 @@ class LocationService {
     return this._fetchPromise;
   }
   /**
+   * Alias for backward compatibility. Reverse geocodes only when invoked.
+   */
+  async resolveLocationName(hass, locale = "en") {
+    return this.reverseGeocode(hass, locale);
+  }
+  /**
    * Synchronous check if location is already cached
    */
   getCachedLocation() {
     return this._cachedLocation;
+  }
+  clearCache() {
+    this._cachedLocation = null;
   }
 }
 const locationService = new LocationService();
@@ -12352,7 +12373,7 @@ const editorTranslations = {
     weather_entity: "Hava Durumu Varlığı (Entity) *",
     select_weather_entity: "Hava durumu varlığı seçin...",
     custom_location_name: "Özel Şehir / Konum Adı (İsteğe bağlı)",
-    location_placeholder: "Örn. Kırklareli",
+    location_placeholder: "Örn. Ev, Kadıköy",
     additional_locations_title: "🌍 Diğer Konumlar / Şehirler (Çoklu Konum)",
     additional_locations_desc: "Kart üzerinde sağa/sola kaydırarak veya alt noktalarla geçiş yapılabilecek diğer hava durumu konumları.",
     add_location_placeholder: "+ Yeni Konum / Şehir Ekle...",
@@ -12385,13 +12406,15 @@ const editorTranslations = {
     map_url_placeholder: "Örn. /map veya https://embed.windy.com",
     show_bottom_bar: "iOS Alt Menü Çubuğunu Göster (Sadece 2+ konumda görünür)",
     animated_background: "Dinamik Atmosferik Gökyüzü Arka Planı (Yağmur, Kar, Şimşek, Güneş Işıltısı)",
-    transparent_background: "Şeffaf Arka Plan (Home Assistant panosuyla harmanla)"
+    transparent_background: "Şeffaf Arka Plan (Home Assistant panosuyla harmanla)",
+    reverse_geocode: "Konum Adını Otomatik Çözümle (İsteğe Bağlı)",
+    reverse_geocode_desc: "Şehir adını koordinatlarla harici servis (BigDataCloud) üzerinden sorgular. Gizlilik için varsayılan olarak kapalıdır."
   },
   en: {
     weather_entity: "Weather Entity *",
     select_weather_entity: "Select weather entity...",
     custom_location_name: "Custom Location Name (Optional)",
-    location_placeholder: "e.g. Kırklareli",
+    location_placeholder: "e.g. Cupertino, Home",
     additional_locations_title: "🌍 Additional Locations (Multi-Location)",
     additional_locations_desc: "Additional weather locations switchable by swiping left/right or tapping bottom dots.",
     add_location_placeholder: "+ Add New Location / City...",
@@ -12424,13 +12447,15 @@ const editorTranslations = {
     map_url_placeholder: "e.g. /map or https://embed.windy.com",
     show_bottom_bar: "Show iOS Bottom Bar (Visible only when 2+ locations configured)",
     animated_background: "Dynamic Weather Sky Background (Rain, Snow, Thunder, Sunlight)",
-    transparent_background: "Transparent Background (Blend with HA theme)"
+    transparent_background: "Transparent Background (Blend with HA theme)",
+    reverse_geocode: "Enable Reverse Geocoding (Opt-in)",
+    reverse_geocode_desc: "Look up city name using coordinates via third-party service (BigDataCloud). Disabled by default for privacy."
   },
   de: {
     weather_entity: "Wetter-Entität *",
     select_weather_entity: "Wetter-Entität auswählen...",
     custom_location_name: "Benutzerdefinierter Standortname (Optional)",
-    location_placeholder: "z. B. Berlin",
+    location_placeholder: "z. B. Berlin, Zuhause",
     additional_locations_title: "🌍 Weitere Standorte (Multi-Standort)",
     additional_locations_desc: "Weitere Standorte, zwischen denen durch Wischen oder Tippen auf die unteren Punkte gewechselt werden kann.",
     add_location_placeholder: "+ Neuen Standort hinzufügen...",
@@ -12463,13 +12488,15 @@ const editorTranslations = {
     map_url_placeholder: "z. B. /map oder https://embed.windy.com",
     show_bottom_bar: "iOS-Untenleiste anzeigen (Nur sichtbar bei 2+ Standorten)",
     animated_background: "Dynamischer Himmelshintergrund (Regen, Schnee, Gewitter)",
-    transparent_background: "Transparenter Hintergrund (Mit HA-Dashboard verschmelzen)"
+    transparent_background: "Transparenter Hintergrund (Mit HA-Dashboard verschmelzen)",
+    reverse_geocode: "Reverse-Geocoding aktivieren (Opt-in)",
+    reverse_geocode_desc: "Ermittelt den Ortsnamen über Drittanbieter (BigDataCloud) anhand der Koordinaten. Aus Datenschutzgründen standardmäßig deaktiviert."
   },
   es: {
     weather_entity: "Entidad meteorológica *",
     select_weather_entity: "Seleccionar entidad meteorológica...",
     custom_location_name: "Nombre de ubicación personalizado (Opcional)",
-    location_placeholder: "ej. Madrid",
+    location_placeholder: "p. ej. Madrid, Casa",
     additional_locations_title: "🌍 Ubicaciones adicionales (Multi-ubicación)",
     additional_locations_desc: "Ubicaciones adicionales intercambiables deslizando o tocando los puntos inferiores.",
     add_location_placeholder: "+ Añadir nueva ubicación...",
@@ -12502,13 +12529,15 @@ const editorTranslations = {
     map_url_placeholder: "ej. /map o https://embed.windy.com",
     show_bottom_bar: "Mostrar barra inferior de iOS (Visible solo con 2+ ubicaciones)",
     animated_background: "Fondo de cielo dinámico (Lluvia, Nieve, Tormenta)",
-    transparent_background: "Fondo transparente (Combinar con el tema de HA)"
+    transparent_background: "Fondo transparente (Combinar con el tema de HA)",
+    reverse_geocode: "Activar geocodificación inversa (Opcional)",
+    reverse_geocode_desc: "Obtiene el nombre de la ciudad mediante coordenadas con BigDataCloud. Desactivado por defecto por privacidad."
   },
   fr: {
     weather_entity: "Entité météo *",
     select_weather_entity: "Sélectionner une entité météo...",
     custom_location_name: "Nom de localisation personnalisé (Optionnel)",
-    location_placeholder: "ex. Paris",
+    location_placeholder: "p. ex. Paris, Maison",
     additional_locations_title: "🌍 Emplacements supplémentaires (Multi-emplacement)",
     additional_locations_desc: "Emplacements météo supplémentaires accessibles par balayage ou via les points inférieurs.",
     add_location_placeholder: "+ Ajouter un nouvel emplacement...",
@@ -12541,7 +12570,9 @@ const editorTranslations = {
     map_url_placeholder: "ex. /map ou https://embed.windy.com",
     show_bottom_bar: "Afficher la barre inférieure iOS (Visible uniquement avec 2+ emplacements)",
     animated_background: "Arrière-plan céleste dynamique (Pluie, Neige, Orage)",
-    transparent_background: "Arrière-plan transparent (Fusionner avec le thème HA)"
+    transparent_background: "Arrière-plan transparent (Fusionner avec le thème HA)",
+    reverse_geocode: "Activer le géocodage inversé (Optionnel)",
+    reverse_geocode_desc: "Recherche le nom de la ville via un service tiers (BigDataCloud) à l'aide des coordonnées. Désactivé par défaut pour la confidentialité."
   }
 };
 function getEditorTranslation(lang) {
@@ -12561,16 +12592,9 @@ var __decorateClass$1 = (decorators, target, key, kind) => {
 let Ios27WeatherCardEditor = class extends i {
   connectedCallback() {
     super.connectedCallback();
-    if (this.hass) {
-      locationService.resolveLocationName(this.hass).then(() => this.requestUpdate());
-    }
   }
   setConfig(config) {
     const cleanConfig = { ...config };
-    const generic = ["cupertino", "forecast home", "home", "ev"];
-    if (cleanConfig.name && generic.includes(cleanConfig.name.trim().toLowerCase())) {
-      delete cleanConfig.name;
-    }
     if (!cleanConfig.card_layout) {
       cleanConfig.card_layout = "square-scroll";
     }
@@ -12613,8 +12637,8 @@ let Ios27WeatherCardEditor = class extends i {
           <input
             type="text"
             class="form-input"
-            .placeholder=${locationService.getCachedLocation() || t2.location_placeholder}
-            .value=${this._config.name && !["cupertino", "forecast home", "home", "ev"].includes(this._config.name.toLowerCase()) ? this._config.name : ""}
+            .placeholder=${t2.location_placeholder}
+            .value=${this._config.name || ""}
             @input=${(e2) => this._valueChanged("name", e2.target.value)}
           />
         </div>
@@ -12829,14 +12853,27 @@ let Ios27WeatherCardEditor = class extends i {
           />
           <label for="transparent_background" class="form-label">${t2.transparent_background}</label>
         </div>
+
+        <!-- Opt-in Reverse Geocoding -->
+        <div class="checkbox-row">
+          <input
+            type="checkbox"
+            id="reverse_geocode"
+            ?checked=${this._config.reverse_geocode === true}
+            @change=${(e2) => this._valueChanged("reverse_geocode", e2.target.checked)}
+          />
+          <label for="reverse_geocode" class="form-label">${t2.reverse_geocode}</label>
+        </div>
+        <div style="font-size: 11px; opacity: 0.65; margin: -6px 0 12px 24px; line-height: 1.3;">
+          ${t2.reverse_geocode_desc}
+        </div>
       </div>
     `;
   }
   _valueChanged(key, value) {
     if (!this._config) return;
     const newConfig = { ...this._config };
-    const generic = ["cupertino", "forecast home", "home", "ev"];
-    if (value === "" || value === void 0 || key === "name" && typeof value === "string" && generic.includes(value.trim().toLowerCase())) {
+    if (value === "" || value === void 0) {
       delete newConfig[key];
     } else {
       newConfig[key] = value;
@@ -13048,7 +13085,9 @@ let Ios27WeatherCard = class extends i {
     super.updated(changedProps);
     if (changedProps.has("hass") || changedProps.has("_config")) {
       this._setupSubscription();
-      this._resolveLocation();
+      if (this._config?.reverse_geocode) {
+        this._resolveLocation();
+      }
     }
   }
   _getLocations() {
@@ -13057,7 +13096,8 @@ let Ios27WeatherCard = class extends i {
       list.push({
         entity: this._config.entity,
         name: this._config.name,
-        temp_sensor: this._config.temp_sensor
+        temp_sensor: this._config.temp_sensor,
+        reverse_geocode: this._config.reverse_geocode
       });
     }
     const extras = this._config?.locations || this._config?.entities || [];
@@ -13085,8 +13125,13 @@ let Ios27WeatherCard = class extends i {
   }
   async _resolveLocation() {
     if (!this.hass) return;
-    const locale = this._config?.locale || this.hass.locale?.language || this.hass.language || "tr";
-    const loc = await locationService.resolveLocationName(this.hass, locale);
+    const locations = this._getLocations();
+    const activeLoc = locations[this._currentLocationIndex] || locations[0];
+    const isOptIn = activeLoc?.reverse_geocode ?? this._config?.reverse_geocode;
+    if (!isOptIn) return;
+    if (activeLoc?.name && activeLoc.name.trim().length > 0) return;
+    const locale = this._config?.locale || this.hass.locale?.language || this.hass.language || "en";
+    const loc = await locationService.reverseGeocode(this.hass, locale);
     if (loc && loc !== this._autoLocationName) {
       this._autoLocationName = loc;
       this.requestUpdate();
@@ -13165,36 +13210,22 @@ let Ios27WeatherCard = class extends i {
     }
     const isNight = hassService.isNight(this.hass, this._config.sun_entity);
     const condition = entityState.state || "sunny";
-    const genericNames = [
-      "forecast home",
-      "weather",
-      "home",
-      "ev",
-      "cupertino",
-      "default",
-      "hava durumu",
-      "weather forecast",
-      "forecast"
-    ];
     let friendlyName = activeLoc?.name?.trim();
-    if (!friendlyName || genericNames.includes(friendlyName.toLowerCase())) {
-      if (activeIndex === 0 && this._autoLocationName) {
+    if (!friendlyName) {
+      const isOptIn = activeLoc?.reverse_geocode ?? this._config?.reverse_geocode;
+      if (isOptIn && this._autoLocationName) {
         friendlyName = this._autoLocationName;
       } else {
-        const cached = activeIndex === 0 ? locationService.getCachedLocation() : null;
-        if (cached) {
-          friendlyName = cached;
+        const entityFriendly = entityState.attributes?.friendly_name?.trim();
+        if (entityFriendly) {
+          friendlyName = entityFriendly;
         } else {
-          const entityName = entityState.attributes?.friendly_name?.trim();
-          if (entityName && !genericNames.includes(entityName.toLowerCase())) {
-            friendlyName = entityName;
+          const haLocation = this.hass.config?.location_name?.trim();
+          if (haLocation) {
+            friendlyName = haLocation;
           } else {
-            const haLocation = this.hass.config?.location_name?.trim();
-            if (haLocation && !genericNames.includes(haLocation.toLowerCase())) {
-              friendlyName = haLocation;
-            } else {
-              friendlyName = activeIndex === 0 ? "Kırklareli" : activeEntityId.replace("weather.", "");
-            }
+            const rawId = activeEntityId.replace(/^weather\./, "").replace(/_/g, " ");
+            friendlyName = rawId ? rawId.charAt(0).toUpperCase() + rawId.slice(1) : "Weather";
           }
         }
       }

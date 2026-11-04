@@ -117,6 +117,20 @@ Le moyen le plus simple consiste à cliquer sur le bouton My Home Assistant ci-d
 
 ---
 
+## 🔒 Confidentialité
+
+- **Aucun partage de coordonnées par défaut :** `reverse_geocode` est désactivé (`false`) par défaut. La carte ne partage aucune coordonnée avec des tiers.
+- **Résolution locale du nom :** Le nom du lieu provient uniquement de la configuration (`name`), du `friendly_name` de l'entité météo ou de `hass.config.location_name`.
+- **Géocodage inversé optionnel (`reverse_geocode: true`) :** Uniquement si explicitement activé et sans nom personnalisé défini, l'API BigDataCloud est interrogée.
+
+---
+
+## 🤝 Crédits et Remerciements
+
+- Des portions de la couche de service et des abonnements sont adaptées des travaux de **Patrick Kissling** dans [clock-weather-card](https://github.com/pkissling/clock-weather-card) (Licence MIT, avis de droit d'auteur inclus dans [LICENSE](LICENSE)).
+
+---
+
 ## 📄 Licence
 
 Ce projet est sous **Licence MIT** - consultez le fichier [LICENSE](LICENSE) pour plus de détails.

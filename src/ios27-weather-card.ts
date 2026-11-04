@@ -134,7 +134,9 @@ export class Ios27WeatherCard extends LitElement {
     super.updated(changedProps);
     if (changedProps.has('hass') || changedProps.has('_config')) {
       this._setupSubscription();
-      this._resolveLocation();
+      if (this._config?.reverse_geocode) {
+        this._resolveLocation();
+      }
     }
   }
 
@@ -145,6 +147,7 @@ export class Ios27WeatherCard extends LitElement {
         entity: this._config.entity,
         name: this._config.name,
         temp_sensor: this._config.temp_sensor,
+        reverse_geocode: this._config.reverse_geocode,
       });
     }
     const extras = this._config?.locations || this._config?.entities || [];
@@ -176,8 +179,16 @@ export class Ios27WeatherCard extends LitElement {
 
   private async _resolveLocation(): Promise<void> {
     if (!this.hass) return;
-    const locale = this._config?.locale || this.hass.locale?.language || (this.hass as any).language || 'tr';
-    const loc = await locationService.resolveLocationName(this.hass, locale);
+    const locations = this._getLocations();
+    const activeLoc = locations[this._currentLocationIndex] || locations[0];
+
+    // Only resolve if explicitly enabled and user has not provided a custom name
+    const isOptIn = activeLoc?.reverse_geocode ?? this._config?.reverse_geocode;
+    if (!isOptIn) return;
+    if (activeLoc?.name && activeLoc.name.trim().length > 0) return;
+
+    const locale = this._config?.locale || this.hass.locale?.language || (this.hass as any).language || 'en';
+    const loc = await locationService.reverseGeocode(this.hass, locale);
     if (loc && loc !== this._autoLocationName) {
       this._autoLocationName = loc;
       this.requestUpdate();
@@ -278,37 +289,23 @@ export class Ios27WeatherCard extends LitElement {
     const isNight = hassService.isNight(this.hass, this._config.sun_entity);
     const condition = entityState.state || 'sunny';
     
-    const genericNames = [
-      'forecast home',
-      'weather',
-      'home',
-      'ev',
-      'cupertino',
-      'default',
-      'hava durumu',
-      'weather forecast',
-      'forecast',
-    ];
-
     let friendlyName = activeLoc?.name?.trim();
-    if (!friendlyName || genericNames.includes(friendlyName.toLowerCase())) {
-      if (activeIndex === 0 && this._autoLocationName) {
+    // Only resolve a fallback if user did not provide a custom name
+    if (!friendlyName) {
+      const isOptIn = activeLoc?.reverse_geocode ?? this._config?.reverse_geocode;
+      if (isOptIn && this._autoLocationName) {
         friendlyName = this._autoLocationName;
       } else {
-        const cached = activeIndex === 0 ? locationService.getCachedLocation() : null;
-        if (cached) {
-          friendlyName = cached;
+        const entityFriendly = entityState.attributes?.friendly_name?.trim();
+        if (entityFriendly) {
+          friendlyName = entityFriendly;
         } else {
-          const entityName = entityState.attributes?.friendly_name?.trim();
-          if (entityName && !genericNames.includes(entityName.toLowerCase())) {
-            friendlyName = entityName;
+          const haLocation = this.hass.config?.location_name?.trim();
+          if (haLocation) {
+            friendlyName = haLocation;
           } else {
-            const haLocation = this.hass.config?.location_name?.trim();
-            if (haLocation && !genericNames.includes(haLocation.toLowerCase())) {
-              friendlyName = haLocation;
-            } else {
-              friendlyName = activeIndex === 0 ? 'Kırklareli' : activeEntityId.replace('weather.', '');
-            }
+            const rawId = activeEntityId.replace(/^weather\./, '').replace(/_/g, ' ');
+            friendlyName = rawId ? rawId.charAt(0).toUpperCase() + rawId.slice(1) : 'Weather';
           }
         }
       }
