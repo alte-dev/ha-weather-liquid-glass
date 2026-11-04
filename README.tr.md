@@ -176,7 +176,7 @@ Kullanıcı gizliliği temel önceliktir:
 
 ## 🤝 Kaynak & Teşekkür
 
-- Tahmin abonelikleri ve servis altyapısının temel kavramları için **Patrick Kissling**'in [clock-weather-card](https://github.com/pkissling/clock-weather-card) (MIT Lisansı, telif hakkı bildirimi [LICENSE](LICENSE) dosyasına eklenmiştir) projesinden esinlenilmiştir.
+- Tahmin abonelikleri ve servis altyapısının temel kavramları için **Patrick Kissling**'in [clock-weather-card](https://github.com/pkissling/clock-weather-card) (MIT Lisansı, telif hakkı bildirimi [NOTICE.md](NOTICE.md) dosyasına eklenmiştir) projesinden esinlenilmiştir.
 - Arayüz ve kullanıcı deneyimi **Apple iOS Weather** uygulamasından esinlenilmiştir.
 
 ---

@@ -124,7 +124,7 @@ Der einfachste Weg ist ein Klick auf die folgende My Home Assistant-Schaltfläch
 
 ## 🤝 Danksagung & Credits
 
-- Teile der Serviceschicht und Abonnements basieren auf der Arbeit von **Patrick Kissling** in [clock-weather-card](https://github.com/pkissling/clock-weather-card) (MIT-Lizenz, Urheberrechtshinweis in [LICENSE](LICENSE) enthalten).
+- Teile der Serviceschicht und Abonnements basieren auf der Arbeit von **Patrick Kissling** in [clock-weather-card](https://github.com/pkissling/clock-weather-card) (MIT-Lizenz, Urheberrechtshinweis in [NOTICE.md](NOTICE.md) enthalten).
 
 ---
 

@@ -124,7 +124,7 @@ La forma más sencilla es hacer clic en el botón de My Home Assistant a continu
 
 ## 🤝 Créditos y Agradecimientos
 
-- Partes de la capa de servicio y suscripciones están adaptadas del trabajo de **Patrick Kissling** en [clock-weather-card](https://github.com/pkissling/clock-weather-card) (Licencia MIT, aviso de copyright incluido en [LICENSE](LICENSE)).
+- Partes de la capa de servicio y suscripciones están adaptadas del trabajo de **Patrick Kissling** en [clock-weather-card](https://github.com/pkissling/clock-weather-card) (Licencia MIT, aviso de copyright incluido en [NOTICE.md](NOTICE.md)).
 
 ---
 

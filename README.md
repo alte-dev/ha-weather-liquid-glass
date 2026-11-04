@@ -187,7 +187,7 @@ Privacy is a fundamental consideration:
 
 ## 🤝 Attribution & Credits
 
-- Portions of the service layer and forecast subscription concepts are adapted and inspired by the work of **Patrick Kissling** in [clock-weather-card](https://github.com/pkissling/clock-weather-card) (MIT License, copyright notice included in [LICENSE](LICENSE)).
+- Portions of the service layer and forecast subscription concepts are adapted and inspired by the work of **Patrick Kissling** in [clock-weather-card](https://github.com/pkissling/clock-weather-card) (MIT License, copyright notice included in [NOTICE.md](NOTICE.md)).
 - UI and UX concept inspired by **Apple iOS Weather**.
 
 ---
