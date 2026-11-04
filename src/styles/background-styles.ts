@@ -23,12 +23,12 @@ export function getWeatherBackground(condition: string, isNight: boolean): strin
     case 'sunny':
     case 'clear':
     case 'clear-day':
-      return 'linear-gradient(180deg, #1d5cb6 0%, #2974d6 45%, #4295f5 100%)';
+      return 'linear-gradient(180deg, #18488a 0%, #1e59a6 45%, #276fc4 100%)';
 
     case 'partlycloudy':
     case 'partly-cloudy':
     case 'partly-cloudy-day':
-      return 'linear-gradient(180deg, #1b4d88 0%, #2767b0 45%, #3d87d4 100%)';
+      return 'linear-gradient(180deg, #163f73 0%, #1c5292 45%, #2566b0 100%)';
 
     case 'cloudy':
     case 'overcast':
@@ -59,6 +59,6 @@ export function getWeatherBackground(condition: string, isNight: boolean): strin
       return 'linear-gradient(180deg, #374151 0%, #475569 45%, #64748b 100%)';
 
     default:
-      return 'linear-gradient(180deg, #2563eb 0%, #3b82f6 45%, #60a5fa 100%)';
+      return 'linear-gradient(180deg, #18488a 0%, #1e59a6 45%, #276fc4 100%)';
   }
 }

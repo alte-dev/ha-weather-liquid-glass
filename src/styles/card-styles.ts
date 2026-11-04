@@ -3,14 +3,14 @@ import { css } from 'lit';
 export const cardStyles = css`
   :host {
     --ios-font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
-    --ios-glass-bg: rgba(255, 255, 255, 0.16);
-    --ios-glass-bg-hover: rgba(255, 255, 255, 0.22);
-    --ios-glass-border: rgba(255, 255, 255, 0.22);
-    --ios-glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.18), inset 0 1px 1px 0 rgba(255, 255, 255, 0.28);
+    --ios-glass-bg: rgba(10, 22, 40, 0.28);
+    --ios-glass-bg-hover: rgba(10, 22, 40, 0.38);
+    --ios-glass-border: rgba(255, 255, 255, 0.20);
+    --ios-glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.24), inset 0 1px 1px 0 rgba(255, 255, 255, 0.20);
     --ios-text-primary: #ffffff;
-    --ios-text-secondary: rgba(255, 255, 255, 0.72);
-    --ios-text-tertiary: rgba(255, 255, 255, 0.5);
-    --ios-blue-accent: #38bdf8;
+    --ios-text-secondary: rgba(255, 255, 255, 0.85);
+    --ios-text-tertiary: rgba(255, 255, 255, 0.65);
+    --ios-blue-accent: #67e8f9;
     --ios-cyan-wind: #22d3ee;
     --ios-pill-active: rgba(255, 255, 255, 0.32);
     --ios-divider: rgba(255, 255, 255, 0.14);
@@ -222,9 +222,11 @@ export const cardStyles = css`
     padding: 12px 14px 14px 14px;
     gap: 10px;
     border-radius: 20px;
-    background: rgba(255, 255, 255, 0.15);
-    border: 1px solid rgba(255, 255, 255, 0.22);
-    box-shadow: 0 4px 22px rgba(0, 0, 0, 0.18);
+    background: rgba(10, 22, 40, 0.28);
+    backdrop-filter: blur(28px) saturate(180%);
+    -webkit-backdrop-filter: blur(28px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.20);
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.22), inset 0 1px 1px rgba(255, 255, 255, 0.20);
   }
 
   .ios27-container.layout-square-scroll .ios-forecast-card-header,
@@ -308,8 +310,10 @@ export const cardStyles = css`
 
   .ios27-container.layout-square-scroll .ios-hourly-pop,
   .ios27-container.layout-square .ios-hourly-pop {
-    font-size: 10px;
-    font-weight: 600;
+    font-size: 10.5px;
+    font-weight: 700;
+    color: var(--ios-blue-accent);
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.85);
     line-height: 1;
   }
 
@@ -1011,6 +1015,7 @@ export const cardStyles = css`
     font-size: 13px;
     font-weight: 500;
     color: var(--ios-text-secondary);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.45);
   }
 
   .ios-hourly-icon {
@@ -1025,15 +1030,21 @@ export const cardStyles = css`
     font-size: 15px;
     font-weight: 600;
     color: var(--ios-text-primary);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.45);
   }
 
   .ios-hourly-pop {
     font-size: 11px;
-    font-weight: 600;
+    font-weight: 700;
     color: var(--ios-blue-accent);
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.85);
     display: flex;
     align-items: center;
     gap: 2px;
+  }
+
+  .ios-hourly-pop svg {
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.7));
   }
 
   /* Precipitation Hourly View - Apple iOS Capsule Tube */
