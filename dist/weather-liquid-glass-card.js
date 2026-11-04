@@ -8962,7 +8962,7 @@ const cardStyles = i$3`
   }
 `;
 function getWeatherBackground(condition, isNight) {
-  const cond = condition.toLowerCase();
+  const cond = (condition || "").toLowerCase();
   if (isNight) {
     if (cond.includes("thunder") || cond.includes("lightning")) {
       return "linear-gradient(180deg, #101221 0%, #1c1d33 50%, #282845 100%)";
@@ -13209,7 +13209,10 @@ let Ios27WeatherCard = class extends i {
       `;
     }
     const isNight = hassService.isNight(this.hass, this._config.sun_entity);
-    const condition = entityState.state || "sunny";
+    let condition = entityState.state || "sunny";
+    if (!condition || condition === "unavailable" || condition === "unknown") {
+      condition = this._hourlyForecasts[0]?.condition || this._dailyForecasts[0]?.condition || "sunny";
+    }
     let friendlyName = activeLoc?.name?.trim();
     if (!friendlyName) {
       const isOptIn = activeLoc?.reverse_geocode ?? this._config?.reverse_geocode;
@@ -13238,7 +13241,14 @@ let Ios27WeatherCard = class extends i {
         currentTemp = sensorVal;
       }
     }
-    const highTemp = this._dailyForecasts[0]?.temperature ?? entityState.attributes?.temperature ?? null;
+    if (currentTemp === null || isNaN(currentTemp)) {
+      if (this._hourlyForecasts.length > 0 && typeof this._hourlyForecasts[0].temperature === "number") {
+        currentTemp = this._hourlyForecasts[0].temperature;
+      } else if (this._dailyForecasts.length > 0 && typeof this._dailyForecasts[0].temperature === "number") {
+        currentTemp = this._dailyForecasts[0].temperature;
+      }
+    }
+    const highTemp = this._dailyForecasts[0]?.temperature ?? entityState.attributes?.temperature ?? currentTemp;
     const lowTemp = this._dailyForecasts[0]?.templow ?? (currentTemp !== null ? currentTemp - 5 : null);
     const windUnit = this._config.wind_unit || hassService.getWindSpeedUnit(this.hass, entityState);
     const precipUnit = this._config.precip_unit || hassService.getPrecipitationUnit(this.hass, entityState);

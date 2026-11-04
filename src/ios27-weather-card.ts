@@ -287,7 +287,10 @@ export class Ios27WeatherCard extends LitElement {
 
     // Resolve weather data
     const isNight = hassService.isNight(this.hass, this._config.sun_entity);
-    const condition = entityState.state || 'sunny';
+    let condition = entityState.state || 'sunny';
+    if (!condition || condition === 'unavailable' || condition === 'unknown') {
+      condition = this._hourlyForecasts[0]?.condition || this._dailyForecasts[0]?.condition || 'sunny';
+    }
     
     let friendlyName = activeLoc?.name?.trim();
     // Only resolve a fallback if user did not provide a custom name
@@ -319,8 +322,16 @@ export class Ios27WeatherCard extends LitElement {
         currentTemp = sensorVal;
       }
     }
+    // Fallback if entity state is unavailable or temperature attribute is missing
+    if (currentTemp === null || isNaN(currentTemp)) {
+      if (this._hourlyForecasts.length > 0 && typeof this._hourlyForecasts[0].temperature === 'number') {
+        currentTemp = this._hourlyForecasts[0].temperature;
+      } else if (this._dailyForecasts.length > 0 && typeof this._dailyForecasts[0].temperature === 'number') {
+        currentTemp = this._dailyForecasts[0].temperature;
+      }
+    }
 
-    const highTemp = this._dailyForecasts[0]?.temperature ?? entityState.attributes?.temperature ?? null;
+    const highTemp = this._dailyForecasts[0]?.temperature ?? entityState.attributes?.temperature ?? currentTemp;
     const lowTemp = this._dailyForecasts[0]?.templow ?? (currentTemp !== null ? currentTemp - 5 : null);
 
     const windUnit = this._config.wind_unit || hassService.getWindSpeedUnit(this.hass, entityState);
