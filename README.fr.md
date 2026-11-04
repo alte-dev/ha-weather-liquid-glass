@@ -125,6 +125,17 @@ Le moyen le plus simple consiste à cliquer sur le bouton My Home Assistant ci-d
 
 ---
 
+## 📋 Historique des modifications
+
+Historique complet disponible dans [CHANGELOG.md](CHANGELOG.md).
+
+- **v1.0.3 (2026-11-04) :** Améliorations du contraste et de la lisibilité avec verre fumé sombre, pourcentages de pluie contrastés (`#67e8f9`) et dégradés de ciel atmosphériques.
+- **v1.0.2 (2026-11-04) :** Repli automatique sur les prévisions horaires en cas d'état `unavailable` et état de chargement *"En attente de données..."*.
+- **v1.0.1 (2026-11-04) :** Géocodage inversé opt-in respectueux de la vie privée et conformité HACS avec [NOTICE.md](NOTICE.md).
+- **v1.0.0 (2026-10-28) :** Version initiale de la Liquid Glass Weather Card.
+
+---
+
 ## 🤝 Crédits et Remerciements
 
 - Des portions de la couche de service et des abonnements sont adaptées des travaux de **Patrick Kissling** dans [clock-weather-card](https://github.com/pkissling/clock-weather-card) (Licence MIT, avis de droit d'auteur inclus dans [NOTICE.md](NOTICE.md)).

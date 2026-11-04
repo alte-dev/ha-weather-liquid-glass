@@ -185,6 +185,36 @@ Privacy is a fundamental consideration:
 
 ---
 
+## 📋 Changelog
+
+Full version history is available in [CHANGELOG.md](CHANGELOG.md).
+
+### [v1.0.3] - 2026-11-04
+- **🎨 Visual & Contrast Improvements:**
+  - Replaced milky-white glass overlay with deep, dark-tinted frosted glass (`rgba(10, 22, 40, 0.28)`) true to native Apple iOS Weather design.
+  - Precipitation percentage text upgraded to bold vibrant cyan (`#67e8f9`) with drop-shadow for 100% legibility on bright backgrounds.
+  - Toned down daylight blue backgrounds to deep, rich, elegant sky gradients.
+  - Added subtle text shadows to hourly timestamps and temperatures to eliminate glare.
+
+### [v1.0.2] - 2026-11-04
+- **⚡ Resiliency & UX Fallbacks:**
+  - When Home Assistant's underlying weather entity temporarily enters an `unavailable` state, the card automatically falls back to cached hourly forecast data instead of showing `--` and `Unavailable`.
+  - Replaced raw `Unavailable` text with friendly localized waiting messages (e.g. *"Veriler bekleniyor..."*, *"Waiting for data..."*).
+  - Cleaner header layout while waiting for weather entities to respond.
+
+### [v1.0.1] - 2026-11-04
+- **🔒 Privacy & HACS Compliance:**
+  - Reverse geocoding via BigDataCloud API is now strictly **opt-in** (`reverse_geocode: false` by default).
+  - Location names resolve purely locally (custom `name`, entity `friendly_name`, or HA instance location name).
+  - Preserved custom configured names without overriding.
+  - Added visual editor privacy toggle with explanations in 5 languages.
+  - Added [NOTICE.md](NOTICE.md) for clock-weather-card MIT copyright notice.
+
+### [v1.0.0] - 2026-10-28
+- **🎉 Initial Release:** Liquid Glass Weather Card for Home Assistant with Condition, Precipitation, and Wind views, animated sky backgrounds, and multi-location swipe.
+
+---
+
 ## 🤝 Attribution & Credits
 
 - Portions of the service layer and forecast subscription concepts are adapted and inspired by the work of **Patrick Kissling** in [clock-weather-card](https://github.com/pkissling/clock-weather-card) (MIT License, copyright notice included in [NOTICE.md](NOTICE.md)).

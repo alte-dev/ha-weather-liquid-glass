@@ -174,6 +174,36 @@ Kullanıcı gizliliği temel önceliktir:
 
 ---
 
+## 📋 Sürüm Geçmişi (Changelog)
+
+Detaylı geçmiş için [CHANGELOG.md](CHANGELOG.md) dosyasına göz atabilirsiniz.
+
+### [v1.0.3] - 2026-11-04
+- **🎨 Görsel ve Kontrast İyileştirmeleri:**
+  - Parlayan beyaz cam katmanı yerine Apple Weather tarzı koyu yarı saydam cam (`rgba(10, 22, 40, 0.28)`) tonuna geçildi.
+  - Yağış olasılığı metni (`.ios-hourly-pop`) canlı camgöbeği (`#67e8f9`), kalın font ve gölge ile her ışık koşulunda belirgin hale getirildi.
+  - Gözü yoran aşırı parlak açık mavi gündüz gradyanı, daha asil ve derin bir gökyüzü gradyanına çekildi.
+  - Saatlik sıcaklık ve zaman metinlerine gölge verilerek parlamalar engellendi.
+
+### [v1.0.2] - 2026-11-04
+- **⚡ Dayanıklılık ve Boş Kalma Koruması:**
+  - Home Assistant weather varlığı geçici olarak `unavailable` olduğunda kartın `--` ve `Unavailable` şeklinde boş kalmasını önleyen otomatik saatlik tahmin yedeklemesi eklendi.
+  - İlk yükleme anında veya veri beklenirken yabancı `Unavailable` yerine doğrudan *"Veriler bekleniyor..."* mesajı gösterilmesi sağlandı.
+  - Veri hazır olana kadar tepe sıcaklık satırı gizlenerek görsel kaymalar engellendi.
+
+### [v1.0.1] - 2026-11-04
+- **🔒 Gizlilik ve HACS Standartları:**
+  - BigDataCloud ile harici ters coğrafi kodlama **isteğe bağlı (opt-in)** yapıldı (`reverse_geocode: false` varsayılan).
+  - Konum adı varsayılan olarak tamamen yerel Home Assistant verilerinden çözümlenir.
+  - Kullanıcının girdiği özel isimler (`Ev`, `Home` vb.) asla silinmez veya ezilmez.
+  - Kart editörüne 5 dilde açıklayıcı gizlilik anahtarı eklendi.
+  - `clock-weather-card` projesinin MIT telif bildirimi [NOTICE.md](NOTICE.md) dosyasına eklendi.
+
+### [v1.0.0] - 2026-10-28
+- **🎉 İlk Sürüm:** Apple iOS Weather esintili sıvı cam kart, Durum/Yağış/Rüzgar görünümleri, dinamik gökyüzü animasyonları ve çoklu konum kaydırma desteği.
+
+---
+
 ## 🤝 Kaynak & Teşekkür
 
 - Tahmin abonelikleri ve servis altyapısının temel kavramları için **Patrick Kissling**'in [clock-weather-card](https://github.com/pkissling/clock-weather-card) (MIT Lisansı, telif hakkı bildirimi [NOTICE.md](NOTICE.md) dosyasına eklenmiştir) projesinden esinlenilmiştir.
