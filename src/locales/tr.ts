@@ -36,7 +36,9 @@ export const tr: TranslationSchema = {
     'snowy-rainy': 'Karla Karışık Yağmur',
     'windy': 'Rüzgarlı',
     'windy-variant': 'Rüzgarlı',
-    'exceptional': 'Hava Uyarısı'
+    'exceptional': 'Hava Uyarısı',
+    'unavailable': 'Veriler bekleniyor...',
+    'unknown': 'Veriler bekleniyor...'
   },
   summaries: {
     rain_expected: (time: string) => `Saat ${time} civarında yağış bekleniyor.`,

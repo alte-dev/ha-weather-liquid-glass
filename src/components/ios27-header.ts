@@ -24,9 +24,10 @@ export class Ios27Header extends LitElement {
     const friendlyCondition = hassService.getFriendlyCondition(this.condition, this.locale);
 
     let highLowText = '';
-    if (this.highTemp !== null && this.lowTemp !== null) {
+    const isUnavailable = this.condition === 'unavailable' || this.condition === 'unknown';
+    if (!isUnavailable && this.highTemp !== null && this.lowTemp !== null) {
       highLowText = t.format_high_low(formattedHigh, formattedLow);
-    } else if (this.highTemp !== null) {
+    } else if (!isUnavailable && this.highTemp !== null) {
       highLowText = `H:${formattedHigh}`;
     }
 

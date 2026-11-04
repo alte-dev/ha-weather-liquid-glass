@@ -9049,7 +9049,9 @@ const en = {
     "snowy-rainy": "Sleet",
     "windy": "Windy",
     "windy-variant": "Windy",
-    "exceptional": "Alert"
+    "exceptional": "Alert",
+    "unavailable": "Waiting for data...",
+    "unknown": "Waiting for data..."
   },
   summaries: {
     rain_expected: (time) => `Rainy conditions expected around ${time}.`,
@@ -9154,7 +9156,9 @@ const tr = {
     "snowy-rainy": "Karla Karışık Yağmur",
     "windy": "Rüzgarlı",
     "windy-variant": "Rüzgarlı",
-    "exceptional": "Hava Uyarısı"
+    "exceptional": "Hava Uyarısı",
+    "unavailable": "Veriler bekleniyor...",
+    "unknown": "Veriler bekleniyor..."
   },
   summaries: {
     rain_expected: (time) => `Saat ${time} civarında yağış bekleniyor.`,
@@ -9259,7 +9263,9 @@ const de = {
     "snowy-rainy": "Schneeregen",
     "windy": "Windig",
     "windy-variant": "Windig",
-    "exceptional": "Wetterwarnung"
+    "exceptional": "Wetterwarnung",
+    "unavailable": "Daten werden geladen...",
+    "unknown": "Daten werden geladen..."
   },
   summaries: {
     rain_expected: (time) => `Regen erwartet gegen ${time}.`,
@@ -9364,7 +9370,9 @@ const es = {
     "snowy-rainy": "Aguanieve",
     "windy": "Ventoso",
     "windy-variant": "Ventoso",
-    "exceptional": "Aviso meteorológico"
+    "exceptional": "Aviso meteorológico",
+    "unavailable": "Esperando datos...",
+    "unknown": "Esperando datos..."
   },
   summaries: {
     rain_expected: (time) => `Se esperan lluvias hacia las ${time}.`,
@@ -9469,7 +9477,9 @@ const fr = {
     "snowy-rainy": "Pluie et neige",
     "windy": "Venteux",
     "windy-variant": "Venteux",
-    "exceptional": "Alerte météo"
+    "exceptional": "Alerte météo",
+    "unavailable": "En attente de données...",
+    "unknown": "En attente de données..."
   },
   summaries: {
     rain_expected: (time) => `Pluie attendue vers ${time}.`,
@@ -9882,9 +9892,10 @@ let Ios27Header = class extends i {
     const formattedLow = hassService.formatTemperature(this.lowTemp);
     const friendlyCondition = hassService.getFriendlyCondition(this.condition, this.locale);
     let highLowText = "";
-    if (this.highTemp !== null && this.lowTemp !== null) {
+    const isUnavailable = this.condition === "unavailable" || this.condition === "unknown";
+    if (!isUnavailable && this.highTemp !== null && this.lowTemp !== null) {
       highLowText = t2.format_high_low(formattedHigh, formattedLow);
-    } else if (this.highTemp !== null) {
+    } else if (!isUnavailable && this.highTemp !== null) {
       highLowText = `H:${formattedHigh}`;
     }
     const displayName = this.locationName?.trim() && this.locationName.toLowerCase() !== "cupertino" ? this.locationName : this.locale === "tr" ? "Hava Durumu" : "Weather";

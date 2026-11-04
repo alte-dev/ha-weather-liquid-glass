@@ -36,7 +36,9 @@ export const en: TranslationSchema = {
     'snowy-rainy': 'Sleet',
     'windy': 'Windy',
     'windy-variant': 'Windy',
-    'exceptional': 'Alert'
+    'exceptional': 'Alert',
+    'unavailable': 'Waiting for data...',
+    'unknown': 'Waiting for data...'
   },
   summaries: {
     rain_expected: (time: string) => `Rainy conditions expected around ${time}.`,
