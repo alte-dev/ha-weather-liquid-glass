@@ -160,58 +160,33 @@ export class Ios27SkyAnimation extends LitElement {
 
     /* =========================================
        SUNNY / SUN HALO & RAINBOW FLARE (REALISTIC APPLE WEATHER)
+       Placed at top edge above city name & temperature numbers
        ========================================= */
     .sun-flare {
       position: absolute;
-      top: -55px;
+      top: -110px;
       left: 50%;
       transform: translateX(-50%);
       width: 220px;
-      height: 220px;
-      background: radial-gradient(circle, #ffffff 0%, rgba(255, 255, 255, 0.95) 18%, rgba(255, 255, 255, 0.5) 38%, rgba(255, 255, 255, 0) 70%);
+      height: 180px;
+      background: radial-gradient(circle at 50% 30%, #ffffff 0%, rgba(255, 255, 255, 0.95) 20%, rgba(255, 255, 255, 0.35) 45%, rgba(255, 255, 255, 0) 75%);
       border-radius: 50%;
-      filter: blur(8px);
+      filter: blur(10px);
       pointer-events: none;
     }
 
-    /* Apple iOS Rainbow Sun Halo */
+    /* Apple iOS Rainbow Sun Halo above header */
     .sun-halo {
       position: absolute;
-      top: -100px;
+      top: -140px;
       left: 50%;
       transform: translateX(-50%);
-      width: 420px;
-      height: 420px;
-      background: radial-gradient(circle, rgba(255, 255, 255, 0) 48%, rgba(255, 210, 120, 0.22) 53%, rgba(130, 240, 190, 0.18) 57%, rgba(90, 190, 255, 0.20) 62%, rgba(255, 255, 255, 0) 70%);
+      width: 380px;
+      height: 380px;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0) 48%, rgba(255, 210, 120, 0.16) 54%, rgba(130, 240, 190, 0.12) 58%, rgba(90, 190, 255, 0.14) 63%, rgba(255, 255, 255, 0) 70%);
       border-radius: 50%;
       filter: blur(8px);
       animation: sunPulse 9s ease-in-out infinite alternate;
-      pointer-events: none;
-    }
-
-    .sun-lens-orb-1 {
-      position: absolute;
-      top: 130px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(255, 255, 255, 0.22) 0%, rgba(160, 215, 255, 0.10) 60%, rgba(255, 255, 255, 0) 100%);
-      filter: blur(4px);
-      pointer-events: none;
-    }
-
-    .sun-lens-orb-2 {
-      position: absolute;
-      top: 200px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 65px;
-      height: 65px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(255, 255, 255, 0.16) 0%, rgba(180, 230, 255, 0.08) 60%, rgba(255, 255, 255, 0) 100%);
-      filter: blur(6px);
       pointer-events: none;
     }
 
@@ -472,8 +447,6 @@ export class Ios27SkyAnimation extends LitElement {
       <div class="sky-stage">
         <div class="sun-halo"></div>
         <div class="sun-flare"></div>
-        <div class="sun-lens-orb-1"></div>
-        <div class="sun-lens-orb-2"></div>
       </div>
     `;
   }

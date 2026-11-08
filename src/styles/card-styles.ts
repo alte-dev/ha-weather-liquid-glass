@@ -16,7 +16,7 @@ export const cardStyles = css`
     --ios-text-primary: #ffffff;
     --ios-text-secondary: #a8cdff;
     --ios-text-tertiary: rgba(156, 194, 245, 0.7);
-    --ios-header-shadow: 0 2px 12px rgba(0, 0, 0, 0.18);
+    --ios-header-shadow: none;
     
     --ios-divider: rgba(255, 255, 255, 0.14);
     
@@ -50,7 +50,7 @@ export const cardStyles = css`
     --ios-text-primary: #ffffff;
     --ios-text-secondary: #8f9bb0;
     --ios-text-tertiary: rgba(143, 155, 176, 0.7);
-    --ios-header-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
+    --ios-header-shadow: none;
     --ios-divider: rgba(255, 255, 255, 0.12);
     --ios-segment-bg: rgba(15, 22, 38, 0.45);
     --ios-segment-active: rgba(255, 255, 255, 0.14);
@@ -74,7 +74,7 @@ export const cardStyles = css`
     --ios-text-primary: #ffffff;
     --ios-text-secondary: #a0b0c5;
     --ios-text-tertiary: rgba(160, 176, 197, 0.7);
-    --ios-header-shadow: 0 2px 12px rgba(0, 0, 0, 0.22);
+    --ios-header-shadow: none;
     --ios-divider: rgba(255, 255, 255, 0.12);
     --ios-segment-bg: rgba(25, 34, 46, 0.45);
     --ios-segment-active: rgba(255, 255, 255, 0.16);
@@ -98,7 +98,7 @@ export const cardStyles = css`
     --ios-text-primary: #ffffff;
     --ios-text-secondary: #7a8ba6;
     --ios-text-tertiary: rgba(122, 139, 166, 0.7);
-    --ios-header-shadow: 0 2px 12px rgba(0, 0, 0, 0.30);
+    --ios-header-shadow: none;
     --ios-divider: rgba(255, 255, 255, 0.10);
     --ios-segment-bg: rgba(10, 15, 28, 0.55);
     --ios-segment-active: rgba(255, 255, 255, 0.15);
@@ -204,7 +204,7 @@ export const cardStyles = css`
     font-size: 20px;
     font-weight: 600;
     letter-spacing: -0.3px;
-    text-shadow: var(--ios-header-shadow);
+    text-shadow: none !important;
   }
 
   .ios27-container.layout-square-scroll .ios-nav-arrow,
@@ -221,7 +221,7 @@ export const cardStyles = css`
     margin: 2px 0 2px 0;
     padding-left: 0;
     line-height: 1;
-    text-shadow: var(--ios-header-shadow);
+    text-shadow: none !important;
   }
 
   /* Condition & High/Low unified on ONE sleek horizontal row */
@@ -242,7 +242,7 @@ export const cardStyles = css`
     color: #ffffff !important;
     opacity: 0.95;
     margin: 0;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.25) !important;
+    text-shadow: none !important;
   }
 
   .ios27-container.layout-square-scroll .ios-high-low,
@@ -252,7 +252,7 @@ export const cardStyles = css`
     color: #ffffff !important;
     opacity: 0.92;
     margin: 0;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.25) !important;
+    text-shadow: none !important;
   }
 
   .ios27-container.layout-square-scroll .ios-high-low::before,
@@ -274,7 +274,7 @@ export const cardStyles = css`
     text-overflow: ellipsis;
     color: #ffffff !important;
     opacity: 0.90;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.25) !important;
+    text-shadow: none !important;
   }
 
   /* Compact Highlights Card inside Square Layout (if visible) */

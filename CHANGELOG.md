@@ -6,6 +6,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ---
 
+## [v1.0.5] - 2026-11-08
+
+### 🇬🇧 English
+- **Fixed Temperature Number Legibility:** Removed dark/black drop shadows from the main temperature value and header texts that caused smudging and unreadability.
+- **Optimized Sun Position:** Repositioned the radiant sunburst to the top edge of the card above the location and temperature, preventing the white sun flare from clashing with the white temperature numbers.
+
+### 🇹🇷 Türkçe
+- **Sıcaklık Sayılarının Okunabilirliği Düzeltildi:** Ana derece sayısı ve başlık metinlerinin arkasında karartmaya ve okunaksızlığa yol açan tüm siyah gölgeler (`text-shadow`) kaldırıldı.
+- **Güneş Konumu Yukarı Taşındı:** Beyaz güneş parlaması, konum ve derece sayısının tam arkasından yukarıya (kartın tavanına) taşındı. Böylece sayılar mavi gökyüzü üzerinde bembeyaz ve pürüzsüz netliğe kavuştu.
+
+---
+
 ## [v1.0.4] - 2026-11-08
 
 ### 🇬🇧 English
@@ -18,7 +30,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
   - **Night:** Deep midnight indigo-to-black gradient (`#1c2340` to `#0e1428`).
 - **Liquid Glass Without White Borders:** Removed harsh white card borders (`border: none`) and interior glare (`inset` shadows). Cards now dynamically adapt to the sky tone with rich, dark-frosted saturation and `blur(24px) saturate(160%)`.
 - **Text Readability & Contrast:**
-  - Header condition text and High/Low temperatures are now rendered in crisp white (`#ffffff`) with subtle drop shadows (`0 1px 3px rgba(0, 0, 0, 0.25)`), guaranteeing perfect legibility against bright daytime skies.
+  - Header condition text and High/Low temperatures are now rendered in crisp white (`#ffffff`), guaranteeing perfect legibility against bright daytime skies.
   - Stripped redundant text shadows from interior card elements for a razor-sharp, modern look.
   - Replaced secondary text colors with airy ice-blue (`#a8cdff` on sunny, `#8f9bb0` on rain).
 - **Interactive Switcher & Precipitation Polish:**
@@ -36,7 +48,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
   - **Gece:** Gece yarısı derin lacivert-siyah gradyanı (`#1c2340` → `#0e1428`).
 - **Bordersız Saf Liquid Glass:** Cam kartlardaki sert beyaz kenarlıklar (`border: none`) ve iç parlama gölgeleri kaldırıldı. Kartlar gökyüzünün doygun yarı saydam tonunu alacak şekilde `blur(24px) saturate(160%)` ile güncellendi.
 - **Mükemmel Metin Okunabilirliği:**
-  - Başlıktaki hava durumu ("Güneşli") ve En Yüksek/En Düşük sıcaklıklar saf beyaz (`#ffffff`) ve hafif gölgeli yapılarak gündüz gökyüzünde okunamaz hale gelmesi engellendi.
+  - Başlıktaki hava durumu ("Güneşli") ve En Yüksek/En Düşük sıcaklıklar saf beyaz (`#ffffff`) yapılarak gündüz gökyüzünde okunamaz hale gelmesi engellendi.
   - Kart içi tüm yazılardaki gereksiz metin gölgeleri sıfırlanarak temiz, düz ve jilet gibi bir tipografi sağlandı.
   - Kart içi ikincil metinler gündüz için `#a8cdff`, yağmur için `#8f9bb0` olarak güncellendi.
 - **3'lü Switcher ve Yağmur Barları:**
@@ -47,34 +59,3 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 ---
 
 ## [v1.0.3] - 2026-11-04
-
-### 🎨 Visual & Contrast Improvements
-- **Dark Tinted Glass Containers:** Replaced the previous white translucent glass layer (`rgba(255, 255, 255, 0.15)`) with a deep, dark-frosted glass tint (`rgba(10, 22, 40, 0.28)`) true to native Apple iOS Weather design. This completely eliminates white glare and blooming over daylight gradients.
-- **High-Contrast Precipitation Percentage:** Precipitation chance text (`.ios-hourly-pop`) upgraded to bold `#67e8f9` cyan with a dark drop shadow (`text-shadow: 0 1px 3px rgba(0, 0, 0, 0.85)`). The rain drop SVG icon now features a dedicated drop shadow, ensuring 100% legibility on bright sky backgrounds.
-- **Atmospheric Sky Gradients:** Toned down overly bright, washed-out daylight blue backgrounds (`#4295f5`) to deep, rich, elegant sky gradients (`#18488a` to `#276fc4`) for both clear and partly-cloudy conditions.
-- **Enhanced Typography & Text Shadows:** Added subtle text shadows (`0 1px 2px rgba(0, 0, 0, 0.45)`) to hourly timestamps and temperatures, preventing text from washing out against complex background animations.
-
----
-
-## [v1.0.2] - 2026-11-04
-
-### ⚡ Resiliency & UX
-- **Automatic Fallback for Unavailable States:** When Home Assistant's underlying weather entity (`weather.*`) temporarily enters an `unavailable` or `unknown` state (e.g. during restart, network reconnections, or rate-limited API polling), the card automatically falls back to cached hourly/daily forecast data (`_hourlyForecasts[0]`) instead of displaying `--` and raw `Unavailable`.
-- **Localized Loading States:** Replaced raw `Unavailable` text with friendly, localized loading messages.
-- **Header Layout Polish:** Suppressed high/low temperature row when data is not yet available to avoid overlapping text during initial load.
-
----
-
-## [v1.0.1] - 2026-11-04
-
-### 🔒 Privacy & HACS Compliance
-- **Opt-In Reverse Geocoding:** Reverse geocoding via BigDataCloud client API is now strictly **opt-in** (`reverse_geocode: false` by default). The card never sends instance coordinates to third parties unless explicitly enabled.
-- **Local Location Resolution:** Location names are resolved strictly locally.
-- **Preserved Custom Names:** Configured custom names are always respected.
-- **MIT License Notice:** Added Patrick Kissling's copyright notice and MIT license for `clock-weather-card` into a dedicated [NOTICE.md](NOTICE.md) file.
-
----
-
-## [v1.0.0] - 2026-10-28
-
-### 🎉 Initial Release
