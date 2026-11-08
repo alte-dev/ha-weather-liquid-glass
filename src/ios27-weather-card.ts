@@ -348,6 +348,9 @@ export class Ios27WeatherCard extends LitElement {
       windUnit
     );
 
+    const themeMode = this._resolveThemeMode(condition, isNight);
+    this.dataset.theme = themeMode;
+
     const dynamicBg = this._config.transparent_background
       ? 'transparent'
       : getWeatherBackground(condition, isNight);
@@ -361,7 +364,8 @@ export class Ios27WeatherCard extends LitElement {
 
     return html`
       <div
-        class="ios27-container layout-${layout} ${this._config.transparent_background ? 'transparent-bg' : ''} ${isScrollable ? 'is-scrollable' : ''}"
+        class="ios27-container layout-${layout} theme-${themeMode} ${this._config.transparent_background ? 'transparent-bg' : ''} ${isScrollable ? 'is-scrollable' : ''}"
+        data-theme="${themeMode}"
         style="background: ${dynamicBg}; ${heightStyle}; position: relative;"
         @touchstart=${this._handleTouchStart}
         @touchend=${this._handleTouchEnd}
@@ -733,6 +737,18 @@ export class Ios27WeatherCard extends LitElement {
       detail: { entityId },
     });
     this.dispatchEvent(event);
+  }
+
+    private _resolveThemeMode(condition: string, isNight: boolean): string {
+    if (isNight) return 'night';
+    const cond = (condition || '').toLowerCase();
+    if (cond.includes('rain') || cond.includes('pouring') || cond.includes('lightning') || cond.includes('thunder')) {
+      return 'rainy';
+    }
+    if (cond.includes('cloud') || cond.includes('overcast') || cond.includes('fog')) {
+      return 'cloudy';
+    }
+    return 'sunny';
   }
 
   public getCardSize(): number {

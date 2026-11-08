@@ -7054,25 +7054,112 @@ function friendlyDateTime(dateTimeish) {
   }
 }
 const cardStyles = i$3`
-  :host {
+    :host {
     --ios-font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
-    --ios-glass-bg: rgba(10, 22, 40, 0.28);
-    --ios-glass-bg-hover: rgba(10, 22, 40, 0.38);
-    --ios-glass-border: rgba(255, 255, 255, 0.20);
-    --ios-glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.24), inset 0 1px 1px 0 rgba(255, 255, 255, 0.20);
+    
+    /* Default (Daytime / Sunny) Liquid Glass Theme */
+    --ios-glass-bg: rgba(22, 68, 145, 0.38);
+    --ios-glass-bg-sub: rgba(26, 75, 155, 0.30);
+    --ios-glass-bg-hover: rgba(30, 85, 175, 0.48);
+    --ios-glass-border: none;
+    --ios-glass-shadow: none;
+    --ios-glass-blur: blur(24px) saturate(160%);
+    --ios-glass-radius: 28px;
+    
     --ios-text-primary: #ffffff;
-    --ios-text-secondary: rgba(255, 255, 255, 0.85);
-    --ios-text-tertiary: rgba(255, 255, 255, 0.65);
-    --ios-blue-accent: #67e8f9;
-    --ios-cyan-wind: #22d3ee;
-    --ios-pill-active: rgba(255, 255, 255, 0.32);
+    --ios-text-secondary: #a8cdff;
+    --ios-text-tertiary: rgba(156, 194, 245, 0.7);
+    --ios-header-shadow: 0 2px 12px rgba(0, 0, 0, 0.18);
+    
     --ios-divider: rgba(255, 255, 255, 0.14);
+    
+    --ios-segment-bg: rgba(14, 48, 110, 0.45);
+    --ios-segment-active: rgba(255, 255, 255, 0.20);
+    
+    --ios-rain-accent: #5cc0f2;
+    --ios-bar-empty: rgba(255, 255, 255, 0.12);
+    --ios-blue-accent: #5cc0f2;
+    --ios-cyan-wind: #5cc0f2;
+    --ios-pill-active: rgba(255, 255, 255, 0.20);
+    
     display: block;
     font-family: var(--ios-font);
     color: var(--ios-text-primary);
     box-sizing: border-box;
     user-select: none;
     -webkit-user-select: none;
+  }
+
+  /* Rainy Theme (Overcast/Heavy Rain slate grey-blue) */
+  :host([data-theme="rainy"]),
+  .ios27-container.theme-rainy {
+    --ios-glass-bg: rgba(28, 38, 58, 0.45);
+    --ios-glass-bg-sub: rgba(28, 38, 58, 0.38);
+    --ios-glass-bg-hover: rgba(35, 48, 72, 0.50);
+    --ios-glass-border: none;
+    --ios-glass-shadow: none;
+    --ios-glass-blur: blur(14px);
+    --ios-glass-radius: 28px;
+    --ios-text-primary: #ffffff;
+    --ios-text-secondary: #8f9bb0;
+    --ios-text-tertiary: rgba(143, 155, 176, 0.7);
+    --ios-header-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
+    --ios-divider: rgba(255, 255, 255, 0.12);
+    --ios-segment-bg: rgba(15, 22, 38, 0.45);
+    --ios-segment-active: rgba(255, 255, 255, 0.14);
+    --ios-rain-accent: #5cc0f2;
+    --ios-bar-empty: rgba(255, 255, 255, 0.12);
+    --ios-blue-accent: #5cc0f2;
+    --ios-cyan-wind: #5cc0f2;
+    --ios-pill-active: rgba(255, 255, 255, 0.14);
+  }
+
+  /* Cloudy / Overcast Theme */
+  :host([data-theme="cloudy"]),
+  .ios27-container.theme-cloudy {
+    --ios-glass-bg: rgba(38, 48, 62, 0.45);
+    --ios-glass-bg-sub: rgba(38, 48, 62, 0.38);
+    --ios-glass-bg-hover: rgba(48, 60, 78, 0.52);
+    --ios-glass-border: none;
+    --ios-glass-shadow: none;
+    --ios-glass-blur: blur(14px);
+    --ios-glass-radius: 28px;
+    --ios-text-primary: #ffffff;
+    --ios-text-secondary: #a0b0c5;
+    --ios-text-tertiary: rgba(160, 176, 197, 0.7);
+    --ios-header-shadow: 0 2px 12px rgba(0, 0, 0, 0.22);
+    --ios-divider: rgba(255, 255, 255, 0.12);
+    --ios-segment-bg: rgba(25, 34, 46, 0.45);
+    --ios-segment-active: rgba(255, 255, 255, 0.16);
+    --ios-rain-accent: #5cc0f2;
+    --ios-bar-empty: rgba(255, 255, 255, 0.12);
+    --ios-blue-accent: #5cc0f2;
+    --ios-cyan-wind: #5cc0f2;
+    --ios-pill-active: rgba(255, 255, 255, 0.16);
+  }
+
+  /* Night Theme (Deep Midnight Blue) */
+  :host([data-theme="night"]),
+  .ios27-container.theme-night {
+    --ios-glass-bg: rgba(14, 20, 38, 0.50);
+    --ios-glass-bg-sub: rgba(14, 20, 38, 0.40);
+    --ios-glass-bg-hover: rgba(22, 30, 55, 0.60);
+    --ios-glass-border: none;
+    --ios-glass-shadow: none;
+    --ios-glass-blur: blur(14px);
+    --ios-glass-radius: 28px;
+    --ios-text-primary: #ffffff;
+    --ios-text-secondary: #7a8ba6;
+    --ios-text-tertiary: rgba(122, 139, 166, 0.7);
+    --ios-header-shadow: 0 2px 12px rgba(0, 0, 0, 0.30);
+    --ios-divider: rgba(255, 255, 255, 0.10);
+    --ios-segment-bg: rgba(10, 15, 28, 0.55);
+    --ios-segment-active: rgba(255, 255, 255, 0.15);
+    --ios-rain-accent: #5cc0f2;
+    --ios-bar-empty: rgba(255, 255, 255, 0.10);
+    --ios-blue-accent: #5cc0f2;
+    --ios-cyan-wind: #5cc0f2;
+    --ios-pill-active: rgba(255, 255, 255, 0.15);
   }
 
   * {
@@ -7170,7 +7257,7 @@ const cardStyles = i$3`
     font-size: 20px;
     font-weight: 600;
     letter-spacing: -0.3px;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5), 0 2px 8px rgba(0, 0, 0, 0.35);
+    text-shadow: var(--ios-header-shadow);
   }
 
   .ios27-container.layout-square-scroll .ios-nav-arrow,
@@ -7187,7 +7274,7 @@ const cardStyles = i$3`
     margin: 2px 0 2px 0;
     padding-left: 0;
     line-height: 1;
-    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4), 0 4px 16px rgba(0, 0, 0, 0.25);
+    text-shadow: var(--ios-header-shadow);
   }
 
   /* Condition & High/Low unified on ONE sleek horizontal row */
@@ -7205,18 +7292,20 @@ const cardStyles = i$3`
   .ios27-container.layout-square .ios-condition-text {
     font-size: 14px;
     font-weight: 500;
-    color: rgba(255, 255, 255, 0.98);
+    color: #ffffff !important;
+    opacity: 0.95;
     margin: 0;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.25) !important;
   }
 
   .ios27-container.layout-square-scroll .ios-high-low,
   .ios27-container.layout-square .ios-high-low {
     font-size: 13.5px;
     font-weight: 500;
-    opacity: 0.95;
+    color: #ffffff !important;
+    opacity: 0.92;
     margin: 0;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.25) !important;
   }
 
   .ios27-container.layout-square-scroll .ios-high-low::before,
@@ -7236,8 +7325,9 @@ const cardStyles = i$3`
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    color: rgba(255, 255, 255, 0.92);
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+    color: #ffffff !important;
+    opacity: 0.90;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.25) !important;
   }
 
   /* Compact Highlights Card inside Square Layout (if visible) */
@@ -7245,27 +7335,34 @@ const cardStyles = i$3`
   .ios27-container.layout-square .ios-highlights-card {
     padding: 6px 12px;
     gap: 3px;
-    border-radius: 14px;
-    background: rgba(15, 23, 42, 0.22);
+    border-radius: var(--ios-glass-radius);
+    background: var(--ios-glass-bg-sub);
     backdrop-filter: blur(24px) saturate(180%);
     -webkit-backdrop-filter: blur(24px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, 0.28);
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.16), inset 0 1px 1px rgba(255, 255, 255, 0.25);
+    border: var(--ios-glass-border);
+    box-shadow: var(--ios-glass-shadow);
   }
 
   .ios27-container.layout-square-scroll .ios-highlights-header,
   .ios27-container.layout-square .ios-highlights-header {
-    font-size: 9.5px;
-    color: rgba(255, 255, 255, 0.92);
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 13px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.95) !important;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    text-shadow: none !important;
   }
 
   .ios27-container.layout-square-scroll .ios-highlights-body,
   .ios27-container.layout-square .ios-highlights-body {
-    font-size: 11px;
-    line-height: 1.25;
-    color: #ffffff;
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+    font-size: 14px;
+    line-height: 1.38;
+    color: #ffffff !important;
+    font-weight: 400;
+    text-shadow: none !important;
   }
 
   /* Compact Glass Forecast Card inside Square Layout */
@@ -7274,12 +7371,12 @@ const cardStyles = i$3`
   .ios27-container.layout-square .ios-glass-card {
     padding: 12px 14px 14px 14px;
     gap: 10px;
-    border-radius: 20px;
-    background: rgba(10, 22, 40, 0.28);
-    backdrop-filter: blur(28px) saturate(180%);
-    -webkit-backdrop-filter: blur(28px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, 0.20);
-    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.22), inset 0 1px 1px rgba(255, 255, 255, 0.20);
+    border-radius: var(--ios-glass-radius);
+    background: var(--ios-glass-bg);
+    backdrop-filter: var(--ios-glass-blur);
+    -webkit-backdrop-filter: var(--ios-glass-blur);
+    border: var(--ios-glass-border);
+    box-shadow: var(--ios-glass-shadow);
   }
 
   .ios27-container.layout-square-scroll .ios-forecast-card-header,
@@ -7300,7 +7397,10 @@ const cardStyles = i$3`
 
   .ios27-container.layout-square-scroll .ios-forecast-subtitle,
   .ios27-container.layout-square .ios-forecast-subtitle {
-    display: none !important;
+    font-size: 12px;
+    color: var(--ios-text-secondary);
+    font-weight: 400;
+    text-shadow: none !important;
   }
 
   .ios27-container.layout-square-scroll .ios-segmented-control,
@@ -7308,8 +7408,8 @@ const cardStyles = i$3`
     padding: 2.5px;
     gap: 3px;
     border-radius: 16px;
-    background: rgba(0, 0, 0, 0.24);
-    border: 1px solid rgba(255, 255, 255, 0.16);
+    background: var(--ios-segment-bg);
+    border: none;
   }
 
   .ios27-container.layout-square-scroll .ios-segment-button,
@@ -7345,8 +7445,11 @@ const cardStyles = i$3`
 
   .ios27-container.layout-square-scroll .ios-hourly-time,
   .ios27-container.layout-square .ios-hourly-time {
-    font-size: 11px;
+    font-size: 13.5px;
     font-weight: 500;
+    color: #ffffff;
+    opacity: 0.92;
+    text-shadow: none !important;
   }
 
   .ios27-container.layout-square-scroll .ios-hourly-icon,
@@ -7357,15 +7460,17 @@ const cardStyles = i$3`
 
   .ios27-container.layout-square-scroll .ios-hourly-temp,
   .ios27-container.layout-square .ios-hourly-temp {
-    font-size: 13px;
-    font-weight: 600;
+    font-size: 16px;
+    font-weight: 500;
+    color: #ffffff;
+    text-shadow: none !important;
   }
 
   .ios27-container.layout-square-scroll .ios-hourly-pop,
   .ios27-container.layout-square .ios-hourly-pop {
     font-size: 10.5px;
     font-weight: 700;
-    color: var(--ios-blue-accent);
+    color: var(--ios-text-secondary);
     text-shadow: 0 1px 3px rgba(0, 0, 0, 0.85);
     line-height: 1;
   }
@@ -7488,7 +7593,7 @@ const cardStyles = i$3`
   .ios27-container.layout-square .ios-detail-tile {
     min-height: 115px;
     padding: 9px 10px 8px 10px;
-    border-radius: 16px;
+    border-radius: 24px;
   }
 
   .ios27-container.layout-square-scroll .ios-stat-value,
@@ -7551,7 +7656,7 @@ const cardStyles = i$3`
   .ios-square-fit-loc {
     font-size: 20px;
     font-weight: 600;
-    color: var(--ios-text-primary);
+    color: var(--ios-text-secondary);
     letter-spacing: -0.3px;
   }
 
@@ -7559,10 +7664,10 @@ const cardStyles = i$3`
     font-size: 13px;
     font-weight: 500;
     color: var(--ios-text-secondary);
-    background: rgba(0, 0, 0, 0.22);
+    background: var(--ios-glass-bg-sub);
     padding: 3px 9px;
     border-radius: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.14);
+    border: var(--ios-glass-border);
   }
 
   .ios-square-fit-main {
@@ -7604,12 +7709,12 @@ const cardStyles = i$3`
 
   .ios-square-fit-forecast-box {
     background: var(--ios-glass-bg);
-    backdrop-filter: blur(24px) saturate(180%);
-    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    backdrop-filter: var(--ios-glass-blur);
+    -webkit-backdrop-filter: var(--ios-glass-blur);
     border: 1px solid var(--ios-glass-border);
     border-radius: 20px;
     padding: 10px 8px;
-    box-shadow: var(--ios-glass-shadow);
+    box-shadow: none;
     z-index: 2;
     display: flex;
     flex-direction: column;
@@ -7692,7 +7797,7 @@ const cardStyles = i$3`
     grid-area: cond !important;
     font-size: 14px !important;
     font-weight: 500 !important;
-    color: var(--ios-text-primary) !important;
+    color: var(--ios-text-secondary);
     opacity: 0.92 !important;
     margin: 0 !important;
     white-space: nowrap !important;
@@ -7702,7 +7807,7 @@ const cardStyles = i$3`
     grid-area: hl !important;
     font-size: 13px !important;
     font-weight: 500 !important;
-    color: var(--ios-text-secondary) !important;
+    color: var(--ios-text-secondary);
     margin: 0 !important;
     white-space: nowrap !important;
   }
@@ -7739,8 +7844,8 @@ const cardStyles = i$3`
   .ios27-container.layout-mini {
     min-height: auto;
     padding: 16px 20px !important;
-    border-radius: 22px;
-    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.2);
+    border-radius: var(--ios-glass-radius);
+    box-shadow: var(--ios-glass-shadow);
   }
 
   .ios-mini-content {
@@ -7762,7 +7867,7 @@ const cardStyles = i$3`
     font-size: 20px;
     font-weight: 600;
     letter-spacing: -0.3px;
-    color: var(--ios-text-primary);
+    color: var(--ios-text-secondary);
   }
 
   .ios-mini-condition {
@@ -7789,8 +7894,8 @@ const cardStyles = i$3`
     font-size: 11px;
     font-weight: 600;
     color: var(--ios-blue-accent);
-    background: rgba(56, 189, 248, 0.15);
-    border: 1px solid rgba(56, 189, 248, 0.3);
+    background: var(--ios-glass-bg-sub);
+    border: var(--ios-glass-border);
     padding: 2px 7px;
     border-radius: 10px;
     display: inline-flex;
@@ -7821,7 +7926,7 @@ const cardStyles = i$3`
     align-items: center;
     text-align: center;
     padding: 10px 0 8px 0;
-    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.45);
+    text-shadow: none;
   }
 
   .ios-header-location-row {
@@ -7837,7 +7942,7 @@ const cardStyles = i$3`
     font-weight: 500;
     letter-spacing: -0.4px;
     color: var(--ios-text-primary);
-    text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5), 0 2px 8px rgba(0, 0, 0, 0.35);
+    text-shadow: var(--ios-header-shadow);
   }
 
   .ios-nav-arrow {
@@ -7855,7 +7960,7 @@ const cardStyles = i$3`
     margin: 4px 0 6px 0;
     padding-left: 12px;
     color: var(--ios-text-primary);
-    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.4), 0 4px 18px rgba(0, 0, 0, 0.3);
+    text-shadow: var(--ios-header-shadow);
   }
 
   .ios-condition-row {
@@ -7868,42 +7973,42 @@ const cardStyles = i$3`
   .ios-condition-text {
     font-size: 19px;
     font-weight: 500;
-    color: var(--ios-text-primary);
+    color: var(--ios-text-secondary);
     opacity: 0.98;
     margin-bottom: 4px;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+    text-shadow: none;
   }
 
   .ios-high-low {
     font-size: 16px;
     font-weight: 500;
-    color: var(--ios-text-primary);
+    color: var(--ios-text-secondary);
     opacity: 0.95;
     letter-spacing: 0.3px;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+    text-shadow: none;
   }
 
   .ios-condition-summary {
     font-size: 14px;
     font-weight: 400;
-    color: rgba(255, 255, 255, 0.92);
+    color: var(--ios-text-secondary);
     margin-top: 6px;
     max-width: 320px;
     line-height: 1.35;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+    text-shadow: none;
   }
 
   /* Highlights Card */
   .ios-highlights-card {
     position: relative;
     z-index: 2;
-    background: rgba(15, 23, 42, 0.22);
-    backdrop-filter: blur(24px) saturate(180%);
-    -webkit-backdrop-filter: blur(24px) saturate(180%);
-    border: 1px solid rgba(255, 255, 255, 0.28);
-    border-radius: 20px;
+    background: var(--ios-glass-bg-sub);
+    backdrop-filter: var(--ios-glass-blur);
+    -webkit-backdrop-filter: var(--ios-glass-blur);
+    border: var(--ios-glass-border);
+    border-radius: var(--ios-glass-radius);
     padding: 12px 16px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18), inset 0 1px 1px rgba(255, 255, 255, 0.25);
+    box-shadow: var(--ios-glass-shadow);
     display: flex;
     flex-direction: column;
     gap: 6px;
@@ -7916,7 +8021,7 @@ const cardStyles = i$3`
     justify-content: space-between;
     font-size: 13px;
     font-weight: 600;
-    color: rgba(255, 255, 255, 0.92);
+    color: var(--ios-text-secondary);
     text-transform: uppercase;
     letter-spacing: 0.4px;
     text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
@@ -7941,10 +8046,10 @@ const cardStyles = i$3`
     position: relative;
     z-index: 2;
     background: var(--ios-glass-bg);
-    backdrop-filter: blur(28px) saturate(180%);
-    -webkit-backdrop-filter: blur(28px) saturate(180%);
-    border: 1px solid var(--ios-glass-border);
-    border-radius: 24px;
+    backdrop-filter: var(--ios-glass-blur);
+    -webkit-backdrop-filter: var(--ios-glass-blur);
+    border: var(--ios-glass-border);
+    border-radius: var(--ios-glass-radius);
     padding: 16px;
     box-shadow: var(--ios-glass-shadow);
     display: flex;
@@ -7983,8 +8088,8 @@ const cardStyles = i$3`
   .ios-segmented-control {
     display: inline-flex;
     align-items: center;
-    background: rgba(0, 0, 0, 0.28);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: var(--ios-segment-bg);
+    border: none;
     border-radius: 30px;
     padding: 3px;
     gap: 2px;
@@ -8012,7 +8117,7 @@ const cardStyles = i$3`
   }
 
   .ios-segment-button.active {
-    background: rgba(255, 255, 255, 0.35);
+    background: var(--ios-segment-active);
     color: #ffffff;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
   }
@@ -8116,10 +8221,10 @@ const cardStyles = i$3`
   .ios-rain-intensity-bar {
     width: 22px;
     height: 50px;
-    background: rgba(255, 255, 255, 0.08);
+    background: var(--ios-bar-empty);
     border-radius: 11px;
-    border: 1px solid rgba(255, 255, 255, 0.22);
-    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3);
+    border: none;
+    box-shadow: none;
     position: relative;
     overflow: hidden;
     display: flex;
@@ -8130,8 +8235,8 @@ const cardStyles = i$3`
 
   .ios-rain-liquid-fill {
     width: 100%;
-    background: linear-gradient(180deg, #38bdf8 0%, #0284c7 100%);
-    box-shadow: 0 0 8px rgba(56, 189, 248, 0.7);
+    background: var(--ios-rain-accent);
+    box-shadow: none;
     border-radius: 8px;
     transition: height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   }
@@ -8169,7 +8274,7 @@ const cardStyles = i$3`
   }
 
   .ios-rain-percent-label.has-rain {
-    color: #38bdf8;
+    color: var(--ios-rain-accent);
     font-weight: 600;
     text-shadow: 0 0 8px rgba(56, 189, 248, 0.7);
   }
@@ -8335,7 +8440,7 @@ const cardStyles = i$3`
     flex: 1 1 0;
     min-width: 0;
     height: 16px;
-    background: rgba(255, 255, 255, 0.16);
+    background: var(--ios-bar-empty);
     border-radius: 2px;
     position: relative;
     overflow: hidden;
@@ -8345,8 +8450,8 @@ const cardStyles = i$3`
 
   .ios-daily-rain-fill {
     width: 100%;
-    background: linear-gradient(180deg, #38bdf8 0%, #0284c7 100%);
-    box-shadow: 0 0 3px rgba(56, 189, 248, 0.7);
+    background: var(--ios-rain-accent);
+    box-shadow: none;
     border-radius: 1px;
     transition: height 0.3s ease;
   }
@@ -8428,7 +8533,7 @@ const cardStyles = i$3`
     height: 38px;
     border-radius: 50%;
     background: var(--ios-glass-bg);
-    border: 1px solid var(--ios-glass-border);
+    border: none;
     backdrop-filter: blur(16px);
     display: flex;
     align-items: center;
@@ -8452,8 +8557,8 @@ const cardStyles = i$3`
   .ios-pager-pill {
     display: flex;
     align-items: center;
-    background: rgba(0, 0, 0, 0.28);
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: var(--ios-segment-bg);
+    border: none;
     border-radius: 20px;
     padding: 6px 14px;
     gap: 8px;
@@ -8701,17 +8806,17 @@ const cardStyles = i$3`
   }
 
   .ios-detail-tile {
-    background: var(--ios-glass-bg);
-    border: 1px solid var(--ios-glass-border);
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
-    border-radius: 20px;
+    background: var(--ios-glass-bg-sub);
+    border: var(--ios-glass-border);
+    backdrop-filter: var(--ios-glass-blur);
+    -webkit-backdrop-filter: var(--ios-glass-blur);
+    border-radius: 24px;
     padding: 13px 13px 11px 13px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     min-height: 140px;
-    box-shadow: var(--ios-glass-shadow);
+    box-shadow: none;
     transition: transform 0.2s ease, background 0.2s ease;
     box-sizing: border-box;
   }
@@ -8971,57 +9076,79 @@ const cardStyles = i$3`
     padding-top: 4px;
     white-space: normal;
   }
+
+  /* Rule 4: Clean text inside glass cards - no text-shadow */
+  .ios-glass-card,
+  .ios-glass-card *,
+  .ios-highlights-card,
+  .ios-highlights-card *,
+  .ios-detail-tile,
+  .ios-detail-tile * {
+    text-shadow: none !important;
+  }
+
+  /* iOS Strict Readability: No text shadow inside cards */
+  .ios-glass-card *,
+  .ios-highlights-card *,
+  .ios-detail-tile *,
+  .ios-segmented-control *,
+  .ios-hourly-strip *,
+  .ios-daily-list * {
+    text-shadow: none !important;
+  }
+
+
 `;
 function getWeatherBackground(condition, isNight) {
   const cond = (condition || "").toLowerCase();
   if (isNight) {
     if (cond.includes("thunder") || cond.includes("lightning")) {
-      return "linear-gradient(180deg, #101221 0%, #1c1d33 50%, #282845 100%)";
+      return "linear-gradient(180deg, #141726 0%, #1c1a33 50%, #0d0f1a 100%)";
     }
     if (cond.includes("rain") || cond.includes("pouring")) {
-      return "linear-gradient(180deg, #131b29 0%, #1e2a3d 50%, #29374d 100%)";
+      return "linear-gradient(180deg, #1c2436 0%, #161c2b 50%, #0e1320 100%)";
     }
     if (cond.includes("cloud")) {
-      return "linear-gradient(180deg, #0f1828 0%, #1a263d 50%, #273854 100%)";
+      return "linear-gradient(180deg, #1f2738 0%, #182030 50%, #101622 100%)";
     }
     if (cond.includes("snow")) {
       return "linear-gradient(180deg, #1a2232 0%, #293448 50%, #3a4860 100%)";
     }
-    return "linear-gradient(180deg, #0a1122 0%, #121f3b 50%, #1c2e54 100%)";
+    return "linear-gradient(180deg, #1c2340 0%, #151b32 45%, #0e1428 100%)";
   }
   switch (cond) {
     case "sunny":
     case "clear":
     case "clear-day":
-      return "linear-gradient(180deg, #18488a 0%, #1e59a6 45%, #276fc4 100%)";
+      return "linear-gradient(180deg, #4d82c8 0%, #447ec5 30%, #4a84cf 65%, #5993dc 100%)";
     case "partlycloudy":
     case "partly-cloudy":
     case "partly-cloudy-day":
-      return "linear-gradient(180deg, #163f73 0%, #1c5292 45%, #2566b0 100%)";
+      return "linear-gradient(180deg, #4a7cb9 0%, #4379bf 30%, #4982cc 65%, #5790d8 100%)";
     case "cloudy":
     case "overcast":
-      return "linear-gradient(180deg, #374151 0%, #2e3745 45%, #1f2631 100%)";
+      return "linear-gradient(180deg, #6b7a90 0%, #5c6b80 40%, #4d5b70 100%)";
     case "rainy":
     case "pouring":
     case "rain":
     case "extreme-rain":
-      return "linear-gradient(180deg, #1e293b 0%, #273549 45%, #16202c 100%)";
+      return "linear-gradient(180deg, #5a6479 0%, #414c61 30%, #384358 100%)";
     case "lightning":
     case "lightning-rainy":
     case "thunderstorm":
-      return "linear-gradient(180deg, #0f172a 0%, #1e1b4b 45%, #16162a 100%)";
+      return "linear-gradient(180deg, #3d4659 0%, #2e3646 40%, #202633 100%)";
     case "snowy":
     case "snow":
     case "snowy-rainy":
     case "sleet":
     case "hail":
-      return "linear-gradient(180deg, #334155 0%, #475569 45%, #64748b 100%)";
+      return "linear-gradient(180deg, #7b8ea6 0%, #64758d 50%, #53647a 100%)";
     case "fog":
     case "windy":
     case "windy-variant":
-      return "linear-gradient(180deg, #374151 0%, #475569 45%, #64748b 100%)";
+      return "linear-gradient(180deg, #6b7a90 0%, #5c6b80 40%, #4d5b70 100%)";
     default:
-      return "linear-gradient(180deg, #18488a 0%, #1e59a6 45%, #276fc4 100%)";
+      return "linear-gradient(180deg, #4d82c8 0%, #447ec5 30%, #4a84cf 65%, #5993dc 100%)";
   }
 }
 const en = {
@@ -12094,9 +12221,10 @@ let Ios27SkyAnimation = class extends i {
   renderSunny() {
     return b`
       <div class="sky-stage">
-        <div class="sky-vignette"></div>
         <div class="sun-halo"></div>
         <div class="sun-flare"></div>
+        <div class="sun-lens-orb-1"></div>
+        <div class="sun-lens-orb-2"></div>
       </div>
     `;
   }
@@ -12280,40 +12408,69 @@ Ios27SkyAnimation.styles = i$3`
     }
 
     /* =========================================
-       SUNNY / SUN HALO ANIMATION
+       SUNNY / SUN HALO & RAINBOW FLARE (REALISTIC APPLE WEATHER)
        ========================================= */
-    .sun-halo {
-      position: absolute;
-      top: -80px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 320px;
-      height: 320px;
-      background: radial-gradient(circle, rgba(255, 230, 140, 0.26) 0%, rgba(255, 190, 40, 0.12) 45%, rgba(255, 255, 255, 0) 75%);
-      border-radius: 50%;
-      animation: sunPulse 7s ease-in-out infinite alternate;
-      filter: blur(16px);
-    }
-
     .sun-flare {
       position: absolute;
-      top: -30px;
+      top: -55px;
       left: 50%;
       transform: translateX(-50%);
-      width: 170px;
-      height: 170px;
-      background: radial-gradient(circle, rgba(255, 250, 220, 0.32) 0%, rgba(255, 255, 255, 0) 65%);
+      width: 220px;
+      height: 220px;
+      background: radial-gradient(circle, #ffffff 0%, rgba(255, 255, 255, 0.95) 18%, rgba(255, 255, 255, 0.5) 38%, rgba(255, 255, 255, 0) 70%);
       border-radius: 50%;
-      filter: blur(12px);
+      filter: blur(8px);
+      pointer-events: none;
+    }
+
+    /* Apple iOS Rainbow Sun Halo */
+    .sun-halo {
+      position: absolute;
+      top: -100px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 420px;
+      height: 420px;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0) 48%, rgba(255, 210, 120, 0.22) 53%, rgba(130, 240, 190, 0.18) 57%, rgba(90, 190, 255, 0.20) 62%, rgba(255, 255, 255, 0) 70%);
+      border-radius: 50%;
+      filter: blur(8px);
+      animation: sunPulse 9s ease-in-out infinite alternate;
+      pointer-events: none;
+    }
+
+    .sun-lens-orb-1 {
+      position: absolute;
+      top: 130px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.22) 0%, rgba(160, 215, 255, 0.10) 60%, rgba(255, 255, 255, 0) 100%);
+      filter: blur(4px);
+      pointer-events: none;
+    }
+
+    .sun-lens-orb-2 {
+      position: absolute;
+      top: 200px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 65px;
+      height: 65px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.16) 0%, rgba(180, 230, 255, 0.08) 60%, rgba(255, 255, 255, 0) 100%);
+      filter: blur(6px);
+      pointer-events: none;
     }
 
     @keyframes sunPulse {
       0% {
-        transform: translateX(-50%) scale(0.95);
-        opacity: 0.75;
+        transform: translateX(-50%) scale(0.98);
+        opacity: 0.85;
       }
       100% {
-        transform: translateX(-50%) scale(1.15);
+        transform: translateX(-50%) scale(1.08);
         opacity: 1;
       }
     }
@@ -13283,6 +13440,8 @@ let Ios27WeatherCard = class extends i {
       locale,
       windUnit
     );
+    const themeMode = this._resolveThemeMode(condition, isNight);
+    this.dataset.theme = themeMode;
     const dynamicBg = this._config.transparent_background ? "transparent" : getWeatherBackground(condition, isNight);
     const rawLayout = this._config.card_layout || "square-scroll";
     const layout = rawLayout === "square" ? "square-scroll" : rawLayout;
@@ -13291,7 +13450,8 @@ let Ios27WeatherCard = class extends i {
     const sunTimes = hassService.getSunTimes(this.hass, this._config.sun_entity);
     return b`
       <div
-        class="ios27-container layout-${layout} ${this._config.transparent_background ? "transparent-bg" : ""} ${isScrollable ? "is-scrollable" : ""}"
+        class="ios27-container layout-${layout} theme-${themeMode} ${this._config.transparent_background ? "transparent-bg" : ""} ${isScrollable ? "is-scrollable" : ""}"
+        data-theme="${themeMode}"
         style="background: ${dynamicBg}; ${heightStyle}; position: relative;"
         @touchstart=${this._handleTouchStart}
         @touchend=${this._handleTouchEnd}
@@ -13626,6 +13786,17 @@ let Ios27WeatherCard = class extends i {
       detail: { entityId }
     });
     this.dispatchEvent(event);
+  }
+  _resolveThemeMode(condition, isNight) {
+    if (isNight) return "night";
+    const cond = (condition || "").toLowerCase();
+    if (cond.includes("rain") || cond.includes("pouring") || cond.includes("lightning") || cond.includes("thunder")) {
+      return "rainy";
+    }
+    if (cond.includes("cloud") || cond.includes("overcast") || cond.includes("fog")) {
+      return "cloudy";
+    }
+    return "sunny";
   }
   getCardSize() {
     return 7;

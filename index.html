@@ -64,12 +64,15 @@
     <div class="controls-row">
       <label><strong>Theme / Condition:</strong></label>
       <select id="condition-picker">
-        <option value="cloudy">Cloudy (Kırklareli)</option>
-        <option value="sunny">Sunny</option>
-        <option value="rainy">Rainy</option>
-        <option value="snowy">Snowy</option>
-        <option value="thunderstorm">Thunderstorm</option>
-        <option value="clear-night">Clear Night</option>
+        <option value="partlycloudy">Partly Cloudy (Parçalı Bulutlu)</option>
+        <option value="sunny">Sunny (Güneşli)</option>
+        <option value="cloudy">Cloudy (Bulutlu)</option>
+        <option value="rainy">Rainy (Yağmurlu)</option>
+        <option value="snowy">Snowy (Karlı)</option>
+        <option value="thunderstorm">Thunderstorm (Gök Gürültülü)</option>
+        <option value="fog">Fog (Sisli)</option>
+        <option value="windy">Windy (Rüzgarlı)</option>
+        <option value="clear-night">Clear Night (Açık Gece)</option>
       </select>
     </div>
 
@@ -178,6 +181,10 @@
         temp = 27;
         templow = 17;
         temphigh = 29;
+      } else if (condition === 'partlycloudy' || condition.includes('partly')) {
+        temp = 21;
+        templow = 13;
+        temphigh = 23;
       } else if (condition === 'rainy' || condition.includes('rain')) {
         temp = 16;
         templow = 12;
@@ -186,6 +193,14 @@
         temp = 19;
         templow = 14;
         temphigh = 21;
+      } else if (condition === 'fog') {
+        temp = 11;
+        templow = 8;
+        temphigh = 14;
+      } else if (condition === 'windy' || condition.includes('wind')) {
+        temp = 18;
+        templow = 12;
+        temphigh = 20;
       } else if (isNight) {
         temp = 14;
         templow = 9;
@@ -250,12 +265,15 @@
       };
     }
 
-    customElements.whenDefined('ios27-weather-card').then(() => {
+    Promise.all([
+      customElements.whenDefined('weather-liquid-glass-card'),
+      customElements.whenDefined('ios27-weather-card')
+    ]).then(() => {
       const card = document.getElementById('test-card');
 
       function updateCard() {
         card.setConfig({
-          type: 'custom:ios27-weather-card',
+          type: 'custom:weather-liquid-glass-card',
           entity: 'weather.home',
           name: 'Kırklareli',
           default_view: currentView,
