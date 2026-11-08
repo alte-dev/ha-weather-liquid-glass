@@ -19,6 +19,7 @@ export class Ios27ForecastCard extends LitElement {
   @property() public timeFormat: '12' | '24' | 'auto' = 'auto';
   @property() public locale: string = 'en';
   @property({ type: Number }) public hourlyCount: number = 24;
+  @property({ type: Number }) public dailyCount: number = 10;
 
   protected createRenderRoot() {
     return this;
@@ -113,11 +114,12 @@ export class Ios27ForecastCard extends LitElement {
           <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
             <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10z"/>
           </svg>
-          <span>${t.ten_day_forecast}</span>
+          <span>${this.dailyCount === 5 ? (t.five_day_forecast || '5-Day Forecast') : (this.dailyCount === 7 ? (t.seven_day_forecast || '7-Day Forecast') : t.ten_day_forecast)}</span>
         </div>
 
         <!-- 10-Day Daily List -->
         <ios27-daily-list
+          .dailyCount=${this.dailyCount || 10}
           .mode=${this.activeMode}
           .forecasts=${this.dailyForecasts}
           .hourlyForecasts=${this.hourlyForecasts}

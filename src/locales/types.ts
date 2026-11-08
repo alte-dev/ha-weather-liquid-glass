@@ -9,6 +9,8 @@ export interface TranslationSchema {
   wind: string;
   wind_subtitle: string;
   ten_day_forecast: string;
+    five_day_forecast: string;
+    seven_day_forecast: string;
   sunrise: string;
   sunset: string;
   format_high_low: (high: string, low: string) => string;

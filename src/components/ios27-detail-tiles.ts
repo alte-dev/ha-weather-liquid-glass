@@ -71,11 +71,31 @@ export class Ios27DetailTiles extends LitElement {
     return map[String(bearing).toLowerCase()] ?? 0;
   }
 
-  // Astronomical Moon Phase calculation (synodic month = 29.53058867 days)
+  // Astronomical Moon Phase calculation (synodic month = 29.53058867 days) with Home Assistant sensor.moon support
   private _getMoonData(): { phase: number; illumination: number; phaseKey: string } {
+    // 1. Check Home Assistant sensor.moon or custom sensor_moon configuration
+    const moonEntityId = this.config?.sensor_moon || 'sensor.moon';
+    const rawMoonState = this.hass?.states?.[moonEntityId]?.state;
+    if (rawMoonState) {
+      const normalized = rawMoonState.toLowerCase().replace(/[- ]/g, '_');
+      const phaseMap: Record<string, { phase: number; illumination: number; phaseKey: string }> = {
+        new_moon: { phase: 0.0, illumination: 0, phaseKey: 'new_moon' },
+        waxing_crescent: { phase: 0.125, illumination: 25, phaseKey: 'waxing_crescent' },
+        first_quarter: { phase: 0.25, illumination: 50, phaseKey: 'first_quarter' },
+        waxing_gibbous: { phase: 0.375, illumination: 75, phaseKey: 'waxing_gibbous' },
+        full_moon: { phase: 0.5, illumination: 100, phaseKey: 'full_moon' },
+        waning_gibbous: { phase: 0.625, illumination: 75, phaseKey: 'waning_gibbous' },
+        last_quarter: { phase: 0.75, illumination: 50, phaseKey: 'last_quarter' },
+        waning_crescent: { phase: 0.875, illumination: 25, phaseKey: 'waning_crescent' },
+      };
+      if (phaseMap[normalized]) {
+        return phaseMap[normalized];
+      }
+    }
+
+    // 2. Fallback to precise astronomical calculation
     const now = new Date();
-    // Known new moon: Jan 11, 2024, 11:57 UTC
-    const knownNewMoon = 1704974220000;
+    const knownNewMoon = 1704974220000; // Jan 11, 2024, 11:57 UTC
     const synodicMonth = 29.53058867 * 86400000;
     const diff = now.getTime() - knownNewMoon;
     const phase = (((diff % synodicMonth) + synodicMonth) % synodicMonth) / synodicMonth;

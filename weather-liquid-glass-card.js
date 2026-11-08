@@ -7055,6 +7055,11 @@ function friendlyDateTime(dateTimeish) {
 }
 const cardStyles = i$3`
     :host {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
     --ios-font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
     
     /* Default (Daytime / Sunny) Liquid Glass Theme */
@@ -7168,6 +7173,10 @@ const cardStyles = i$3`
 
   .ios27-container {
     position: relative;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
     border-radius: 28px;
     padding: 24px 18px 20px 18px;
     overflow: hidden;
@@ -7188,6 +7197,10 @@ const cardStyles = i$3`
   /* Internal Scroll Wrapper for Scrollable layouts */
   .ios27-scroll-wrapper {
     position: relative;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
     z-index: 2;
     display: flex;
     flex-direction: column;
@@ -8001,6 +8014,10 @@ const cardStyles = i$3`
   /* Highlights Card */
   .ios-highlights-card {
     position: relative;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
     z-index: 2;
     background: var(--ios-glass-bg-sub);
     backdrop-filter: var(--ios-glass-blur);
@@ -8044,6 +8061,10 @@ const cardStyles = i$3`
   /* Main Weather Glass Card (Holds switcher, hourly strip, 10-day forecast) */
   .ios-glass-card {
     position: relative;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
     z-index: 2;
     background: var(--ios-glass-bg);
     backdrop-filter: var(--ios-glass-blur);
@@ -8140,6 +8161,10 @@ const cardStyles = i$3`
   .ios-hourly-strip {
     display: flex;
     overflow-x: auto;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
     overflow-y: hidden;
     gap: 14px;
     padding: 6px 4px 8px 4px;
@@ -9162,6 +9187,8 @@ const en = {
   wind: "Wind",
   wind_subtitle: "Speed · Gusts",
   ten_day_forecast: "10-Day Forecast",
+  five_day_forecast: "5-Day Forecast",
+  seven_day_forecast: "7-Day Forecast",
   sunrise: "Sunrise",
   sunset: "Sunset",
   format_high_low: (high, low) => `H:${high} L:${low}`,
@@ -9269,6 +9296,8 @@ const tr = {
   wind: "Rüzgar",
   wind_subtitle: "Hız · Rüzgar Hamlesi",
   ten_day_forecast: "10 Günlük Tahmin",
+  five_day_forecast: "5 Günlük Tahmin",
+  seven_day_forecast: "7 Günlük Tahmin",
   sunrise: "Gün Doğumu",
   sunset: "Gün Batımı",
   format_high_low: (high, low) => `D:${low} Y:${high}`,
@@ -9376,6 +9405,8 @@ const de = {
   wind: "Wind",
   wind_subtitle: "Geschwindigkeit · Böen",
   ten_day_forecast: "10-Tage-Vorhersage",
+  five_day_forecast: "5-Tage-Vorhersage",
+  seven_day_forecast: "7-Tage-Vorhersage",
   sunrise: "Sonnenaufgang",
   sunset: "Sonnenuntergang",
   format_high_low: (high, low) => `T:${low} H:${high}`,
@@ -9483,6 +9514,8 @@ const es = {
   wind: "Viento",
   wind_subtitle: "Velocidad · Rachas",
   ten_day_forecast: "Pronóstico de 10 días",
+  five_day_forecast: "Pronóstico de 5 días",
+  seven_day_forecast: "Pronóstico de 7 días",
   sunrise: "Amanecer",
   sunset: "Atardecer",
   format_high_low: (high, low) => `Mín:${low} Máx:${high}`,
@@ -9590,6 +9623,8 @@ const fr = {
   wind: "Vent",
   wind_subtitle: "Vitesse · Rafales",
   ten_day_forecast: "Prévisions sur 10 jours",
+  five_day_forecast: "Prévisions à 5 jours",
+  seven_day_forecast: "Prévisions à 7 jours",
   sunrise: "Lever du soleil",
   sunset: "Coucher du soleil",
   format_high_low: (high, low) => `Min:${low} Max:${high}`,
@@ -9759,23 +9794,47 @@ class HassService {
 }
 const hassService = new HassService();
 class ForecastService {
-  constructor() {
-    this.hourlyUnsubscribe = null;
-    this.dailyUnsubscribe = null;
-    this.currentEntityId = null;
-  }
+  /**
+   * Subscribe to weather forecast updates with multi-level resilient fallbacks.
+   * Supports:
+   * 1. WebSocket `weather/subscribe_forecast` (Home Assistant 2023.9+)
+   * 2. `forecast_type: 'daily'` with fallback to `twice_daily`
+   * 3. WebSocket `weather/get_forecasts` query
+   * 4. Legacy `entity.attributes.forecast` attribute inspection
+   * 5. Hourly-to-Daily automatic synthesis if daily forecast is not provided by integration
+   */
   async subscribeForecasts(hass, entityId, onHourlyUpdate, onDailyUpdate) {
-    this.unsubscribeAll();
-    this.currentEntityId = entityId;
+    if (!hass || !entityId) return () => {
+    };
     const entity = hass.states[entityId];
     if (!entity) return () => {
     };
+    const unsubs = [];
+    let isDisposed = false;
+    let hasReceivedDaily = false;
+    let latestHourly = [];
+    const handleHourly = (forecasts) => {
+      if (isDisposed || !Array.isArray(forecasts)) return;
+      latestHourly = forecasts;
+      onHourlyUpdate(forecasts);
+      if (!hasReceivedDaily && latestHourly.length >= 8) {
+        const synthDaily = this.synthesizeDailyFromHourly(latestHourly);
+        if (synthDaily.length > 0) {
+          onDailyUpdate(synthDaily);
+        }
+      }
+    };
+    const handleDaily = (forecasts) => {
+      if (isDisposed || !Array.isArray(forecasts) || forecasts.length === 0) return;
+      hasReceivedDaily = true;
+      onDailyUpdate(forecasts);
+    };
     try {
       if (hass.connection && typeof hass.connection.subscribeMessage === "function") {
-        const unsubHourly = await hass.connection.subscribeMessage(
+        const unsub = await hass.connection.subscribeMessage(
           (event) => {
             if (event?.forecast) {
-              onHourlyUpdate(event.forecast);
+              handleHourly(event.forecast);
             }
           },
           {
@@ -9784,17 +9843,24 @@ class ForecastService {
             entity_id: entityId
           }
         );
-        this.hourlyUnsubscribe = unsubHourly;
+        if (isDisposed) {
+          try {
+            unsub();
+          } catch {
+          }
+        } else {
+          unsubs.push(unsub);
+        }
       }
-    } catch (e2) {
-      this.fetchForecastFallback(hass, entityId, "hourly", onHourlyUpdate);
+    } catch {
+      this.fetchForecastFallback(hass, entityId, "hourly", handleHourly);
     }
     try {
       if (hass.connection && typeof hass.connection.subscribeMessage === "function") {
-        const unsubDaily = await hass.connection.subscribeMessage(
+        const unsub = await hass.connection.subscribeMessage(
           (event) => {
-            if (event?.forecast) {
-              onDailyUpdate(event.forecast);
+            if (event?.forecast && Array.isArray(event.forecast) && event.forecast.length > 0) {
+              handleDaily(event.forecast);
             }
           },
           {
@@ -9803,15 +9869,67 @@ class ForecastService {
             entity_id: entityId
           }
         );
-        this.dailyUnsubscribe = unsubDaily;
+        if (isDisposed) {
+          try {
+            unsub();
+          } catch {
+          }
+        } else {
+          unsubs.push(unsub);
+        }
       }
-    } catch (e2) {
-      this.fetchForecastFallback(hass, entityId, "daily", onDailyUpdate);
+    } catch {
+      try {
+        if (hass.connection && typeof hass.connection.subscribeMessage === "function") {
+          const unsubTwice = await hass.connection.subscribeMessage(
+            (event) => {
+              if (event?.forecast && Array.isArray(event.forecast)) {
+                handleDaily(this.convertTwiceDailyToDaily(event.forecast));
+              }
+            },
+            {
+              type: "weather/subscribe_forecast",
+              forecast_type: "twice_daily",
+              entity_id: entityId
+            }
+          );
+          if (isDisposed) {
+            try {
+              unsubTwice();
+            } catch {
+            }
+          } else {
+            unsubs.push(unsubTwice);
+          }
+        }
+      } catch {
+        this.fetchForecastFallback(hass, entityId, "daily", handleDaily);
+      }
     }
-    if (entity.attributes?.forecast && Array.isArray(entity.attributes.forecast)) {
-      onDailyUpdate(entity.attributes.forecast);
+    if (entity.attributes?.forecast && Array.isArray(entity.attributes.forecast) && entity.attributes.forecast.length > 0) {
+      handleDaily(entity.attributes.forecast);
     }
-    return () => this.unsubscribeAll();
+    setTimeout(() => {
+      if (!isDisposed && !hasReceivedDaily) {
+        this.fetchForecastFallback(hass, entityId, "daily", (f2) => {
+          if (f2.length > 0) handleDaily(f2);
+          else {
+            this.fetchForecastFallback(hass, entityId, "twice_daily", (tf) => {
+              if (tf.length > 0) handleDaily(this.convertTwiceDailyToDaily(tf));
+            });
+          }
+        });
+      }
+    }, 1500);
+    return () => {
+      isDisposed = true;
+      for (const unsub of unsubs) {
+        try {
+          unsub();
+        } catch {
+        }
+      }
+    };
   }
   async fetchForecastFallback(hass, entityId, forecastType, callback) {
     try {
@@ -9825,26 +9943,82 @@ class ForecastService {
       }
     } catch {
       const entity = hass.states[entityId];
-      if (entity?.attributes?.forecast) {
+      if (entity?.attributes?.forecast && Array.isArray(entity.attributes.forecast)) {
         callback(entity.attributes.forecast);
       }
     }
   }
-  unsubscribeAll() {
-    if (this.hourlyUnsubscribe) {
-      try {
-        this.hourlyUnsubscribe();
-      } catch {
+  /**
+   * Converts Home Assistant twice_daily forecast items (day/night pairs) into consolidated daily forecast items.
+   */
+  convertTwiceDailyToDaily(forecasts) {
+    const dailyMap = /* @__PURE__ */ new Map();
+    for (const item of forecasts) {
+      if (!item.datetime) continue;
+      const dateKey = DateTime.fromISO(item.datetime).toISODate() || item.datetime.split("T")[0];
+      const existing = dailyMap.get(dateKey);
+      if (!existing) {
+        dailyMap.set(dateKey, {
+          datetime: item.datetime,
+          condition: item.condition,
+          temperature: item.temperature,
+          templow: item.templow ?? item.temperature,
+          precipitation: item.precipitation ?? 0,
+          precipitation_probability: item.precipitation_probability ?? 0,
+          wind_speed: item.wind_speed
+        });
+      } else {
+        if (typeof item.temperature === "number") {
+          existing.temperature = Math.max(existing.temperature, item.temperature);
+        }
+        if (typeof item.templow === "number") {
+          existing.templow = Math.min(existing.templow, item.templow);
+        } else if (typeof item.temperature === "number") {
+          existing.templow = Math.min(existing.templow, item.temperature);
+        }
+        if (item.is_daytime && item.condition) {
+          existing.condition = item.condition;
+        }
       }
-      this.hourlyUnsubscribe = null;
     }
-    if (this.dailyUnsubscribe) {
-      try {
-        this.dailyUnsubscribe();
-      } catch {
-      }
-      this.dailyUnsubscribe = null;
+    return Array.from(dailyMap.values());
+  }
+  /**
+   * Synthesize daily forecasts from hourly data if the underlying weather integration
+   * only exposes hourly forecasts. Groups hours by day and derives High, Low, and primary condition.
+   */
+  synthesizeDailyFromHourly(hourly) {
+    const dayGroups = /* @__PURE__ */ new Map();
+    for (const h2 of hourly) {
+      if (!h2.datetime) continue;
+      const dayKey = DateTime.fromISO(h2.datetime).toISODate() || h2.datetime.split("T")[0];
+      const list = dayGroups.get(dayKey) || [];
+      list.push(h2);
+      dayGroups.set(dayKey, list);
     }
+    const syntheticDaily = [];
+    for (const [dayKey, hours] of dayGroups.entries()) {
+      if (hours.length === 0) continue;
+      const temps = hours.map((h2) => h2.temperature).filter((t2) => typeof t2 === "number");
+      const highs = temps.length > 0 ? Math.max(...temps) : 20;
+      const lows = temps.length > 0 ? Math.min(...temps) : highs - 5;
+      const midday = hours.find((h2) => {
+        const hour = DateTime.fromISO(h2.datetime).hour;
+        return hour >= 11 && hour <= 15;
+      }) || hours[0];
+      const maxPrecipProb = Math.max(...hours.map((h2) => h2.precipitation_probability || 0));
+      const totalPrecip = hours.reduce((sum, h2) => sum + (h2.precipitation || 0), 0);
+      syntheticDaily.push({
+        datetime: hours[0].datetime,
+        condition: midday.condition,
+        temperature: highs,
+        templow: lows,
+        precipitation: Math.round(totalPrecip * 10) / 10,
+        precipitation_probability: maxPrecipProb,
+        wind_speed: midday.wind_speed
+      });
+    }
+    return syntheticDaily;
   }
 }
 const forecastService = new ForecastService();
@@ -10036,7 +10210,7 @@ let Ios27Header = class extends i {
     } else if (!isUnavailable && this.highTemp !== null) {
       highLowText = `H:${formattedHigh}`;
     }
-    const displayName = this.locationName?.trim() && this.locationName.toLowerCase() !== "cupertino" ? this.locationName : this.locale === "tr" ? "Hava Durumu" : "Weather";
+    const displayName = this.locationName?.trim() ? this.locationName : this.locale === "tr" ? "Hava Durumu" : "Weather";
     return b`
       <div class="ios-header">
         <div class="ios-header-location-row">
@@ -10872,6 +11046,7 @@ let Ios27DailyList = class extends i {
     this.windUnit = "km/h";
     this.precipUnit = "mm";
     this.locale = "en";
+    this.dailyCount = 10;
   }
   createRenderRoot() {
     return this;
@@ -10879,7 +11054,7 @@ let Ios27DailyList = class extends i {
   render() {
     const list = this.prepareDailyList();
     if (list.length === 0) {
-      return b`<div style="color: rgba(255,255,255,0.6); font-size: 13px; padding: 10px;">Loading 10-day forecast...</div>`;
+      return b`<div style="color: rgba(255,255,255,0.6); font-size: 13px; padding: 10px;">${translationService.get(this.locale).conditions?.["unavailable"] || "Waiting for data..."}</div>`;
     }
     return b`
       <div class="ios-daily-list">
@@ -10891,7 +11066,7 @@ let Ios27DailyList = class extends i {
     if (!this.forecasts || this.forecasts.length === 0) return [];
     const t2 = translationService.get(this.locale);
     const now2 = DateTime.now().setLocale(this.locale);
-    return this.forecasts.slice(0, 10).map((f2, i2) => {
+    return this.forecasts.slice(0, this.dailyCount || 10).map((f2, i2) => {
       const dt = DateTime.fromISO(f2.datetime).setLocale(this.locale);
       const isToday = i2 === 0 || dt.isValid && dt.hasSame(now2, "day");
       const dayLabel = isToday ? t2.today : dt.isValid ? dt.toFormat("ccc") : `Day ${i2 + 1}`;
@@ -11153,6 +11328,9 @@ __decorateClass$6([
 __decorateClass$6([
   n$1()
 ], Ios27DailyList.prototype, "locale", 2);
+__decorateClass$6([
+  n$1({ type: Number })
+], Ios27DailyList.prototype, "dailyCount", 2);
 Ios27DailyList = __decorateClass$6([
   t("ios27-daily-list")
 ], Ios27DailyList);
@@ -11180,6 +11358,7 @@ let Ios27ForecastCard = class extends i {
     this.timeFormat = "auto";
     this.locale = "en";
     this.hourlyCount = 24;
+    this.dailyCount = 10;
   }
   createRenderRoot() {
     return this;
@@ -11271,11 +11450,12 @@ let Ios27ForecastCard = class extends i {
           <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
             <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10z"/>
           </svg>
-          <span>${t2.ten_day_forecast}</span>
+          <span>${this.dailyCount === 5 ? t2.five_day_forecast || "5-Day Forecast" : this.dailyCount === 7 ? t2.seven_day_forecast || "7-Day Forecast" : t2.ten_day_forecast}</span>
         </div>
 
         <!-- 10-Day Daily List -->
         <ios27-daily-list
+          .dailyCount=${this.dailyCount || 10}
           .mode=${this.activeMode}
           .forecasts=${this.dailyForecasts}
           .hourlyForecasts=${this.hourlyForecasts}
@@ -11334,6 +11514,9 @@ __decorateClass$5([
 __decorateClass$5([
   n$1({ type: Number })
 ], Ios27ForecastCard.prototype, "hourlyCount", 2);
+__decorateClass$5([
+  n$1({ type: Number })
+], Ios27ForecastCard.prototype, "dailyCount", 2);
 Ios27ForecastCard = __decorateClass$5([
   t("ios27-forecast-card")
 ], Ios27ForecastCard);
@@ -11422,8 +11605,26 @@ let Ios27DetailTiles = class extends i {
     };
     return map[String(bearing).toLowerCase()] ?? 0;
   }
-  // Astronomical Moon Phase calculation (synodic month = 29.53058867 days)
+  // Astronomical Moon Phase calculation (synodic month = 29.53058867 days) with Home Assistant sensor.moon support
   _getMoonData() {
+    const moonEntityId = this.config?.sensor_moon || "sensor.moon";
+    const rawMoonState = this.hass?.states?.[moonEntityId]?.state;
+    if (rawMoonState) {
+      const normalized = rawMoonState.toLowerCase().replace(/[- ]/g, "_");
+      const phaseMap = {
+        new_moon: { phase: 0, illumination: 0, phaseKey: "new_moon" },
+        waxing_crescent: { phase: 0.125, illumination: 25, phaseKey: "waxing_crescent" },
+        first_quarter: { phase: 0.25, illumination: 50, phaseKey: "first_quarter" },
+        waxing_gibbous: { phase: 0.375, illumination: 75, phaseKey: "waxing_gibbous" },
+        full_moon: { phase: 0.5, illumination: 100, phaseKey: "full_moon" },
+        waning_gibbous: { phase: 0.625, illumination: 75, phaseKey: "waning_gibbous" },
+        last_quarter: { phase: 0.75, illumination: 50, phaseKey: "last_quarter" },
+        waning_crescent: { phase: 0.875, illumination: 25, phaseKey: "waning_crescent" }
+      };
+      if (phaseMap[normalized]) {
+        return phaseMap[normalized];
+      }
+    }
     const now2 = /* @__PURE__ */ new Date();
     const knownNewMoon = 170497422e4;
     const synodicMonth = 29.53058867 * 864e5;
@@ -12532,6 +12733,7 @@ const editorTranslations = {
     remove: "Kaldır",
     add_city_help: "💡 Farklı şehirler eklemek için: Home Assistant'ta Ayarlar > Cihazlar ve Hizmetler > Entegrasyon Ekle bölümünden Met.no veya Open-Meteo ile istediğiniz şehri ekleyin. Oluşturulan yeni weather.sehir varlığı burada otomatik listelenecektir.",
     card_layout_shape: "Kart Düzeni (Format)",
+    daily_forecast_days: "Günlük Tahmin Süresi",
     layout_square_scroll: "🔄 Kare - Kaydırılabilir (1:1 İçten Kaydırmalı Zengin Görünüm)",
     layout_square_fit: "⏹ Kare - Tam Sığan (1:1 Sıfır Kaydırmalı Kompakt Widget)",
     layout_default: "📱 Varsayılan (Orijinal Dikey iPhone Boyutu)",
@@ -12573,6 +12775,7 @@ const editorTranslations = {
     remove: "Remove",
     add_city_help: "💡 To add different cities: In Home Assistant, go to Settings > Devices & Services > Add Integration and add Met.no or Open-Meteo for your desired cities. The created weather.city entities will appear here automatically.",
     card_layout_shape: "Card Layout Shape",
+    daily_forecast_days: "Daily Forecast Days",
     layout_square_scroll: "🔄 Square - Scrollable (1:1 with Internal Scroll)",
     layout_square_fit: "⏹ Square - Fitted (1:1 Zero-scroll Widget)",
     layout_default: "📱 Default (Full Vertical Phone Style)",
@@ -12614,6 +12817,7 @@ const editorTranslations = {
     remove: "Entfernen",
     add_city_help: "💡 Um weitere Städte hinzuzufügen: Fügen Sie in Home Assistant unter Einstellungen > Geräte & Dienste > Integration hinzufügen Met.no oder Open-Meteo hinzu.",
     card_layout_shape: "Kartenlayout-Format",
+    daily_forecast_days: "Tage der Tagesvorhersage",
     layout_square_scroll: "🔄 Quadrat - Scrollbar (1:1 mit internem Scrollen)",
     layout_square_fit: "⏹ Quadrat - Angepasst (1:1 Widget ohne Scrollen)",
     layout_default: "📱 Standard (Vollständige vertikale Ansicht)",
@@ -12655,6 +12859,7 @@ const editorTranslations = {
     remove: "Eliminar",
     add_city_help: "💡 Para añadir diferentes ciudades: En Home Assistant vaya a Ajustes > Dispositivos y Servicios > Añadir integración y configure Met.no u Open-Meteo.",
     card_layout_shape: "Diseño de la tarjeta",
+    daily_forecast_days: "Días de Pronóstico Diario",
     layout_square_scroll: "🔄 Cuadrado - Con scroll (1:1 con desplazamiento interno)",
     layout_square_fit: "⏹ Cuadrado - Ajustado (1:1 Widget sin desplazamiento)",
     layout_default: "📱 Predeterminado (Estilo vertical teléfono completo)",
@@ -12696,6 +12901,7 @@ const editorTranslations = {
     remove: "Supprimer",
     add_city_help: "💡 Pour ajouter d'autres villes: Dans Home Assistant, allez dans Paramètres > Appareils et services > Ajouter une intégration et ajoutez Met.no ou Open-Meteo.",
     card_layout_shape: "Disposition de la carte",
+    daily_forecast_days: "Jours de Prévision Quotidienne",
     layout_square_scroll: "🔄 Carré - Avec défilement (1:1 avec défilement interne)",
     layout_square_fit: "⏹ Carré - Ajusté (1:1 Widget sans défilement)",
     layout_default: "📱 Défaut (Style vertical complet type iPhone)",
@@ -12834,6 +13040,20 @@ let Ios27WeatherCardEditor = class extends i {
               ${t2.add_city_help}
             </div>
           ` : ""}
+        </div>
+
+        <!-- Daily Forecast Days -->
+        <div class="form-row">
+          <label class="form-label">${t2.daily_forecast_days || "Daily Forecast Days"}</label>
+          <select
+            class="form-input"
+            .value=${String(this._config?.daily_count || 10)}
+            @change=${(e2) => this._valueChanged("daily_count", parseInt(e2.target.value, 10))}
+          >
+            <option value="10" ?selected=${(this._config?.daily_count || 10) === 10}>10</option>
+            <option value="7" ?selected=${this._config?.daily_count === 7}>7</option>
+            <option value="5" ?selected=${this._config?.daily_count === 5}>5</option>
+          </select>
         </div>
 
         <!-- Card Layout Shape -->
@@ -13204,9 +13424,6 @@ let Ios27WeatherCard = class extends i {
       throw new Error("Please specify a weather entity in the card configuration.");
     }
     const cleanConfig = { ...config };
-    if (cleanConfig.name && cleanConfig.name.trim().toLowerCase() === "cupertino") {
-      delete cleanConfig.name;
-    }
     this._config = {
       card_layout: "square-scroll",
       scrollable: true,
@@ -13232,6 +13449,7 @@ let Ios27WeatherCard = class extends i {
       this._unsubscribeForecast();
       this._unsubscribeForecast = void 0;
     }
+    this._subscribedEntity = void 0;
   }
   updated(changedProps) {
     super.updated(changedProps);
@@ -13268,6 +13486,7 @@ let Ios27WeatherCard = class extends i {
     this._currentLocationIndex = newIndex;
     this._hourlyForecasts = [];
     this._dailyForecasts = [];
+    this._subscribedEntity = void 0;
     if (this._unsubscribeForecast) {
       this._unsubscribeForecast();
       this._unsubscribeForecast = void 0;
@@ -13463,6 +13682,7 @@ let Ios27WeatherCard = class extends i {
                 .activeMode=${this._activeMode}
                 .hourlyForecasts=${this._hourlyForecasts}
                 .dailyForecasts=${this._dailyForecasts}
+                .dailyCount=${this._config.daily_count || 10}
                 .hourlyCount=${this._config.hourly_count || 24}
                 .currentTemp=${currentTemp}
                 .currentCondition=${condition}

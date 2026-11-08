@@ -2,6 +2,11 @@ import { css } from 'lit';
 
 export const cardStyles = css`
     :host {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
     --ios-font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
     
     /* Default (Daytime / Sunny) Liquid Glass Theme */
@@ -115,6 +120,10 @@ export const cardStyles = css`
 
   .ios27-container {
     position: relative;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
     border-radius: 28px;
     padding: 24px 18px 20px 18px;
     overflow: hidden;
@@ -135,6 +144,10 @@ export const cardStyles = css`
   /* Internal Scroll Wrapper for Scrollable layouts */
   .ios27-scroll-wrapper {
     position: relative;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
     z-index: 2;
     display: flex;
     flex-direction: column;
@@ -948,6 +961,10 @@ export const cardStyles = css`
   /* Highlights Card */
   .ios-highlights-card {
     position: relative;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
     z-index: 2;
     background: var(--ios-glass-bg-sub);
     backdrop-filter: var(--ios-glass-blur);
@@ -991,6 +1008,10 @@ export const cardStyles = css`
   /* Main Weather Glass Card (Holds switcher, hourly strip, 10-day forecast) */
   .ios-glass-card {
     position: relative;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
     z-index: 2;
     background: var(--ios-glass-bg);
     backdrop-filter: var(--ios-glass-blur);
@@ -1087,6 +1108,10 @@ export const cardStyles = css`
   .ios-hourly-strip {
     display: flex;
     overflow-x: auto;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
     overflow-y: hidden;
     gap: 14px;
     padding: 6px 4px 8px 4px;

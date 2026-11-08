@@ -11,6 +11,8 @@ export const tr: TranslationSchema = {
   wind: 'Rüzgar',
   wind_subtitle: 'Hız · Rüzgar Hamlesi',
   ten_day_forecast: '10 Günlük Tahmin',
+    five_day_forecast: '5 Günlük Tahmin',
+    seven_day_forecast: '7 Günlük Tahmin',
   sunrise: 'Gün Doğumu',
   sunset: 'Gün Batımı',
   format_high_low: (high: string, low: string) => `D:${low} Y:${high}`,

@@ -16,6 +16,7 @@ export class Ios27DailyList extends LitElement {
   @property() public windUnit: string = 'km/h';
   @property() public precipUnit: string = 'mm';
   @property() public locale: string = 'en';
+  @property({ type: Number }) public dailyCount: number = 10;
 
   protected createRenderRoot() {
     return this;
@@ -24,7 +25,7 @@ export class Ios27DailyList extends LitElement {
   public render(): TemplateResult {
     const list = this.prepareDailyList();
     if (list.length === 0) {
-      return html`<div style="color: rgba(255,255,255,0.6); font-size: 13px; padding: 10px;">Loading 10-day forecast...</div>`;
+      return html`<div style="color: rgba(255,255,255,0.6); font-size: 13px; padding: 10px;">${translationService.get(this.locale).conditions?.['unavailable'] || 'Waiting for data...'}</div>`;
     }
 
     return html`
@@ -46,7 +47,7 @@ export class Ios27DailyList extends LitElement {
     const t = translationService.get(this.locale);
     const now = DateTime.now().setLocale(this.locale);
 
-    return this.forecasts.slice(0, 10).map((f, i) => {
+    return this.forecasts.slice(0, this.dailyCount || 10).map((f, i) => {
       const dt = DateTime.fromISO(f.datetime).setLocale(this.locale);
       const isToday = i === 0 || (dt.isValid && dt.hasSame(now, 'day'));
       const dayLabel = isToday ? t.today : dt.isValid ? dt.toFormat('ccc') : `Day ${i + 1}`;

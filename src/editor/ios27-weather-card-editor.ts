@@ -191,6 +191,20 @@ export class Ios27WeatherCardEditor extends LitElement {
           ` : ''}
         </div>
 
+        <!-- Daily Forecast Days -->
+        <div class="form-row">
+          <label class="form-label">${t.daily_forecast_days || 'Daily Forecast Days'}</label>
+          <select
+            class="form-input"
+            .value=${String(this._config?.daily_count || 10)}
+            @change=${(e: Event) => this._valueChanged('daily_count', parseInt((e.target as HTMLSelectElement).value, 10))}
+          >
+            <option value="10" ?selected=${(this._config?.daily_count || 10) === 10}>10</option>
+            <option value="7" ?selected=${this._config?.daily_count === 7}>7</option>
+            <option value="5" ?selected=${this._config?.daily_count === 5}>5</option>
+          </select>
+        </div>
+
         <!-- Card Layout Shape -->
         <div class="form-row">
           <label class="form-label">${t.card_layout_shape}</label>

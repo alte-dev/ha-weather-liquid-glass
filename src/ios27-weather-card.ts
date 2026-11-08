@@ -60,6 +60,7 @@ export class Ios27WeatherCard extends LitElement {
   @state() private _hourlyForecasts: WeatherForecast[] = [];
   @state() private _dailyForecasts: WeatherForecast[] = [];
   @state() private _unsubscribeForecast?: () => void;
+  private _subscribedEntity?: string;
   @state() private _autoLocationName: string = '';
 
   // Multi-location states
@@ -98,9 +99,7 @@ export class Ios27WeatherCard extends LitElement {
       throw new Error('Please specify a weather entity in the card configuration.');
     }
     const cleanConfig = { ...config };
-    if (cleanConfig.name && cleanConfig.name.trim().toLowerCase() === 'cupertino') {
-      delete cleanConfig.name;
-    }
+    
     this._config = {
       card_layout: 'square-scroll',
       scrollable: true,
@@ -128,6 +127,7 @@ export class Ios27WeatherCard extends LitElement {
       this._unsubscribeForecast();
       this._unsubscribeForecast = undefined;
     }
+    this._subscribedEntity = undefined;
   }
 
   protected updated(changedProps: PropertyValues): void {
@@ -168,6 +168,7 @@ export class Ios27WeatherCard extends LitElement {
     this._currentLocationIndex = newIndex;
     this._hourlyForecasts = [];
     this._dailyForecasts = [];
+    this._subscribedEntity = undefined;
 
     if (this._unsubscribeForecast) {
       this._unsubscribeForecast();
@@ -408,6 +409,7 @@ export class Ios27WeatherCard extends LitElement {
                 .activeMode=${this._activeMode}
                 .hourlyForecasts=${this._hourlyForecasts}
                 .dailyForecasts=${this._dailyForecasts}
+                .dailyCount=${this._config.daily_count || 10}
                 .hourlyCount=${this._config.hourly_count || 24}
                 .currentTemp=${currentTemp}
                 .currentCondition=${condition}

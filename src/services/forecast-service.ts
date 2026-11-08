@@ -1,33 +1,62 @@
 import type { HomeAssistant } from 'custom-card-helpers';
 import type { WeatherForecast } from '@/types';
+import { DateTime } from 'luxon';
 
 type ForecastCallback = (forecasts: WeatherForecast[]) => void;
 
 class ForecastService {
-  private hourlyUnsubscribe: (() => void) | null = null;
-  private dailyUnsubscribe: (() => void) | null = null;
-  private currentEntityId: string | null = null;
-
+  /**
+   * Subscribe to weather forecast updates with multi-level resilient fallbacks.
+   * Supports:
+   * 1. WebSocket `weather/subscribe_forecast` (Home Assistant 2023.9+)
+   * 2. `forecast_type: 'daily'` with fallback to `twice_daily`
+   * 3. WebSocket `weather/get_forecasts` query
+   * 4. Legacy `entity.attributes.forecast` attribute inspection
+   * 5. Hourly-to-Daily automatic synthesis if daily forecast is not provided by integration
+   */
   public async subscribeForecasts(
     hass: HomeAssistant,
     entityId: string,
     onHourlyUpdate: ForecastCallback,
     onDailyUpdate: ForecastCallback
   ): Promise<() => void> {
-    this.unsubscribeAll();
-    this.currentEntityId = entityId;
+    if (!hass || !entityId) return () => {};
 
-    // Check if weather entity exists
     const entity = hass.states[entityId];
     if (!entity) return () => {};
+
+    const unsubs: Array<() => void> = [];
+    let isDisposed = false;
+    let hasReceivedDaily = false;
+    let latestHourly: WeatherForecast[] = [];
+
+    const handleHourly = (forecasts: WeatherForecast[]) => {
+      if (isDisposed || !Array.isArray(forecasts)) return;
+      latestHourly = forecasts;
+      onHourlyUpdate(forecasts);
+
+      // If daily forecast has not arrived yet, synthesize daily forecast from hourly data as self-healing fallback
+      if (!hasReceivedDaily && latestHourly.length >= 8) {
+        const synthDaily = this.synthesizeDailyFromHourly(latestHourly);
+        if (synthDaily.length > 0) {
+          onDailyUpdate(synthDaily);
+        }
+      }
+    };
+
+    const handleDaily = (forecasts: WeatherForecast[]) => {
+      if (isDisposed || !Array.isArray(forecasts) || forecasts.length === 0) return;
+      hasReceivedDaily = true;
+      onDailyUpdate(forecasts);
+    };
 
     // 1. Subscribe to Hourly Forecast
     try {
       if (hass.connection && typeof hass.connection.subscribeMessage === 'function') {
-        const unsubHourly = await hass.connection.subscribeMessage(
+        const unsub = await hass.connection.subscribeMessage(
           (event: any) => {
             if (event?.forecast) {
-              onHourlyUpdate(event.forecast);
+              handleHourly(event.forecast);
             }
           },
           {
@@ -36,20 +65,23 @@ class ForecastService {
             entity_id: entityId,
           }
         );
-        this.hourlyUnsubscribe = unsubHourly;
+        if (isDisposed) {
+          try { unsub(); } catch {}
+        } else {
+          unsubs.push(unsub);
+        }
       }
-    } catch (e) {
-      // Fallback for older Home Assistant versions
-      this.fetchForecastFallback(hass, entityId, 'hourly', onHourlyUpdate);
+    } catch {
+      this.fetchForecastFallback(hass, entityId, 'hourly', handleHourly);
     }
 
-    // 2. Subscribe to Daily Forecast
+    // 2. Subscribe to Daily Forecast (with automatic fallback to twice_daily)
     try {
       if (hass.connection && typeof hass.connection.subscribeMessage === 'function') {
-        const unsubDaily = await hass.connection.subscribeMessage(
+        const unsub = await hass.connection.subscribeMessage(
           (event: any) => {
-            if (event?.forecast) {
-              onDailyUpdate(event.forecast);
+            if (event?.forecast && Array.isArray(event.forecast) && event.forecast.length > 0) {
+              handleDaily(event.forecast);
             }
           },
           {
@@ -58,25 +90,71 @@ class ForecastService {
             entity_id: entityId,
           }
         );
-        this.dailyUnsubscribe = unsubDaily;
+        if (isDisposed) {
+          try { unsub(); } catch {}
+        } else {
+          unsubs.push(unsub);
+        }
       }
-    } catch (e) {
-      // Fallback
-      this.fetchForecastFallback(hass, entityId, 'daily', onDailyUpdate);
+    } catch {
+      // If 'daily' subscription is unsupported by entity, attempt 'twice_daily' subscription
+      try {
+        if (hass.connection && typeof hass.connection.subscribeMessage === 'function') {
+          const unsubTwice = await hass.connection.subscribeMessage(
+            (event: any) => {
+              if (event?.forecast && Array.isArray(event.forecast)) {
+                handleDaily(this.convertTwiceDailyToDaily(event.forecast));
+              }
+            },
+            {
+              type: 'weather/subscribe_forecast',
+              forecast_type: 'twice_daily',
+              entity_id: entityId,
+            }
+          );
+          if (isDisposed) {
+            try { unsubTwice(); } catch {}
+          } else {
+            unsubs.push(unsubTwice);
+          }
+        }
+      } catch {
+        this.fetchForecastFallback(hass, entityId, 'daily', handleDaily);
+      }
     }
 
-    // If forecasts are in attributes (legacy HA weather entities)
-    if (entity.attributes?.forecast && Array.isArray(entity.attributes.forecast)) {
-      onDailyUpdate(entity.attributes.forecast);
+    // 3. Check legacy entity attributes
+    if (entity.attributes?.forecast && Array.isArray(entity.attributes.forecast) && entity.attributes.forecast.length > 0) {
+      handleDaily(entity.attributes.forecast);
     }
 
-    return () => this.unsubscribeAll();
+    // 4. One-time fallback query via weather/get_forecasts if still not loaded
+    setTimeout(() => {
+      if (!isDisposed && !hasReceivedDaily) {
+        this.fetchForecastFallback(hass, entityId, 'daily', (f) => {
+          if (f.length > 0) handleDaily(f);
+          else {
+            // Try twice_daily query
+            this.fetchForecastFallback(hass, entityId, 'twice_daily', (tf) => {
+              if (tf.length > 0) handleDaily(this.convertTwiceDailyToDaily(tf));
+            });
+          }
+        });
+      }
+    }, 1500);
+
+    return () => {
+      isDisposed = true;
+      for (const unsub of unsubs) {
+        try { unsub(); } catch {}
+      }
+    };
   }
 
   private async fetchForecastFallback(
     hass: HomeAssistant,
     entityId: string,
-    forecastType: 'hourly' | 'daily',
+    forecastType: 'hourly' | 'daily' | 'twice_daily',
     callback: ForecastCallback
   ) {
     try {
@@ -89,27 +167,97 @@ class ForecastService {
         callback(response[entityId].forecast);
       }
     } catch {
-      // If service fails, check attributes
+      // Check legacy attribute as last resort
       const entity = hass.states[entityId];
-      if (entity?.attributes?.forecast) {
+      if (entity?.attributes?.forecast && Array.isArray(entity.attributes.forecast)) {
         callback(entity.attributes.forecast);
       }
     }
   }
 
-  public unsubscribeAll() {
-    if (this.hourlyUnsubscribe) {
-      try {
-        this.hourlyUnsubscribe();
-      } catch {}
-      this.hourlyUnsubscribe = null;
+  /**
+   * Converts Home Assistant twice_daily forecast items (day/night pairs) into consolidated daily forecast items.
+   */
+  public convertTwiceDailyToDaily(forecasts: any[]): WeatherForecast[] {
+    const dailyMap = new Map<string, any>();
+
+    for (const item of forecasts) {
+      if (!item.datetime) continue;
+      const dateKey = DateTime.fromISO(item.datetime).toISODate() || item.datetime.split('T')[0];
+      const existing = dailyMap.get(dateKey);
+
+      if (!existing) {
+        dailyMap.set(dateKey, {
+          datetime: item.datetime,
+          condition: item.condition,
+          temperature: item.temperature,
+          templow: item.templow ?? item.temperature,
+          precipitation: item.precipitation ?? 0,
+          precipitation_probability: item.precipitation_probability ?? 0,
+          wind_speed: item.wind_speed,
+        });
+      } else {
+        if (typeof item.temperature === 'number') {
+          existing.temperature = Math.max(existing.temperature, item.temperature);
+        }
+        if (typeof item.templow === 'number') {
+          existing.templow = Math.min(existing.templow, item.templow);
+        } else if (typeof item.temperature === 'number') {
+          existing.templow = Math.min(existing.templow, item.temperature);
+        }
+        if (item.is_daytime && item.condition) {
+          existing.condition = item.condition;
+        }
+      }
     }
-    if (this.dailyUnsubscribe) {
-      try {
-        this.dailyUnsubscribe();
-      } catch {}
-      this.dailyUnsubscribe = null;
+
+    return Array.from(dailyMap.values());
+  }
+
+  /**
+   * Synthesize daily forecasts from hourly data if the underlying weather integration
+   * only exposes hourly forecasts. Groups hours by day and derives High, Low, and primary condition.
+   */
+  public synthesizeDailyFromHourly(hourly: WeatherForecast[]): WeatherForecast[] {
+    const dayGroups = new Map<string, WeatherForecast[]>();
+
+    for (const h of hourly) {
+      if (!h.datetime) continue;
+      const dayKey = DateTime.fromISO(h.datetime).toISODate() || h.datetime.split('T')[0];
+      const list = dayGroups.get(dayKey) || [];
+      list.push(h);
+      dayGroups.set(dayKey, list);
     }
+
+    const syntheticDaily: WeatherForecast[] = [];
+
+    for (const [dayKey, hours] of dayGroups.entries()) {
+      if (hours.length === 0) continue;
+      const temps = hours.map(h => h.temperature).filter((t): t is number => typeof t === 'number');
+      const highs = temps.length > 0 ? Math.max(...temps) : 20;
+      const lows = temps.length > 0 ? Math.min(...temps) : highs - 5;
+
+      // Pick midday condition or first daytime condition
+      const midday = hours.find(h => {
+        const hour = DateTime.fromISO(h.datetime).hour;
+        return hour >= 11 && hour <= 15;
+      }) || hours[0];
+
+      const maxPrecipProb = Math.max(...hours.map(h => h.precipitation_probability || 0));
+      const totalPrecip = hours.reduce((sum, h) => sum + (h.precipitation || 0), 0);
+
+      syntheticDaily.push({
+        datetime: hours[0].datetime,
+        condition: midday.condition,
+        temperature: highs,
+        templow: lows,
+        precipitation: Math.round(totalPrecip * 10) / 10,
+        precipitation_probability: maxPrecipProb,
+        wind_speed: midday.wind_speed,
+      });
+    }
+
+    return syntheticDaily;
   }
 }
 

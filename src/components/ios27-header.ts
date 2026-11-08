@@ -31,7 +31,7 @@ export class Ios27Header extends LitElement {
       highLowText = `H:${formattedHigh}`;
     }
 
-    const displayName = this.locationName?.trim() && this.locationName.toLowerCase() !== 'cupertino'
+    const displayName = this.locationName?.trim() 
       ? this.locationName
       : (this.locale === 'tr' ? 'Hava Durumu' : 'Weather');
 

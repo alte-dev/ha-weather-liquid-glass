@@ -11,6 +11,8 @@ export const fr: TranslationSchema = {
   wind: 'Vent',
   wind_subtitle: 'Vitesse · Rafales',
   ten_day_forecast: 'Prévisions sur 10 jours',
+    five_day_forecast: 'Prévisions à 5 jours',
+    seven_day_forecast: 'Prévisions à 7 jours',
   sunrise: 'Lever du soleil',
   sunset: 'Coucher du soleil',
   format_high_low: (high: string, low: string) => `Min:${low} Max:${high}`,
