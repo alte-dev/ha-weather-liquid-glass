@@ -25,7 +25,8 @@ export class Ios27DailyList extends LitElement {
   public render(): TemplateResult {
     const list = this.prepareDailyList();
     if (list.length === 0) {
-      return html`<div style="color: rgba(255,255,255,0.6); font-size: 13px; padding: 10px;">${translationService.get(this.locale).conditions?.['unavailable'] || 'Waiting for data...'}</div>`;
+      const t = translationService.get(this.locale);
+      return html`<div style="color: rgba(255,255,255,0.6); font-size: 13px; padding: 10px;">${t.waiting_for_data || 'Waiting for data...'}</div>`;
     }
 
     return html`
@@ -47,20 +48,67 @@ export class Ios27DailyList extends LitElement {
     const t = translationService.get(this.locale);
     const now = DateTime.now().setLocale(this.locale);
 
-    return this.forecasts.slice(0, this.dailyCount || 10).map((f, i) => {
+    // Group items by calendar day (e.g. merge day and night forecasts for the same date)
+    const dayMap = new Map<string, { forecast: WeatherForecast; low: number; high: number }>();
+
+    for (const f of this.forecasts) {
+      if (!f.datetime) continue;
       const dt = DateTime.fromISO(f.datetime).setLocale(this.locale);
-      const isToday = i === 0 || (dt.isValid && dt.hasSame(now, 'day'));
-      const dayLabel = isToday ? t.today : dt.isValid ? dt.toFormat('ccc') : `Day ${i + 1}`;
+      const dateKey = dt.isValid ? dt.toISODate()! : (f.datetime.split('T')[0] || String(dayMap.size));
 
       const high = f.temperature ?? (f.templow ? f.templow + 5 : 20);
       const low = f.templow ?? (f.temperature ? f.temperature - 5 : 12);
 
+      const existing = dayMap.get(dateKey);
+      if (!existing) {
+        dayMap.set(dateKey, {
+          forecast: { ...f },
+          low: Math.min(low, high),
+          high: Math.max(low, high),
+        });
+      } else {
+        existing.low = Math.min(existing.low, low, high);
+        existing.high = Math.max(existing.high, low, high);
+        // Prefer daytime condition over night condition for the daily summary icon
+        if (f.condition && !f.condition.includes('night') && (!existing.forecast.condition || existing.forecast.condition.includes('night'))) {
+          existing.forecast.condition = f.condition;
+        }
+        if (typeof f.precipitation === 'number') {
+          existing.forecast.precipitation = (existing.forecast.precipitation || 0) + f.precipitation;
+        }
+        if (typeof f.precipitation_probability === 'number') {
+          existing.forecast.precipitation_probability = Math.max(existing.forecast.precipitation_probability || 0, f.precipitation_probability);
+        }
+      }
+    }
+
+    const uniqueDays = Array.from(dayMap.values());
+    const limit = this.dailyCount || 10;
+
+    let hasFoundToday = false;
+
+    return uniqueDays.slice(0, limit).map((item, i) => {
+      const dt = DateTime.fromISO(item.forecast.datetime).setLocale(this.locale);
+      let isToday = false;
+
+      if (!hasFoundToday) {
+        if (dt.isValid && (dt.hasSame(now, 'day') || dt < now)) {
+          isToday = true;
+          hasFoundToday = true;
+        } else if (i === 0) {
+          isToday = true;
+          hasFoundToday = true;
+        }
+      }
+
+      const dayLabel = isToday ? t.today : dt.isValid ? dt.toFormat('ccc') : `Day ${i + 1}`;
+
       return {
         dayLabel,
-        forecast: f,
+        forecast: item.forecast,
         isToday,
-        low: Math.min(low, high),
-        high: Math.max(low, high),
+        low: item.low,
+        high: item.high,
       };
     });
   }

@@ -558,6 +558,7 @@ export class Ios27DetailTiles extends LitElement {
 
   // 8. HUMIDITY & DEW POINT TILE
   private _renderHumidityTile(d: any, humidity: number, dewPoint: number): TemplateResult {
+    const t = translationService.get(this.locale);
     return html`
       <div class="ios-detail-tile">
         <div class="ios-tile-header">
@@ -568,7 +569,7 @@ export class Ios27DetailTiles extends LitElement {
         </div>
 
         <div class="ios-tile-body">
-          <div class="ios-stat-value">%${Math.round(humidity)}</div>
+          <div class="ios-stat-value">${t.format_percent ? t.format_percent(Math.round(humidity)) : `${Math.round(humidity)}%`}</div>
         </div>
 
         <div class="ios-tile-footer">${d.dew_point(dewPoint)}</div>

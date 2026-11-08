@@ -52,7 +52,7 @@ export class Ios27ForecastCard extends LitElement {
             <!-- Cloud / Conditions Button -->
             <button
               class="ios-segment-button ${this.activeMode === 'condition' ? 'active' : ''}"
-              title="Weather Conditions & Temperature"
+              title="${t.view_condition_title || 'Weather Conditions & Temperature'}"
               role="tab"
               aria-selected="${this.activeMode === 'condition'}"
               @click=${() => this.setMode('condition')}
@@ -65,7 +65,7 @@ export class Ios27ForecastCard extends LitElement {
             <!-- Rain / Precipitation Button -->
             <button
               class="ios-segment-button ${this.activeMode === 'precipitation' ? 'active' : ''}"
-              title="Precipitation Intensity & Rain Chance"
+              title="${t.view_precipitation_title || 'Precipitation Intensity & Rain Chance'}"
               role="tab"
               aria-selected="${this.activeMode === 'precipitation'}"
               @click=${() => this.setMode('precipitation')}
@@ -78,7 +78,7 @@ export class Ios27ForecastCard extends LitElement {
             <!-- Wind Button -->
             <button
               class="ios-segment-button ${this.activeMode === 'wind' ? 'active' : ''}"
-              title="Wind Speed & Wave"
+              title="${t.view_wind_title || 'Wind Speed & Wave'}"
               role="tab"
               aria-selected="${this.activeMode === 'wind'}"
               @click=${() => this.setMode('wind')}
@@ -114,7 +114,15 @@ export class Ios27ForecastCard extends LitElement {
           <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
             <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10z"/>
           </svg>
-          <span>${this.dailyCount === 5 ? (t.five_day_forecast || '5-Day Forecast') : (this.dailyCount === 7 ? (t.seven_day_forecast || '7-Day Forecast') : t.ten_day_forecast)}</span>
+          <span>${(() => {
+            const uniqueDaysCount = new Set(
+              (this.dailyForecasts || [])
+                .filter(f => f.datetime)
+                .map(f => f.datetime.split('T')[0])
+            ).size;
+            const displayCount = Math.min(this.dailyCount || 10, uniqueDaysCount > 0 ? uniqueDaysCount : 10);
+            return t.format_day_forecast ? t.format_day_forecast(displayCount) : `${displayCount}-Day Forecast`;
+          })()}</span>
         </div>
 
         <!-- 10-Day Daily List -->

@@ -1,10 +1,12 @@
 import { html, LitElement, type TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import translationService from '@/services/translation-service';
 
 @customElement('ios27-bottom-bar')
 export class Ios27BottomBar extends LitElement {
   @property({ type: Number }) public totalLocations: number = 1;
   @property({ type: Number }) public activeIndex: number = 0;
+  @property() public locale: string = 'en';
 
   protected createRenderRoot() {
     return this;
@@ -16,6 +18,7 @@ export class Ios27BottomBar extends LitElement {
       return html``;
     }
 
+    const t = translationService.get(this.locale);
     const active = Math.min(Math.max(0, this.activeIndex), total - 1);
 
     return html`
@@ -23,7 +26,7 @@ export class Ios27BottomBar extends LitElement {
         <!-- Map button -->
         <button
           class="ios-bottom-btn"
-          title="Open Weather Map"
+          title="${t.open_map || 'Open Weather Map'}"
           @click=${this.onMapClick}
         >
           <svg viewBox="0 0 24 24">
@@ -32,12 +35,12 @@ export class Ios27BottomBar extends LitElement {
         </button>
 
         <!-- Pager Dots Pill (Interactive Multi-Location Switcher) -->
-        <div class="ios-pager-pill" title="Konum Değiştir / Sağa-Sola Kaydır">
+        <div class="ios-pager-pill" title="${t.switch_location || 'Switch Location / Swipe'}">
           <!-- Primary Location: Location Arrow -->
           <svg
             class="ios-pager-arrow ${active === 0 ? 'active' : ''}"
             viewBox="0 0 24 24"
-            title="Konum 1 (Ana Konum)"
+            title="${t.primary_location || 'Primary Location'}"
             @click=${(e: Event) => this.onDotClick(e, 0)}
           >
             <path d="M12 2L4.5 20.29l.71.71L12 18l6.79 3 .71-.71z" />
@@ -49,7 +52,7 @@ export class Ios27BottomBar extends LitElement {
             return html`
               <div
                 class="ios-pager-dot ${active === locIdx ? 'active' : ''}"
-                title="Konum ${locIdx + 1}"
+                title="${t.primary_location ? `${t.primary_location} ${locIdx + 1}` : `Location ${locIdx + 1}`}"
                 @click=${(e: Event) => this.onDotClick(e, locIdx)}
               ></div>
             `;
@@ -59,7 +62,7 @@ export class Ios27BottomBar extends LitElement {
         <!-- Menu / List button -->
         <button
           class="ios-bottom-btn"
-          title="Şehirler ve Konumlar Listesi"
+          title="${t.location_list || 'Cities & Locations List'}"
           @click=${this.onListClick}
         >
           <svg viewBox="0 0 24 24">

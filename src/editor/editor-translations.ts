@@ -10,6 +10,7 @@ export interface EditorTranslations {
   add_city_help: string;
   card_layout_shape: string;
   daily_forecast_days: string;
+  daily_forecast_days_help: string;
   layout_square_scroll: string;
   layout_square_fit: string;
   layout_default: string;
@@ -54,6 +55,7 @@ export const editorTranslations: Record<string, EditorTranslations> = {
     add_city_help: '💡 Farklı şehirler eklemek için: Home Assistant\'ta Ayarlar > Cihazlar ve Hizmetler > Entegrasyon Ekle bölümünden Met.no veya Open-Meteo ile istediğiniz şehri ekleyin. Oluşturulan yeni weather.sehir varlığı burada otomatik listelenecektir.',
     card_layout_shape: 'Kart Düzeni (Format)',
     daily_forecast_days: 'Günlük Tahmin Süresi',
+    daily_forecast_days_help: '💡 Not: Kart burada seçilen gün sayısı kadar gösterim yapmayı hedefler, ancak hava durumu entegrasyonunuz (ör. MGM, Met.no) kaç günlük veri sağlıyorsa en fazla o kadar gün listelenebilir (çoğu servis 5-7 gün sağlar).',
     layout_square_scroll: '🔄 Kare - Kaydırılabilir (1:1 İçten Kaydırmalı Zengin Görünüm)',
     layout_square_fit: '⏹ Kare - Tam Sığan (1:1 Sıfır Kaydırmalı Kompakt Widget)',
     layout_default: '📱 Varsayılan (Orijinal Dikey iPhone Boyutu)',
@@ -96,6 +98,7 @@ export const editorTranslations: Record<string, EditorTranslations> = {
     add_city_help: '💡 To add different cities: In Home Assistant, go to Settings > Devices & Services > Add Integration and add Met.no or Open-Meteo for your desired cities. The created weather.city entities will appear here automatically.',
     card_layout_shape: 'Card Layout Shape',
     daily_forecast_days: 'Daily Forecast Days',
+    daily_forecast_days_help: '💡 Note: The card displays up to the selected days, but will only show as many days as your weather integration provides (most services supply 5-7 days).',
     layout_square_scroll: '🔄 Square - Scrollable (1:1 with Internal Scroll)',
     layout_square_fit: '⏹ Square - Fitted (1:1 Zero-scroll Widget)',
     layout_default: '📱 Default (Full Vertical Phone Style)',
@@ -138,6 +141,7 @@ export const editorTranslations: Record<string, EditorTranslations> = {
     add_city_help: '💡 Um weitere Städte hinzuzufügen: Fügen Sie in Home Assistant unter Einstellungen > Geräte & Dienste > Integration hinzufügen Met.no oder Open-Meteo hinzu.',
     card_layout_shape: 'Kartenlayout-Format',
     daily_forecast_days: 'Tage der Tagesvorhersage',
+    daily_forecast_days_help: '💡 Hinweis: Die Karte zeigt maximal die ausgewählten Tage an, jedoch nur so viele Tage, wie Ihre Wetter-Integration liefert (die meisten Dienste liefern 5–7 Tage).',
     layout_square_scroll: '🔄 Quadrat - Scrollbar (1:1 mit internem Scrollen)',
     layout_square_fit: '⏹ Quadrat - Angepasst (1:1 Widget ohne Scrollen)',
     layout_default: '📱 Standard (Vollständige vertikale Ansicht)',
@@ -180,6 +184,7 @@ export const editorTranslations: Record<string, EditorTranslations> = {
     add_city_help: '💡 Para añadir diferentes ciudades: En Home Assistant vaya a Ajustes > Dispositivos y Servicios > Añadir integración y configure Met.no u Open-Meteo.',
     card_layout_shape: 'Diseño de la tarjeta',
     daily_forecast_days: 'Días de Pronóstico Diario',
+    daily_forecast_days_help: '💡 Nota: La tarjeta muestra hasta los días seleccionados, pero solo mostrará la cantidad de días que suministre su integración meteorológica (la mayoría de los servicios suministran de 5 a 7 días).',
     layout_square_scroll: '🔄 Cuadrado - Con scroll (1:1 con desplazamiento interno)',
     layout_square_fit: '⏹ Cuadrado - Ajustado (1:1 Widget sin desplazamiento)',
     layout_default: '📱 Predeterminado (Estilo vertical teléfono completo)',
@@ -222,6 +227,7 @@ export const editorTranslations: Record<string, EditorTranslations> = {
     add_city_help: '💡 Pour ajouter d\'autres villes: Dans Home Assistant, allez dans Paramètres > Appareils et services > Ajouter une intégration et ajoutez Met.no ou Open-Meteo.',
     card_layout_shape: 'Disposition de la carte',
     daily_forecast_days: 'Jours de Prévision Quotidienne',
+    daily_forecast_days_help: '💡 Remarque : La carte affiche jusqu\'au nombre de jours sélectionné, mais ne peut afficher que le nombre de jours fournis par votre intégration météo (la plupart des services fournissent de 5 à 7 jours).',
     layout_square_scroll: '🔄 Carré - Avec défilement (1:1 avec défilement interne)',
     layout_square_fit: '⏹ Carré - Ajusté (1:1 Widget sans défilement)',
     layout_default: '📱 Défaut (Style vertical complet type iPhone)',

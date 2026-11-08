@@ -9189,6 +9189,23 @@ const en = {
   ten_day_forecast: "10-Day Forecast",
   five_day_forecast: "5-Day Forecast",
   seven_day_forecast: "7-Day Forecast",
+  format_day_forecast: (days) => `${days}-Day Forecast`,
+  format_high: (high) => `H:${high}`,
+  loading_hourly: "Loading hourly forecast...",
+  waiting_for_data: "Waiting for data...",
+  weather: "Weather",
+  drawer_title: "Weather · Locations",
+  done: "Done",
+  primary_location: "Primary Location",
+  remove_location: "Remove this location",
+  select_city_to_add: "+ Select another city / weather entity...",
+  add: "Add",
+  open_map: "Open Weather Map",
+  switch_location: "Switch Location / Swipe",
+  location_list: "Cities & Locations List",
+  view_condition_title: "Weather Conditions & Temperature",
+  view_precipitation_title: "Precipitation Intensity & Rain Chance",
+  view_wind_title: "Wind Speed & Wave",
   sunrise: "Sunrise",
   sunset: "Sunset",
   format_high_low: (high, low) => `H:${high} L:${low}`,
@@ -9298,6 +9315,23 @@ const tr = {
   ten_day_forecast: "10 Günlük Tahmin",
   five_day_forecast: "5 Günlük Tahmin",
   seven_day_forecast: "7 Günlük Tahmin",
+  format_day_forecast: (days) => `${days} Günlük Tahmin`,
+  format_high: (high) => `Y:${high}`,
+  loading_hourly: "Saatlik tahmin yükleniyor...",
+  waiting_for_data: "Veriler bekleniyor...",
+  weather: "Hava Durumu",
+  drawer_title: "Hava Durumu · Şehirler",
+  done: "Bitti",
+  primary_location: "Ana Konum",
+  remove_location: "Bu konumu kaldır",
+  select_city_to_add: "+ Başka bir şehir / hava durumu seçin...",
+  add: "Ekle",
+  open_map: "Hava Durumu Haritasını Aç",
+  switch_location: "Konum Değiştir / Sağa-Sola Kaydır",
+  location_list: "Şehirler ve Konumlar Listesi",
+  view_condition_title: "Hava Koşulları ve Sıcaklık",
+  view_precipitation_title: "Yağış Yoğunluğu ve Yağmur Olasılığı",
+  view_wind_title: "Rüzgar Hızı ve Dalga Grafiği",
   sunrise: "Gün Doğumu",
   sunset: "Gün Batımı",
   format_high_low: (high, low) => `D:${low} Y:${high}`,
@@ -9407,6 +9441,23 @@ const de = {
   ten_day_forecast: "10-Tage-Vorhersage",
   five_day_forecast: "5-Tage-Vorhersage",
   seven_day_forecast: "7-Tage-Vorhersage",
+  format_day_forecast: (days) => `${days}-Tage-Vorhersage`,
+  format_high: (high) => `H:${high}`,
+  loading_hourly: "Stundenvorhersage wird geladen...",
+  waiting_for_data: "Warten auf Daten...",
+  weather: "Wetter",
+  drawer_title: "Wetter · Standorte",
+  done: "Fertig",
+  primary_location: "Hauptstandort",
+  remove_location: "Diesen Standort entfernen",
+  select_city_to_add: "+ Weiteren Standort / Wetter-Entität auswählen...",
+  add: "Hinzufügen",
+  open_map: "Wetterkarte öffnen",
+  switch_location: "Standort wechseln / Wischen",
+  location_list: "Städte- und Standortliste",
+  view_condition_title: "Wetterbedingungen & Temperatur",
+  view_precipitation_title: "Niederschlagsintensität & Regenwahrscheinlichkeit",
+  view_wind_title: "Windgeschwindigkeit & Wellen",
   sunrise: "Sonnenaufgang",
   sunset: "Sonnenuntergang",
   format_high_low: (high, low) => `T:${low} H:${high}`,
@@ -9516,6 +9567,23 @@ const es = {
   ten_day_forecast: "Pronóstico de 10 días",
   five_day_forecast: "Pronóstico de 5 días",
   seven_day_forecast: "Pronóstico de 7 días",
+  format_day_forecast: (days) => `Pronóstico para ${days} días`,
+  format_high: (high) => `Máx:${high}`,
+  loading_hourly: "Cargando pronóstico por horas...",
+  waiting_for_data: "Esperando datos...",
+  weather: "Tiempo",
+  drawer_title: "Tiempo · Ubicaciones",
+  done: "Listo",
+  primary_location: "Ubicación principal",
+  remove_location: "Eliminar esta ubicación",
+  select_city_to_add: "+ Seleccionar otra ciudad / entidad meteorológica...",
+  add: "Añadir",
+  open_map: "Abrir mapa meteorológico",
+  switch_location: "Cambiar ubicación / Deslizar",
+  location_list: "Lista de ciudades y ubicaciones",
+  view_condition_title: "Condiciones meteorológicas y temperatura",
+  view_precipitation_title: "Intensidad de precipitación y probabilidad de lluvia",
+  view_wind_title: "Velocidad del viento y oleaje",
   sunrise: "Amanecer",
   sunset: "Atardecer",
   format_high_low: (high, low) => `Mín:${low} Máx:${high}`,
@@ -9625,6 +9693,23 @@ const fr = {
   ten_day_forecast: "Prévisions sur 10 jours",
   five_day_forecast: "Prévisions à 5 jours",
   seven_day_forecast: "Prévisions à 7 jours",
+  format_day_forecast: (days) => `Prévisions sur ${days} jours`,
+  format_high: (high) => `Max:${high}`,
+  loading_hourly: "Chargement des prévisions horaires...",
+  waiting_for_data: "En attente de données...",
+  weather: "Météo",
+  drawer_title: "Météo · Lieux",
+  done: "Terminé",
+  primary_location: "Emplacement principal",
+  remove_location: "Supprimer cet emplacement",
+  select_city_to_add: "+ Sélectionner une autre ville / entité météo...",
+  add: "Ajouter",
+  open_map: "Ouvrir la carte météo",
+  switch_location: "Changer de lieu / Balayer",
+  location_list: "Liste des villes et emplacements",
+  view_condition_title: "Conditions météo et température",
+  view_precipitation_title: "Intensité des précipitations et probabilité de pluie",
+  view_wind_title: "Vitesse du vent et vagues",
   sunrise: "Lever du soleil",
   sunset: "Coucher du soleil",
   format_high_low: (high, low) => `Min:${low} Max:${high}`,
@@ -10210,9 +10295,9 @@ let Ios27Header = class extends i {
     if (!isUnavailable && this.highTemp !== null && this.lowTemp !== null) {
       highLowText = t2.format_high_low(formattedHigh, formattedLow);
     } else if (!isUnavailable && this.highTemp !== null) {
-      highLowText = `H:${formattedHigh}`;
+      highLowText = t2.format_high ? t2.format_high(formattedHigh) : `H:${formattedHigh}`;
     }
-    const displayName = this.locationName?.trim() ? this.locationName : this.locale === "tr" ? "Hava Durumu" : "Weather";
+    const displayName = this.locationName?.trim() ? this.locationName : t2.weather || "Weather";
     return b`
       <div class="ios-header">
         <div class="ios-header-location-row">
@@ -10666,7 +10751,8 @@ let Ios27HourlyStrip = class extends i {
   render() {
     const list = this.prepareHourlyList();
     if (list.length === 0) {
-      return b`<div class="ios-hourly-strip" style="color: rgba(255,255,255,0.6); font-size: 13px; padding: 10px;">Loading hourly forecast...</div>`;
+      const t2 = translationService.get(this.locale);
+      return b`<div class="ios-hourly-strip" style="color: rgba(255,255,255,0.6); font-size: 13px; padding: 10px;">${t2.loading_hourly || "Loading hourly forecast..."}</div>`;
     }
     if (this.mode === "precipitation") {
       return this.renderPrecipitationStrip(list);
@@ -11056,7 +11142,8 @@ let Ios27DailyList = class extends i {
   render() {
     const list = this.prepareDailyList();
     if (list.length === 0) {
-      return b`<div style="color: rgba(255,255,255,0.6); font-size: 13px; padding: 10px;">${translationService.get(this.locale).conditions?.["unavailable"] || "Waiting for data..."}</div>`;
+      const t2 = translationService.get(this.locale);
+      return b`<div style="color: rgba(255,255,255,0.6); font-size: 13px; padding: 10px;">${t2.waiting_for_data || "Waiting for data..."}</div>`;
     }
     return b`
       <div class="ios-daily-list">
@@ -11068,18 +11155,56 @@ let Ios27DailyList = class extends i {
     if (!this.forecasts || this.forecasts.length === 0) return [];
     const t2 = translationService.get(this.locale);
     const now2 = DateTime.now().setLocale(this.locale);
-    return this.forecasts.slice(0, this.dailyCount || 10).map((f2, i2) => {
+    const dayMap = /* @__PURE__ */ new Map();
+    for (const f2 of this.forecasts) {
+      if (!f2.datetime) continue;
       const dt = DateTime.fromISO(f2.datetime).setLocale(this.locale);
-      const isToday = i2 === 0 || dt.isValid && dt.hasSame(now2, "day");
-      const dayLabel = isToday ? t2.today : dt.isValid ? dt.toFormat("ccc") : `Day ${i2 + 1}`;
+      const dateKey = dt.isValid ? dt.toISODate() : f2.datetime.split("T")[0] || String(dayMap.size);
       const high = f2.temperature ?? (f2.templow ? f2.templow + 5 : 20);
       const low = f2.templow ?? (f2.temperature ? f2.temperature - 5 : 12);
+      const existing = dayMap.get(dateKey);
+      if (!existing) {
+        dayMap.set(dateKey, {
+          forecast: { ...f2 },
+          low: Math.min(low, high),
+          high: Math.max(low, high)
+        });
+      } else {
+        existing.low = Math.min(existing.low, low, high);
+        existing.high = Math.max(existing.high, low, high);
+        if (f2.condition && !f2.condition.includes("night") && (!existing.forecast.condition || existing.forecast.condition.includes("night"))) {
+          existing.forecast.condition = f2.condition;
+        }
+        if (typeof f2.precipitation === "number") {
+          existing.forecast.precipitation = (existing.forecast.precipitation || 0) + f2.precipitation;
+        }
+        if (typeof f2.precipitation_probability === "number") {
+          existing.forecast.precipitation_probability = Math.max(existing.forecast.precipitation_probability || 0, f2.precipitation_probability);
+        }
+      }
+    }
+    const uniqueDays = Array.from(dayMap.values());
+    const limit = this.dailyCount || 10;
+    let hasFoundToday = false;
+    return uniqueDays.slice(0, limit).map((item, i2) => {
+      const dt = DateTime.fromISO(item.forecast.datetime).setLocale(this.locale);
+      let isToday = false;
+      if (!hasFoundToday) {
+        if (dt.isValid && (dt.hasSame(now2, "day") || dt < now2)) {
+          isToday = true;
+          hasFoundToday = true;
+        } else if (i2 === 0) {
+          isToday = true;
+          hasFoundToday = true;
+        }
+      }
+      const dayLabel = isToday ? t2.today : dt.isValid ? dt.toFormat("ccc") : `Day ${i2 + 1}`;
       return {
         dayLabel,
-        forecast: f2,
+        forecast: item.forecast,
         isToday,
-        low: Math.min(low, high),
-        high: Math.max(low, high)
+        low: item.low,
+        high: item.high
       };
     });
   }
@@ -11390,7 +11515,7 @@ let Ios27ForecastCard = class extends i {
             <!-- Cloud / Conditions Button -->
             <button
               class="ios-segment-button ${this.activeMode === "condition" ? "active" : ""}"
-              title="Weather Conditions & Temperature"
+              title="${t2.view_condition_title || "Weather Conditions & Temperature"}"
               role="tab"
               aria-selected="${this.activeMode === "condition"}"
               @click=${() => this.setMode("condition")}
@@ -11403,7 +11528,7 @@ let Ios27ForecastCard = class extends i {
             <!-- Rain / Precipitation Button -->
             <button
               class="ios-segment-button ${this.activeMode === "precipitation" ? "active" : ""}"
-              title="Precipitation Intensity & Rain Chance"
+              title="${t2.view_precipitation_title || "Precipitation Intensity & Rain Chance"}"
               role="tab"
               aria-selected="${this.activeMode === "precipitation"}"
               @click=${() => this.setMode("precipitation")}
@@ -11416,7 +11541,7 @@ let Ios27ForecastCard = class extends i {
             <!-- Wind Button -->
             <button
               class="ios-segment-button ${this.activeMode === "wind" ? "active" : ""}"
-              title="Wind Speed & Wave"
+              title="${t2.view_wind_title || "Wind Speed & Wave"}"
               role="tab"
               aria-selected="${this.activeMode === "wind"}"
               @click=${() => this.setMode("wind")}
@@ -11452,7 +11577,13 @@ let Ios27ForecastCard = class extends i {
           <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
             <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10z"/>
           </svg>
-          <span>${this.dailyCount === 5 ? t2.five_day_forecast || "5-Day Forecast" : this.dailyCount === 7 ? t2.seven_day_forecast || "7-Day Forecast" : t2.ten_day_forecast}</span>
+          <span>${(() => {
+      const uniqueDaysCount = new Set(
+        (this.dailyForecasts || []).filter((f2) => f2.datetime).map((f2) => f2.datetime.split("T")[0])
+      ).size;
+      const displayCount = Math.min(this.dailyCount || 10, uniqueDaysCount > 0 ? uniqueDaysCount : 10);
+      return t2.format_day_forecast ? t2.format_day_forecast(displayCount) : `${displayCount}-Day Forecast`;
+    })()}</span>
         </div>
 
         <!-- 10-Day Daily List -->
@@ -12029,6 +12160,7 @@ let Ios27DetailTiles = class extends i {
   }
   // 8. HUMIDITY & DEW POINT TILE
   _renderHumidityTile(d2, humidity, dewPoint) {
+    const t2 = translationService.get(this.locale);
     return b`
       <div class="ios-detail-tile">
         <div class="ios-tile-header">
@@ -12039,7 +12171,7 @@ let Ios27DetailTiles = class extends i {
         </div>
 
         <div class="ios-tile-body">
-          <div class="ios-stat-value">%${Math.round(humidity)}</div>
+          <div class="ios-stat-value">${t2.format_percent ? t2.format_percent(Math.round(humidity)) : `${Math.round(humidity)}%`}</div>
         </div>
 
         <div class="ios-tile-footer">${d2.dew_point(dewPoint)}</div>
@@ -12149,6 +12281,7 @@ let Ios27BottomBar = class extends i {
     super(...arguments);
     this.totalLocations = 1;
     this.activeIndex = 0;
+    this.locale = "en";
   }
   createRenderRoot() {
     return this;
@@ -12158,13 +12291,14 @@ let Ios27BottomBar = class extends i {
     if (total <= 1) {
       return b``;
     }
+    const t2 = translationService.get(this.locale);
     const active = Math.min(Math.max(0, this.activeIndex), total - 1);
     return b`
       <div class="ios-bottom-bar">
         <!-- Map button -->
         <button
           class="ios-bottom-btn"
-          title="Open Weather Map"
+          title="${t2.open_map || "Open Weather Map"}"
           @click=${this.onMapClick}
         >
           <svg viewBox="0 0 24 24">
@@ -12173,12 +12307,12 @@ let Ios27BottomBar = class extends i {
         </button>
 
         <!-- Pager Dots Pill (Interactive Multi-Location Switcher) -->
-        <div class="ios-pager-pill" title="Konum Değiştir / Sağa-Sola Kaydır">
+        <div class="ios-pager-pill" title="${t2.switch_location || "Switch Location / Swipe"}">
           <!-- Primary Location: Location Arrow -->
           <svg
             class="ios-pager-arrow ${active === 0 ? "active" : ""}"
             viewBox="0 0 24 24"
-            title="Konum 1 (Ana Konum)"
+            title="${t2.primary_location || "Primary Location"}"
             @click=${(e2) => this.onDotClick(e2, 0)}
           >
             <path d="M12 2L4.5 20.29l.71.71L12 18l6.79 3 .71-.71z" />
@@ -12190,7 +12324,7 @@ let Ios27BottomBar = class extends i {
       return b`
               <div
                 class="ios-pager-dot ${active === locIdx ? "active" : ""}"
-                title="Konum ${locIdx + 1}"
+                title="${t2.primary_location ? `${t2.primary_location} ${locIdx + 1}` : `Location ${locIdx + 1}`}"
                 @click=${(e2) => this.onDotClick(e2, locIdx)}
               ></div>
             `;
@@ -12200,7 +12334,7 @@ let Ios27BottomBar = class extends i {
         <!-- Menu / List button -->
         <button
           class="ios-bottom-btn"
-          title="Şehirler ve Konumlar Listesi"
+          title="${t2.location_list || "Cities & Locations List"}"
           @click=${this.onListClick}
         >
           <svg viewBox="0 0 24 24">
@@ -12235,6 +12369,9 @@ __decorateClass$3([
 __decorateClass$3([
   n$1({ type: Number })
 ], Ios27BottomBar.prototype, "activeIndex", 2);
+__decorateClass$3([
+  n$1()
+], Ios27BottomBar.prototype, "locale", 2);
 Ios27BottomBar = __decorateClass$3([
   t("ios27-bottom-bar")
 ], Ios27BottomBar);
@@ -12736,6 +12873,7 @@ const editorTranslations = {
     add_city_help: "💡 Farklı şehirler eklemek için: Home Assistant'ta Ayarlar > Cihazlar ve Hizmetler > Entegrasyon Ekle bölümünden Met.no veya Open-Meteo ile istediğiniz şehri ekleyin. Oluşturulan yeni weather.sehir varlığı burada otomatik listelenecektir.",
     card_layout_shape: "Kart Düzeni (Format)",
     daily_forecast_days: "Günlük Tahmin Süresi",
+    daily_forecast_days_help: "💡 Not: Kart burada seçilen gün sayısı kadar gösterim yapmayı hedefler, ancak hava durumu entegrasyonunuz (ör. MGM, Met.no) kaç günlük veri sağlıyorsa en fazla o kadar gün listelenebilir (çoğu servis 5-7 gün sağlar).",
     layout_square_scroll: "🔄 Kare - Kaydırılabilir (1:1 İçten Kaydırmalı Zengin Görünüm)",
     layout_square_fit: "⏹ Kare - Tam Sığan (1:1 Sıfır Kaydırmalı Kompakt Widget)",
     layout_default: "📱 Varsayılan (Orijinal Dikey iPhone Boyutu)",
@@ -12778,6 +12916,7 @@ const editorTranslations = {
     add_city_help: "💡 To add different cities: In Home Assistant, go to Settings > Devices & Services > Add Integration and add Met.no or Open-Meteo for your desired cities. The created weather.city entities will appear here automatically.",
     card_layout_shape: "Card Layout Shape",
     daily_forecast_days: "Daily Forecast Days",
+    daily_forecast_days_help: "💡 Note: The card displays up to the selected days, but will only show as many days as your weather integration provides (most services supply 5-7 days).",
     layout_square_scroll: "🔄 Square - Scrollable (1:1 with Internal Scroll)",
     layout_square_fit: "⏹ Square - Fitted (1:1 Zero-scroll Widget)",
     layout_default: "📱 Default (Full Vertical Phone Style)",
@@ -12820,6 +12959,7 @@ const editorTranslations = {
     add_city_help: "💡 Um weitere Städte hinzuzufügen: Fügen Sie in Home Assistant unter Einstellungen > Geräte & Dienste > Integration hinzufügen Met.no oder Open-Meteo hinzu.",
     card_layout_shape: "Kartenlayout-Format",
     daily_forecast_days: "Tage der Tagesvorhersage",
+    daily_forecast_days_help: "💡 Hinweis: Die Karte zeigt maximal die ausgewählten Tage an, jedoch nur so viele Tage, wie Ihre Wetter-Integration liefert (die meisten Dienste liefern 5–7 Tage).",
     layout_square_scroll: "🔄 Quadrat - Scrollbar (1:1 mit internem Scrollen)",
     layout_square_fit: "⏹ Quadrat - Angepasst (1:1 Widget ohne Scrollen)",
     layout_default: "📱 Standard (Vollständige vertikale Ansicht)",
@@ -12862,6 +13002,7 @@ const editorTranslations = {
     add_city_help: "💡 Para añadir diferentes ciudades: En Home Assistant vaya a Ajustes > Dispositivos y Servicios > Añadir integración y configure Met.no u Open-Meteo.",
     card_layout_shape: "Diseño de la tarjeta",
     daily_forecast_days: "Días de Pronóstico Diario",
+    daily_forecast_days_help: "💡 Nota: La tarjeta muestra hasta los días seleccionados, pero solo mostrará la cantidad de días que suministre su integración meteorológica (la mayoría de los servicios suministran de 5 a 7 días).",
     layout_square_scroll: "🔄 Cuadrado - Con scroll (1:1 con desplazamiento interno)",
     layout_square_fit: "⏹ Cuadrado - Ajustado (1:1 Widget sin desplazamiento)",
     layout_default: "📱 Predeterminado (Estilo vertical teléfono completo)",
@@ -12904,6 +13045,7 @@ const editorTranslations = {
     add_city_help: "💡 Pour ajouter d'autres villes: Dans Home Assistant, allez dans Paramètres > Appareils et services > Ajouter une intégration et ajoutez Met.no ou Open-Meteo.",
     card_layout_shape: "Disposition de la carte",
     daily_forecast_days: "Jours de Prévision Quotidienne",
+    daily_forecast_days_help: "💡 Remarque : La carte affiche jusqu'au nombre de jours sélectionné, mais ne peut afficher que le nombre de jours fournis par votre intégration météo (la plupart des services fournissent de 5 à 7 jours).",
     layout_square_scroll: "🔄 Carré - Avec défilement (1:1 avec défilement interne)",
     layout_square_fit: "⏹ Carré - Ajusté (1:1 Widget sans défilement)",
     layout_default: "📱 Défaut (Style vertical complet type iPhone)",
@@ -13056,6 +13198,9 @@ let Ios27WeatherCardEditor = class extends i {
             <option value="7" ?selected=${this._config?.daily_count === 7}>7</option>
             <option value="5" ?selected=${this._config?.daily_count === 5}>5</option>
           </select>
+          <div style="font-size: 11px; opacity: 0.8; margin-top: 6px; line-height: 1.45; background: rgba(56, 189, 248, 0.08); border: 1px solid rgba(56, 189, 248, 0.2); padding: 8px 10px; border-radius: 8px;">
+            ${t2.daily_forecast_days_help}
+          </div>
         </div>
 
         <!-- Card Layout Shape -->
@@ -13736,6 +13881,7 @@ let Ios27WeatherCard = class extends i {
                 <ios27-bottom-bar
                   .totalLocations=${locations.length}
                   .activeIndex=${activeIndex}
+                  .locale=${locale}
                   @location-select=${(e2) => this._switchLocation(e2.detail.index)}
                   @map-click=${this._handleMapClick}
                   @list-click=${() => {
@@ -13752,15 +13898,17 @@ let Ios27WeatherCard = class extends i {
     `;
   }
   _renderLocationDrawer(locations, activeIndex) {
+    const locale = this._config?.locale || this.hass?.locale?.language || this.hass?.language || "en";
+    const t2 = translationService.get(locale);
     const allWeatherEntities = Object.keys(this.hass.states).filter((id) => id.startsWith("weather.") && !locations.some((l2) => l2.entity === id));
     return b`
       <div class="ios-location-drawer" @click=${(e2) => e2.stopPropagation()}>
         <div class="ios-drawer-header">
-          <div class="ios-drawer-title">Hava Durumu · Şehirler</div>
+          <div class="ios-drawer-title">${t2.drawer_title}</div>
           <button class="ios-drawer-close-btn" @click=${() => {
       this._showLocationDrawer = false;
     }}>
-            Bitti
+            ${t2.done}
           </button>
         </div>
 
@@ -13769,7 +13917,7 @@ let Ios27WeatherCard = class extends i {
       const st = this.hass.states[loc.entity];
       const cond = st?.state || "sunny";
       const temp = st?.attributes?.temperature ?? "--";
-      const name = loc.name || st?.attributes?.friendly_name || (idx === 0 ? "Ana Konum" : loc.entity.replace("weather.", ""));
+      const name = loc.name || st?.attributes?.friendly_name || (idx === 0 ? t2.primary_location : loc.entity.replace("weather.", ""));
       const isCurrent = idx === activeIndex;
       return b`
               <div
@@ -13789,7 +13937,7 @@ let Ios27WeatherCard = class extends i {
                     <span>${name}</span>
                   </div>
                   <div class="ios-city-condition">
-                    ${hassService.getFriendlyCondition(cond, this._config?.locale || "tr")}
+                    ${hassService.getFriendlyCondition(cond, locale)}
                   </div>
                 </div>
 
@@ -13799,7 +13947,7 @@ let Ios27WeatherCard = class extends i {
                   ${idx > 0 ? b`
                     <button
                       class="ios-city-delete-btn"
-                      title="Bu konumu kaldır"
+                      title="${t2.remove_location}"
                       @click=${(e2) => {
         e2.stopPropagation();
         this._removeLocation(idx);
@@ -13826,7 +13974,7 @@ let Ios27WeatherCard = class extends i {
       this._selectedNewEntityToAdd = e2.target.value;
     }}
             >
-              <option value="">+ Başka bir şehir / hava durumu seçin...</option>
+              <option value="">${t2.select_city_to_add}</option>
               ${allWeatherEntities.map((id) => b`
                 <option value="${id}">
                   ${this.hass.states[id]?.attributes?.friendly_name || id}
@@ -13837,7 +13985,7 @@ let Ios27WeatherCard = class extends i {
               class="ios-add-city-btn"
               @click=${this._handleAddSelectedCity}
             >
-              Ekle
+              ${t2.add}
             </button>
           </div>
         ` : ""}

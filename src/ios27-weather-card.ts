@@ -459,6 +459,7 @@ export class Ios27WeatherCard extends LitElement {
                 <ios27-bottom-bar
                   .totalLocations=${locations.length}
                   .activeIndex=${activeIndex}
+                  .locale=${locale}
                   @location-select=${(e: CustomEvent) => this._switchLocation(e.detail.index)}
                   @map-click=${this._handleMapClick}
                   @list-click=${() => { this._showLocationDrawer = true; }}
@@ -474,15 +475,17 @@ export class Ios27WeatherCard extends LitElement {
   }
 
   private _renderLocationDrawer(locations: WeatherLocationConfig[], activeIndex: number): TemplateResult {
+    const locale = this._config?.locale || this.hass?.locale?.language || (this.hass as any)?.language || 'en';
+    const t = translationService.get(locale);
     const allWeatherEntities = Object.keys(this.hass.states)
       .filter(id => id.startsWith('weather.') && !locations.some(l => l.entity === id));
 
     return html`
       <div class="ios-location-drawer" @click=${(e: Event) => e.stopPropagation()}>
         <div class="ios-drawer-header">
-          <div class="ios-drawer-title">Hava Durumu · Şehirler</div>
+          <div class="ios-drawer-title">${t.drawer_title}</div>
           <button class="ios-drawer-close-btn" @click=${() => { this._showLocationDrawer = false; }}>
-            Bitti
+            ${t.done}
           </button>
         </div>
 
@@ -491,7 +494,7 @@ export class Ios27WeatherCard extends LitElement {
             const st = this.hass.states[loc.entity];
             const cond = st?.state || 'sunny';
             const temp = st?.attributes?.temperature ?? '--';
-            const name = loc.name || st?.attributes?.friendly_name || (idx === 0 ? 'Ana Konum' : loc.entity.replace('weather.', ''));
+            const name = loc.name || st?.attributes?.friendly_name || (idx === 0 ? t.primary_location : loc.entity.replace('weather.', ''));
             const isCurrent = idx === activeIndex;
 
             return html`
@@ -512,7 +515,7 @@ export class Ios27WeatherCard extends LitElement {
                     <span>${name}</span>
                   </div>
                   <div class="ios-city-condition">
-                    ${hassService.getFriendlyCondition(cond, this._config?.locale || 'tr')}
+                    ${hassService.getFriendlyCondition(cond, locale)}
                   </div>
                 </div>
 
@@ -522,7 +525,7 @@ export class Ios27WeatherCard extends LitElement {
                   ${idx > 0 ? html`
                     <button
                       class="ios-city-delete-btn"
-                      title="Bu konumu kaldır"
+                      title="${t.remove_location}"
                       @click=${(e: Event) => {
                         e.stopPropagation();
                         this._removeLocation(idx);
@@ -547,7 +550,7 @@ export class Ios27WeatherCard extends LitElement {
               .value=${this._selectedNewEntityToAdd}
               @change=${(e: Event) => { this._selectedNewEntityToAdd = (e.target as HTMLSelectElement).value; }}
             >
-              <option value="">+ Başka bir şehir / hava durumu seçin...</option>
+              <option value="">${t.select_city_to_add}</option>
               ${allWeatherEntities.map(id => html`
                 <option value="${id}">
                   ${this.hass.states[id]?.attributes?.friendly_name || id}
@@ -558,7 +561,7 @@ export class Ios27WeatherCard extends LitElement {
               class="ios-add-city-btn"
               @click=${this._handleAddSelectedCity}
             >
-              Ekle
+              ${t.add}
             </button>
           </div>
         ` : ''}

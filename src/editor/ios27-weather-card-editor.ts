@@ -203,6 +203,9 @@ export class Ios27WeatherCardEditor extends LitElement {
             <option value="7" ?selected=${this._config?.daily_count === 7}>7</option>
             <option value="5" ?selected=${this._config?.daily_count === 5}>5</option>
           </select>
+          <div style="font-size: 11px; opacity: 0.8; margin-top: 6px; line-height: 1.45; background: rgba(56, 189, 248, 0.08); border: 1px solid rgba(56, 189, 248, 0.2); padding: 8px 10px; border-radius: 8px;">
+            ${t.daily_forecast_days_help}
+          </div>
         </div>
 
         <!-- Card Layout Shape -->

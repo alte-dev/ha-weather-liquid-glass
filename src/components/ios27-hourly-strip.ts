@@ -106,7 +106,8 @@ export class Ios27HourlyStrip extends LitElement {
   public render(): TemplateResult {
     const list = this.prepareHourlyList();
     if (list.length === 0) {
-      return html`<div class="ios-hourly-strip" style="color: rgba(255,255,255,0.6); font-size: 13px; padding: 10px;">Loading hourly forecast...</div>`;
+      const t = translationService.get(this.locale);
+      return html`<div class="ios-hourly-strip" style="color: rgba(255,255,255,0.6); font-size: 13px; padding: 10px;">${t.loading_hourly || 'Loading hourly forecast...'}</div>`;
     }
 
     if (this.mode === 'precipitation') {

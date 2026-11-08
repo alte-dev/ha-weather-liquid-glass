@@ -28,12 +28,12 @@ export class Ios27Header extends LitElement {
     if (!isUnavailable && this.highTemp !== null && this.lowTemp !== null) {
       highLowText = t.format_high_low(formattedHigh, formattedLow);
     } else if (!isUnavailable && this.highTemp !== null) {
-      highLowText = `H:${formattedHigh}`;
+      highLowText = t.format_high ? t.format_high(formattedHigh) : `H:${formattedHigh}`;
     }
 
     const displayName = this.locationName?.trim() 
       ? this.locationName
-      : (this.locale === 'tr' ? 'Hava Durumu' : 'Weather');
+      : (t.weather || 'Weather');
 
     return html`
       <div class="ios-header">
