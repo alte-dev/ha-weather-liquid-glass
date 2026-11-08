@@ -1,6 +1,6 @@
 {
   "name": "weather-liquid-glass-card",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Ultra-modern frosted Liquid Glass Weather Card for Home Assistant Lovelace with interactive Condition, Precipitation, and Wind views.",
   "keywords": [
     "home-assistant",

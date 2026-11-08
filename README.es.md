@@ -6,7 +6,7 @@
 </p>
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/icon.png?v=1.0.6" width="128" height="128" alt="Liquid Glass Weather Card Icon">
+  <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/icon.png?v=1.0.7" width="128" height="128" alt="Liquid Glass Weather Card Icon">
 </p>
 
 <h1 align="center">🌤️ Tarjeta del Tiempo iOS 27 para Home Assistant</h1>
@@ -28,17 +28,17 @@ Tarjeta meteorológica inspirada en Apple iOS 27 con estética de cristal transl
 ### 1. 🔀 3 Modos interactivos
 | ⛅ Condiciones y 10 días | 💧 24h Lluvia e intensidad | 💨 Viento y ondas |
 |:---:|:---:|:---:|
-| <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/preview-default.png?v=1.0.6" width="240" alt="Modo Condiciones" /> | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/preview-rain.png?v=1.0.6" width="240" alt="Modo Precipitación" /> | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/preview-wind.png?v=1.0.6" width="240" alt="Modo Viento" /> |
+| <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/preview-default.png?v=1.0.7" width="240" alt="Modo Condiciones" /> | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/preview-rain.png?v=1.0.7" width="240" alt="Modo Precipitación" /> | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/preview-wind.png?v=1.0.7" width="240" alt="Modo Viento" /> |
 
 ### 2. 📐 5 Diseños de tarjeta
 
 | Diseño (Layout) | Captura | Descripción |
 |:---|:---:|:---|
-| **Predeterminado (Completo)**<br>`card_layout: default` | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/preview-default.png?v=1.0.6" width="200" /> | Vista vertical completa estilo iPhone con cabecera, destacados, pronóstico por horas, lista de 10 días y barra inferior. Admite `scrollable: true` y `card_height`. |
-| **Cuadrado (Ajuste Widget)**<br>`card_layout: square-fit` | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/preview-square-fit.png?v=1.0.6" width="200" /> | Widget cuadrado 1:1 con **cero desplazamiento**! Gran temperatura, icono animado, selector de 3 modos y caja de pronóstico de 5 horas. |
-| **Cuadrado (Con Scroll)**<br>`card_layout: square-scroll` | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/preview-square-scroll.png?v=1.0.6" width="200" /> | Tarjeta cuadrada 1:1 con **desplazamiento vertical fluido**! Información completa con animaciones sutiles de lluvia y nieve de fondo. |
-| **Compacto (Horizontal)**<br>`card_layout: compact` | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/preview-compact.png?v=1.0.6" width="240" /> | Tarjeta rectangular (~240px). Cabecera en paralelo con pronóstico por horas de 24h, ideal para paneles con múltiples columnas. |
-| **Mini Widget**<br>`card_layout: mini` | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/preview-mini.png?v=1.0.6" width="220" /> | Widget minimalista (~130px). Ciudad, temperatura, estado del tiempo, máximas/mínimas y probabilidad de lluvia. |
+| **Predeterminado (Completo)**<br>`card_layout: default` | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/preview-default.png?v=1.0.7" width="200" /> | Vista vertical completa estilo iPhone con cabecera, destacados, pronóstico por horas, lista de 10 días y barra inferior. Admite `scrollable: true` y `card_height`. |
+| **Cuadrado (Ajuste Widget)**<br>`card_layout: square-fit` | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/preview-square-fit.png?v=1.0.7" width="200" /> | Widget cuadrado 1:1 con **cero desplazamiento**! Gran temperatura, icono animado, selector de 3 modos y caja de pronóstico de 5 horas. |
+| **Cuadrado (Con Scroll)**<br>`card_layout: square-scroll` | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/preview-square-scroll.png?v=1.0.7" width="200" /> | Tarjeta cuadrada 1:1 con **desplazamiento vertical fluido**! Información completa con animaciones sutiles de lluvia y nieve de fondo. |
+| **Compacto (Horizontal)**<br>`card_layout: compact` | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/preview-compact.png?v=1.0.7" width="240" /> | Tarjeta rectangular (~240px). Cabecera en paralelo con pronóstico por horas de 24h, ideal para paneles con múltiples columnas. |
+| **Mini Widget**<br>`card_layout: mini` | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/preview-mini.png?v=1.0.7" width="220" /> | Widget minimalista (~130px). Ciudad, temperatura, estado del tiempo, máximas/mínimas y probabilidad de lluvia. |
 
 ### 3. 🎨 Fondos atmosféricos dinámicos
 
@@ -46,9 +46,9 @@ Gradientes Apple Weather adaptados automáticamente a las condiciones meteoroló
 
 | ☀️ Soleado | ⛅ Nublado / Cubierto | 🌧️ Lluvia (Efecto sutil) |
 |:---:|:---:|:---:|
-| <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/theme-sunny.png?v=1.0.6" width="220" alt="Tema Soleado" /> | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/theme-cloudy.png?v=1.0.6" width="220" alt="Tema Nublado" /> | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/theme-rainy.png?v=1.0.6" width="220" alt="Tema Lluvioso" /> |
+| <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/theme-sunny.png?v=1.0.7" width="220" alt="Tema Soleado" /> | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/theme-cloudy.png?v=1.0.7" width="220" alt="Tema Nublado" /> | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/theme-rainy.png?v=1.0.7" width="220" alt="Tema Lluvioso" /> |
 | **❄️ Nieve (Copos suaves)** | **⚡ Tormenta / Rayos** | **🌙 Noche despejada** |
-| <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/theme-snowy.png?v=1.0.6" width="220" alt="Tema Nieve" /> | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/theme-thunderstorm.png?v=1.0.6" width="220" alt="Tema Tormenta" /> | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/theme-night.png?v=1.0.6" width="220" alt="Tema Noche" /> |
+| <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/theme-snowy.png?v=1.0.7" width="220" alt="Tema Nieve" /> | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/theme-thunderstorm.png?v=1.0.7" width="220" alt="Tema Tormenta" /> | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/theme-night.png?v=1.0.7" width="220" alt="Tema Noche" /> |
 
 ---
 

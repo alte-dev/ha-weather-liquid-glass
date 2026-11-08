@@ -9906,15 +9906,17 @@ class ForecastService {
         this.fetchForecastFallback(hass, entityId, "daily", handleDaily);
       }
     }
-    if (entity.attributes?.forecast && Array.isArray(entity.attributes.forecast) && entity.attributes.forecast.length > 0) {
+    if (!hasReceivedDaily && entity.attributes?.forecast && Array.isArray(entity.attributes.forecast) && entity.attributes.forecast.length > 0) {
       handleDaily(entity.attributes.forecast);
     }
     setTimeout(() => {
       if (!isDisposed && !hasReceivedDaily) {
         this.fetchForecastFallback(hass, entityId, "daily", (f2) => {
+          if (isDisposed || hasReceivedDaily) return;
           if (f2.length > 0) handleDaily(f2);
           else {
             this.fetchForecastFallback(hass, entityId, "twice_daily", (tf) => {
+              if (isDisposed || hasReceivedDaily) return;
               if (tf.length > 0) handleDaily(this.convertTwiceDailyToDaily(tf));
             });
           }
@@ -13453,11 +13455,14 @@ let Ios27WeatherCard = class extends i {
   }
   updated(changedProps) {
     super.updated(changedProps);
-    if (changedProps.has("hass") || changedProps.has("_config")) {
+    if (changedProps.has("_config")) {
+      this._subscribedEntity = void 0;
       this._setupSubscription();
-      if (this._config?.reverse_geocode) {
-        this._resolveLocation();
-      }
+    } else if (!this._subscribedEntity) {
+      this._setupSubscription();
+    }
+    if (this._config?.reverse_geocode) {
+      this._resolveLocation();
     }
   }
   _getLocations() {
@@ -13513,6 +13518,11 @@ let Ios27WeatherCard = class extends i {
     const locations = this._getLocations();
     const activeLoc = locations[this._currentLocationIndex] || locations[0];
     if (!activeLoc?.entity) return;
+    const subKey = `${activeLoc.entity}_${this._currentLocationIndex}`;
+    if (this._subscribedEntity === subKey) {
+      return;
+    }
+    this._subscribedEntity = subKey;
     if (this._unsubscribeForecast) {
       this._unsubscribeForecast();
       this._unsubscribeForecast = void 0;
@@ -13529,7 +13539,14 @@ let Ios27WeatherCard = class extends i {
         this.requestUpdate();
       }
     ).then((unsub) => {
-      this._unsubscribeForecast = unsub;
+      if (this._subscribedEntity !== subKey) {
+        try {
+          unsub();
+        } catch {
+        }
+      } else {
+        this._unsubscribeForecast = unsub;
+      }
     });
   }
   // Touch swipe handling to switch locations left/right

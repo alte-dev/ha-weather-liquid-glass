@@ -6,7 +6,7 @@
 </p>
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/icon.png?v=1.0.6" width="128" height="128" alt="Liquid Glass Weather Card Icon">
+  <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/icon.png?v=1.0.7" width="128" height="128" alt="Liquid Glass Weather Card Icon">
 </p>
 
 <h1 align="center">🌤️ Home Assistant İçin Liquid Glass Weather Card</h1>
@@ -28,17 +28,17 @@ Home Assistant Lovelace panelleri için Apple iOS 27 tasarım diline sahip moder
 ### 1. 🔀 3 İnteraktif Mod
 | ⛅ Koşullar & 10 Günlük Sıcaklık | 💧 24 Saatlik Yağış & Yoğunluk | 💨 Rüzgar Hızı & Dalga Grafiği |
 |:---:|:---:|:---:|
-| <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/preview-default.png?v=1.0.6" width="240" alt="Koşul Modu" /> | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/preview-rain.png?v=1.0.6" width="240" alt="Yağış Modu" /> | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/preview-wind.png?v=1.0.6" width="240" alt="Rüzgar Modu" /> |
+| <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/preview-default.png?v=1.0.7" width="240" alt="Koşul Modu" /> | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/preview-rain.png?v=1.0.7" width="240" alt="Yağış Modu" /> | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/preview-wind.png?v=1.0.7" width="240" alt="Rüzgar Modu" /> |
 
 ### 2. 📐 5 Farklı Kart Düzeni
 
 | Düzen (Layout) | Görsel | Açıklama |
 |:---|:---:|:---|
-| **Varsayılan (Tam Boy)**<br>`card_layout: default` | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/preview-default.png?v=1.0.6" width="200" /> | Orijinal dikey iPhone arayüzü: Başlık, öne çıkanlar, 24 saatlik şerit, 10 günlük liste ve alt menü. İsteğe bağlı `scrollable: true` ve `card_height` destekler. |
-| **Kare (Tam Sığan Widget)**<br>`card_layout: square-fit` | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/preview-square-fit.png?v=1.0.6" width="200" /> | 1:1 Kare kutu ve **sıfır kaydırma (tam sığan)**! Büyük sıcaklık, ikon, 3 modlu mini buton ve 5 saatlik mikro tahmin şeridi. |
-| **Kare (Kaydırılabilir)**<br>`card_layout: square-scroll` | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/preview-square-scroll.png?v=1.0.6" width="200" /> | 1:1 Kare alanda **akıcı dikey kaydırma**! Tüm zengin hava durumu ve 10 günlük tahminleri küçük bir kare alanda inceleyin. |
-| **Kompakt (Yatay)**<br>`card_layout: compact` | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/preview-compact.png?v=1.0.6" width="240" /> | Yatay dikdörtgen kart (~240px). Yan yana konum ve sıcaklık, 24 saatlik şerit. Çok sütunlu paneller için idealdir. |
-| **Mini Widget**<br>`card_layout: mini` | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/preview-mini.png?v=1.0.6" width="220" /> | Minimalist mikro widget (~130px). Şehir, büyük sıcaklık, durum, en yüksek/en düşük ve yağış ihtimali rozeti. |
+| **Varsayılan (Tam Boy)**<br>`card_layout: default` | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/preview-default.png?v=1.0.7" width="200" /> | Orijinal dikey iPhone arayüzü: Başlık, öne çıkanlar, 24 saatlik şerit, 10 günlük liste ve alt menü. İsteğe bağlı `scrollable: true` ve `card_height` destekler. |
+| **Kare (Tam Sığan Widget)**<br>`card_layout: square-fit` | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/preview-square-fit.png?v=1.0.7" width="200" /> | 1:1 Kare kutu ve **sıfır kaydırma (tam sığan)**! Büyük sıcaklık, ikon, 3 modlu mini buton ve 5 saatlik mikro tahmin şeridi. |
+| **Kare (Kaydırılabilir)**<br>`card_layout: square-scroll` | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/preview-square-scroll.png?v=1.0.7" width="200" /> | 1:1 Kare alanda **akıcı dikey kaydırma**! Tüm zengin hava durumu ve 10 günlük tahminleri küçük bir kare alanda inceleyin. |
+| **Kompakt (Yatay)**<br>`card_layout: compact` | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/preview-compact.png?v=1.0.7" width="240" /> | Yatay dikdörtgen kart (~240px). Yan yana konum ve sıcaklık, 24 saatlik şerit. Çok sütunlu paneller için idealdir. |
+| **Mini Widget**<br>`card_layout: mini` | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/preview-mini.png?v=1.0.7" width="220" /> | Minimalist mikro widget (~130px). Şehir, büyük sıcaklık, durum, en yüksek/en düşük ve yağış ihtimali rozeti. |
 
 ### 3. 🎨 Dinamik Atmosferik Hava Durumu Arka Planları
 
@@ -46,9 +46,9 @@ Hava durumuna ve gündüz/geceye göre otomatik değişen Apple renk gradyanlar�
 
 | ☀️ Güneşli | ⛅ Bulutlu / Kapalı | 🌧️ Yağmurlu |
 |:---:|:---:|:---:|
-| <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/theme-sunny.png?v=1.0.6" width="220" alt="Güneşli Tema" /> | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/theme-cloudy.png?v=1.0.6" width="220" alt="Bulutlu Tema" /> | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/theme-rainy.png?v=1.0.6" width="220" alt="Yağmurlu Tema" /> |
+| <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/theme-sunny.png?v=1.0.7" width="220" alt="Güneşli Tema" /> | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/theme-cloudy.png?v=1.0.7" width="220" alt="Bulutlu Tema" /> | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/theme-rainy.png?v=1.0.7" width="220" alt="Yağmurlu Tema" /> |
 | **❄️ Karlı** | **⚡ Fırtına / Şimşek** | **🌙 Açık Gece** |
-| <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/theme-snowy.png?v=1.0.6" width="220" alt="Karlı Tema" /> | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/theme-thunderstorm.png?v=1.0.6" width="220" alt="Fırtına Teması" /> | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/theme-night.png?v=1.0.6" width="220" alt="Açık Gece Teması" /> |
+| <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/theme-snowy.png?v=1.0.7" width="220" alt="Karlı Tema" /> | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/theme-thunderstorm.png?v=1.0.7" width="220" alt="Fırtına Teması" /> | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/theme-night.png?v=1.0.7" width="220" alt="Açık Gece Teması" /> |
 
 ---
 

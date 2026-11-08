@@ -132,11 +132,14 @@ export class Ios27WeatherCard extends LitElement {
 
   protected updated(changedProps: PropertyValues): void {
     super.updated(changedProps);
-    if (changedProps.has('hass') || changedProps.has('_config')) {
+    if (changedProps.has('_config')) {
+      this._subscribedEntity = undefined;
       this._setupSubscription();
-      if (this._config?.reverse_geocode) {
-        this._resolveLocation();
-      }
+    } else if (!this._subscribedEntity) {
+      this._setupSubscription();
+    }
+    if (this._config?.reverse_geocode) {
+      this._resolveLocation();
     }
   }
 
@@ -202,6 +205,12 @@ export class Ios27WeatherCard extends LitElement {
     const activeLoc = locations[this._currentLocationIndex] || locations[0];
     if (!activeLoc?.entity) return;
 
+    const subKey = `${activeLoc.entity}_${this._currentLocationIndex}`;
+    if (this._subscribedEntity === subKey) {
+      return; // Already subscribed to this location/entity
+    }
+    this._subscribedEntity = subKey;
+
     if (this._unsubscribeForecast) {
       this._unsubscribeForecast();
       this._unsubscribeForecast = undefined;
@@ -219,7 +228,11 @@ export class Ios27WeatherCard extends LitElement {
         this.requestUpdate();
       }
     ).then(unsub => {
-      this._unsubscribeForecast = unsub;
+      if (this._subscribedEntity !== subKey) {
+        try { unsub(); } catch {}
+      } else {
+        this._unsubscribeForecast = unsub;
+      }
     });
   }
 

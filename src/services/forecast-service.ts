@@ -123,8 +123,8 @@ class ForecastService {
       }
     }
 
-    // 3. Check legacy entity attributes
-    if (entity.attributes?.forecast && Array.isArray(entity.attributes.forecast) && entity.attributes.forecast.length > 0) {
+    // 3. Check legacy entity attributes only if daily forecast has not arrived yet
+    if (!hasReceivedDaily && entity.attributes?.forecast && Array.isArray(entity.attributes.forecast) && entity.attributes.forecast.length > 0) {
       handleDaily(entity.attributes.forecast);
     }
 
@@ -132,10 +132,12 @@ class ForecastService {
     setTimeout(() => {
       if (!isDisposed && !hasReceivedDaily) {
         this.fetchForecastFallback(hass, entityId, 'daily', (f) => {
+          if (isDisposed || hasReceivedDaily) return;
           if (f.length > 0) handleDaily(f);
           else {
             // Try twice_daily query
             this.fetchForecastFallback(hass, entityId, 'twice_daily', (tf) => {
+              if (isDisposed || hasReceivedDaily) return;
               if (tf.length > 0) handleDaily(this.convertTwiceDailyToDaily(tf));
             });
           }
