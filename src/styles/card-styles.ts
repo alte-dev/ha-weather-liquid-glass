@@ -597,6 +597,8 @@ export const cardStyles = css`
     padding: 18px 20px !important;
     justify-content: space-between;
     gap: 10px;
+    background-size: 100% 155% !important;
+    background-position: top center !important;
   }
 
   .ios-square-fit-wrapper {
@@ -649,9 +651,9 @@ export const cardStyles = css`
     font-size: 13px;
     font-weight: 600;
     color: var(--ios-text-primary);
-    background: var(--ios-glass-bg-sub);
-    backdrop-filter: blur(24px) saturate(180%);
-    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    background: var(--ios-glass-bg);
+    backdrop-filter: var(--ios-glass-blur);
+    -webkit-backdrop-filter: var(--ios-glass-blur);
     padding: 4px 11px;
     border-radius: 14px;
     border: var(--ios-glass-border);
@@ -722,9 +724,9 @@ export const cardStyles = css`
   }
 
   .ios-square-fit-stat-pill {
-    background: var(--ios-glass-bg-sub);
-    backdrop-filter: blur(24px) saturate(180%);
-    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    background: var(--ios-glass-bg);
+    backdrop-filter: var(--ios-glass-blur);
+    -webkit-backdrop-filter: var(--ios-glass-blur);
     border: var(--ios-glass-border);
     box-shadow: var(--ios-glass-shadow);
     border-radius: 18px;
@@ -763,8 +765,8 @@ export const cardStyles = css`
 
   .ios-square-fit-forecast-box {
     background: var(--ios-glass-bg);
-    backdrop-filter: blur(24px) saturate(180%);
-    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    backdrop-filter: var(--ios-glass-blur);
+    -webkit-backdrop-filter: var(--ios-glass-blur);
     border: var(--ios-glass-border);
     box-shadow: var(--ios-glass-shadow);
     border-radius: 22px;

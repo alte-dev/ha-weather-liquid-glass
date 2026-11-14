@@ -7650,6 +7650,8 @@ const cardStyles = i$3`
     padding: 18px 20px !important;
     justify-content: space-between;
     gap: 10px;
+    background-size: 100% 155% !important;
+    background-position: top center !important;
   }
 
   .ios-square-fit-wrapper {
@@ -7702,9 +7704,9 @@ const cardStyles = i$3`
     font-size: 13px;
     font-weight: 600;
     color: var(--ios-text-primary);
-    background: var(--ios-glass-bg-sub);
-    backdrop-filter: blur(24px) saturate(180%);
-    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    background: var(--ios-glass-bg);
+    backdrop-filter: var(--ios-glass-blur);
+    -webkit-backdrop-filter: var(--ios-glass-blur);
     padding: 4px 11px;
     border-radius: 14px;
     border: var(--ios-glass-border);
@@ -7775,9 +7777,9 @@ const cardStyles = i$3`
   }
 
   .ios-square-fit-stat-pill {
-    background: var(--ios-glass-bg-sub);
-    backdrop-filter: blur(24px) saturate(180%);
-    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    background: var(--ios-glass-bg);
+    backdrop-filter: var(--ios-glass-blur);
+    -webkit-backdrop-filter: var(--ios-glass-blur);
     border: var(--ios-glass-border);
     box-shadow: var(--ios-glass-shadow);
     border-radius: 18px;
@@ -7816,8 +7818,8 @@ const cardStyles = i$3`
 
   .ios-square-fit-forecast-box {
     background: var(--ios-glass-bg);
-    backdrop-filter: blur(24px) saturate(180%);
-    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    backdrop-filter: var(--ios-glass-blur);
+    -webkit-backdrop-filter: var(--ios-glass-blur);
     border: var(--ios-glass-border);
     box-shadow: var(--ios-glass-shadow);
     border-radius: 22px;
@@ -14195,10 +14197,36 @@ let Ios27WeatherCard = class extends i {
     } else if (highTemp !== null) {
       highLowText = t2.format_high ? t2.format_high(formattedHigh) : `H:${formattedHigh}`;
     }
+    const getNum = (sensorId, attrVal, forecastVal) => {
+      if (sensorId && this.hass?.states?.[sensorId]) {
+        const parsed = parseFloat(this.hass.states[sensorId].state);
+        if (!isNaN(parsed)) return Math.round(parsed);
+      }
+      if (attrVal !== void 0 && attrVal !== null && attrVal !== "") {
+        const parsed = Number(attrVal);
+        if (!isNaN(parsed)) return Math.round(parsed);
+      }
+      if (forecastVal !== void 0 && forecastVal !== null && forecastVal !== "") {
+        const parsed = Number(forecastVal);
+        if (!isNaN(parsed)) return Math.round(parsed);
+      }
+      return null;
+    };
     const actualTemp = currentTemp !== null ? Math.round(currentTemp) : 18;
-    const humidity = entityState?.attributes?.humidity !== void 0 ? Math.round(Number(entityState.attributes.humidity)) : null;
-    const windSpeed = entityState?.attributes?.wind_speed !== void 0 ? Math.round(Number(entityState.attributes.wind_speed)) : null;
-    let apparentTemp = entityState?.attributes?.apparent_temperature !== void 0 ? Math.round(Number(entityState.attributes.apparent_temperature)) : null;
+    const humidity = getNum(
+      this._config?.sensor_humidity,
+      entityState?.attributes?.humidity,
+      this._hourlyForecasts?.[0]?.humidity ?? this._dailyForecasts?.[0]?.humidity
+    );
+    const windSpeed = getNum(
+      this._config?.sensor_wind_speed,
+      entityState?.attributes?.wind_speed,
+      this._hourlyForecasts?.[0]?.wind_speed ?? this._dailyForecasts?.[0]?.wind_speed
+    );
+    let apparentTemp = getNum(
+      this._config?.sensor_apparent_temp,
+      entityState?.attributes?.apparent_temperature
+    );
     if (apparentTemp === null && currentTemp !== null) {
       const hum = humidity ?? 65;
       const w = (windSpeed ?? 10) / 3.6;
@@ -14258,24 +14286,18 @@ let Ios27WeatherCard = class extends i {
 
         <!-- Quick Stats Pills Row (Feels Like, Wind, Humidity) -->
         <div class="ios-square-fit-stats-row">
-          ${apparentTemp !== null ? b`
-            <div class="ios-square-fit-stat-pill">
-              <span class="ios-square-fit-stat-label">${d2.feels_like}</span>
-              <span class="ios-square-fit-stat-val">${apparentTemp}°</span>
-            </div>
-          ` : ""}
-          ${windSpeed !== null ? b`
-            <div class="ios-square-fit-stat-pill">
-              <span class="ios-square-fit-stat-label">${d2.wind}</span>
-              <span class="ios-square-fit-stat-val">${windSpeed} <small>${windUnit}</small></span>
-            </div>
-          ` : ""}
-          ${humidity !== null ? b`
-            <div class="ios-square-fit-stat-pill">
-              <span class="ios-square-fit-stat-label">${d2.humidity}</span>
-              <span class="ios-square-fit-stat-val">${t2.format_percent ? t2.format_percent(humidity) : `${humidity}%`}</span>
-            </div>
-          ` : ""}
+          <div class="ios-square-fit-stat-pill">
+            <span class="ios-square-fit-stat-label">${d2.feels_like}</span>
+            <span class="ios-square-fit-stat-val">${apparentTemp !== null ? `${apparentTemp}°` : "--"}</span>
+          </div>
+          <div class="ios-square-fit-stat-pill">
+            <span class="ios-square-fit-stat-label">${d2.wind}</span>
+            <span class="ios-square-fit-stat-val">${windSpeed !== null ? b`${windSpeed} <small>${windUnit}</small>` : "--"}</span>
+          </div>
+          <div class="ios-square-fit-stat-pill">
+            <span class="ios-square-fit-stat-label">${d2.humidity}</span>
+            <span class="ios-square-fit-stat-val">${humidity !== null ? t2.format_percent ? t2.format_percent(humidity) : `${humidity}%` : "--"}</span>
+          </div>
         </div>
 
         <!-- Frosted Glass Hourly Strip (5 Columns) -->

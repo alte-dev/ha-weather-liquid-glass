@@ -646,13 +646,38 @@ export class Ios27WeatherCard extends LitElement {
       highLowText = t.format_high ? t.format_high(formattedHigh) : `H:${formattedHigh}`;
     }
 
-    // Metrics: Feels Like, Wind, Humidity
+    // Metrics: Feels Like, Wind, Humidity (with custom sensor & forecast fallbacks)
+    const getNum = (sensorId?: string, attrVal?: unknown, forecastVal?: unknown): number | null => {
+      if (sensorId && this.hass?.states?.[sensorId]) {
+        const parsed = parseFloat(this.hass.states[sensorId].state);
+        if (!isNaN(parsed)) return Math.round(parsed);
+      }
+      if (attrVal !== undefined && attrVal !== null && attrVal !== '') {
+        const parsed = Number(attrVal);
+        if (!isNaN(parsed)) return Math.round(parsed);
+      }
+      if (forecastVal !== undefined && forecastVal !== null && forecastVal !== '') {
+        const parsed = Number(forecastVal);
+        if (!isNaN(parsed)) return Math.round(parsed);
+      }
+      return null;
+    };
+
     const actualTemp = currentTemp !== null ? Math.round(currentTemp) : 18;
-    const humidity = entityState?.attributes?.humidity !== undefined ? Math.round(Number(entityState.attributes.humidity)) : null;
-    const windSpeed = entityState?.attributes?.wind_speed !== undefined ? Math.round(Number(entityState.attributes.wind_speed)) : null;
-    let apparentTemp = entityState?.attributes?.apparent_temperature !== undefined
-      ? Math.round(Number(entityState.attributes.apparent_temperature))
-      : null;
+    const humidity = getNum(
+      this._config?.sensor_humidity,
+      entityState?.attributes?.humidity,
+      this._hourlyForecasts?.[0]?.humidity ?? this._dailyForecasts?.[0]?.humidity
+    );
+    const windSpeed = getNum(
+      this._config?.sensor_wind_speed,
+      entityState?.attributes?.wind_speed,
+      this._hourlyForecasts?.[0]?.wind_speed ?? this._dailyForecasts?.[0]?.wind_speed
+    );
+    let apparentTemp = getNum(
+      this._config?.sensor_apparent_temp,
+      entityState?.attributes?.apparent_temperature
+    );
 
     if (apparentTemp === null && currentTemp !== null) {
       const hum = humidity ?? 65;
@@ -717,24 +742,18 @@ export class Ios27WeatherCard extends LitElement {
 
         <!-- Quick Stats Pills Row (Feels Like, Wind, Humidity) -->
         <div class="ios-square-fit-stats-row">
-          ${apparentTemp !== null ? html`
-            <div class="ios-square-fit-stat-pill">
-              <span class="ios-square-fit-stat-label">${d.feels_like}</span>
-              <span class="ios-square-fit-stat-val">${apparentTemp}°</span>
-            </div>
-          ` : ''}
-          ${windSpeed !== null ? html`
-            <div class="ios-square-fit-stat-pill">
-              <span class="ios-square-fit-stat-label">${d.wind}</span>
-              <span class="ios-square-fit-stat-val">${windSpeed} <small>${windUnit}</small></span>
-            </div>
-          ` : ''}
-          ${humidity !== null ? html`
-            <div class="ios-square-fit-stat-pill">
-              <span class="ios-square-fit-stat-label">${d.humidity}</span>
-              <span class="ios-square-fit-stat-val">${t.format_percent ? t.format_percent(humidity) : `${humidity}%`}</span>
-            </div>
-          ` : ''}
+          <div class="ios-square-fit-stat-pill">
+            <span class="ios-square-fit-stat-label">${d.feels_like}</span>
+            <span class="ios-square-fit-stat-val">${apparentTemp !== null ? `${apparentTemp}°` : '--'}</span>
+          </div>
+          <div class="ios-square-fit-stat-pill">
+            <span class="ios-square-fit-stat-label">${d.wind}</span>
+            <span class="ios-square-fit-stat-val">${windSpeed !== null ? html`${windSpeed} <small>${windUnit}</small>` : '--'}</span>
+          </div>
+          <div class="ios-square-fit-stat-pill">
+            <span class="ios-square-fit-stat-label">${d.humidity}</span>
+            <span class="ios-square-fit-stat-val">${humidity !== null ? (t.format_percent ? t.format_percent(humidity) : `${humidity}%`) : '--'}</span>
+          </div>
         </div>
 
         <!-- Frosted Glass Hourly Strip (5 Columns) -->
