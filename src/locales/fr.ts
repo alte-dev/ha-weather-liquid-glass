@@ -49,6 +49,7 @@ export const fr: TranslationSchema = {
     'hail': 'Grêle',
     'lightning': 'Orage',
     'lightning-rainy': 'Orage et pluie',
+    'thunderstorm': 'Orage',
     'pouring': 'Forte pluie',
     'rainy': 'Pluvieux',
     'snowy': 'Neige',

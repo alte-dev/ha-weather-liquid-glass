@@ -46,7 +46,7 @@ if (!window.customCards.some(card => card.type === 'weather-liquid-glass-card'))
 
 // Log banner to browser console
 console.info(
-  '%c  LIQUID GLASS WEATHER CARD  \n%c Version: 1.0.0 · Apple iOS Design ',
+  '%c  LIQUID GLASS WEATHER CARD  \n%c Version: 1.0.9 · Apple iOS Design ',
   'color: #38bdf8; font-weight: bold; background: #0f172a; padding: 4px 8px; border-radius: 4px 4px 0 0;',
   'color: #ffffff; font-weight: normal; background: #1e293b; padding: 4px 8px; border-radius: 0 0 4px 4px;'
 );
@@ -371,7 +371,9 @@ export class Ios27WeatherCard extends LitElement {
 
     const rawLayout = this._config.card_layout || 'square-scroll';
     const layout = rawLayout === 'square' ? 'square-scroll' : rawLayout;
-    const isScrollable = layout === 'square-scroll' || this._config.scrollable !== false || Boolean(this._config.card_height);
+    const isScrollable =
+      layout === 'square-scroll' ||
+      (layout !== 'square-fit' && layout !== 'mini' && (this._config.scrollable !== false || Boolean(this._config.card_height)));
     const heightStyle = this._config.card_height ? `height: ${this._config.card_height}; max-height: ${this._config.card_height};` : '';
 
     const sunTimes = hassService.getSunTimes(this.hass, this._config.sun_entity);
@@ -393,9 +395,9 @@ export class Ios27WeatherCard extends LitElement {
         ` : ''}
 
         ${layout === 'square-fit'
-          ? this._renderSquareFit(friendlyName, currentTemp, condition, highTemp, lowTemp, isNight, locale, windUnit)
+          ? this._renderSquareFit(friendlyName, currentTemp, condition, highTemp, lowTemp, isNight, locale, windUnit, entityState, conditionNote)
           : layout === 'mini'
-          ? this._renderMini(friendlyName, currentTemp, condition, highTemp, lowTemp, isNight, locale)
+          ? this._renderMini(friendlyName, currentTemp, condition, highTemp, lowTemp, isNight, locale, windUnit, entityState)
           : html`
             <div class="ios27-scroll-wrapper">
               <!-- Centered / Compact iOS Header -->
@@ -626,59 +628,138 @@ export class Ios27WeatherCard extends LitElement {
     lowTemp: number | null,
     isNight: boolean,
     locale: string,
-    windUnit: string
+    windUnit: string,
+    entityState?: any,
+    conditionNote?: string
   ): TemplateResult {
     const t = translationService.get(locale);
+    const d = t.details;
     const formattedCurrent = hassService.formatTemperature(currentTemp);
     const formattedHigh = hassService.formatTemperature(highTemp);
     const formattedLow = hassService.formatTemperature(lowTemp);
+    const friendlyCondition = hassService.getFriendlyCondition(condition, locale);
 
     let highLowText = '';
     if (highTemp !== null && lowTemp !== null) {
       highLowText = t.format_high_low(formattedHigh, formattedLow);
     } else if (highTemp !== null) {
-      highLowText = `H:${formattedHigh}`;
+      highLowText = t.format_high ? t.format_high(formattedHigh) : `H:${formattedHigh}`;
     }
 
-    const hourlyItems = this._hourlyForecasts.slice(0, 5);
+    // Metrics: Feels Like, Wind, Humidity
+    const actualTemp = currentTemp !== null ? Math.round(currentTemp) : 18;
+    const humidity = entityState?.attributes?.humidity !== undefined ? Math.round(Number(entityState.attributes.humidity)) : null;
+    const windSpeed = entityState?.attributes?.wind_speed !== undefined ? Math.round(Number(entityState.attributes.wind_speed)) : null;
+    let apparentTemp = entityState?.attributes?.apparent_temperature !== undefined
+      ? Math.round(Number(entityState.attributes.apparent_temperature))
+      : null;
+
+    if (apparentTemp === null && currentTemp !== null) {
+      const hum = humidity ?? 65;
+      const w = (windSpeed ?? 10) / 3.6;
+      const e = (hum / 100) * 6.105 * Math.exp((17.27 * actualTemp) / (237.7 + actualTemp));
+      apparentTemp = Math.round(actualTemp + 0.33 * e - 0.70 * w - 4.0);
+    }
+
+    // Prepare 5-hour strip (starting with "Now" + next 4 hours)
+    const nowDt = DateTime.now().setLocale(locale);
+    const is24 = this._config?.time_format === '24' || (this._config?.time_format !== '12' && ['tr', 'de', 'fr', 'es'].includes(locale));
+    const futureHours = this._hourlyForecasts.filter(f => {
+      const dt = DateTime.fromISO(f.datetime);
+      return dt.isValid && dt > nowDt.minus({ minutes: 30 });
+    }).slice(0, 4);
+
+    const hourlyCols = [
+      {
+        label: t.now,
+        condition,
+        temp: formattedCurrent,
+        pop: this._hourlyForecasts[0]?.precipitation_probability ?? 0,
+        isNight,
+      },
+      ...futureHours.map(item => {
+        const dt = DateTime.fromISO(item.datetime);
+        const h = dt.isValid ? dt.hour : 12;
+        return {
+          label: dt.isValid ? (is24 ? dt.toFormat('H') : dt.toFormat('ha')) : '--',
+          condition: item.condition || condition,
+          temp: hassService.formatTemperature(item.temperature),
+          pop: item.precipitation_probability ?? 0,
+          isNight: h < 6 || h >= 21,
+        };
+      }),
+    ];
 
     return html`
-      <!-- Header Row: Location & High/Low -->
-      <div class="ios-square-fit-header">
-        <div class="ios-square-fit-loc-group">
-          <span class="ios-square-fit-loc">${friendlyName}</span>
-          <svg class="ios-nav-arrow" viewBox="0 0 24 24" style="width: 13px; height: 13px; opacity: 0.85; fill: currentColor;">
-            <path d="M12 2L4.5 20.29l.71.71L12 18l6.79 3 .71-.71z" />
-          </svg>
+      <div class="ios-square-fit-wrapper">
+        <!-- Header Row: Location & High/Low Pill -->
+        <div class="ios-square-fit-header">
+          <div class="ios-square-fit-loc-group">
+            <span class="ios-square-fit-loc">${friendlyName}</span>
+            <svg class="ios-nav-arrow" viewBox="0 0 24 24">
+              <path d="M12 2L4.5 20.29l.71.71L12 18l6.79 3 .71-.71z" />
+            </svg>
+          </div>
+          ${highLowText ? html`<div class="ios-square-fit-highlow">${highLowText}</div>` : ''}
         </div>
-        ${highLowText ? html`<div class="ios-square-fit-highlow">${highLowText}</div>` : ''}
-      </div>
 
-      <!-- Current Temperature & Weather Icon -->
-      <div class="ios-square-fit-main">
-        <div class="ios-square-fit-temp">${formattedCurrent}</div>
-        <ios27-weather-icon .condition=${condition} .isNight=${isNight} size="46"></ios27-weather-icon>
-      </div>
+        <!-- Hero Section: Big Temp + Condition Text + Weather Icon -->
+        <div class="ios-square-fit-main">
+          <div class="ios-square-fit-temp-col">
+            <div class="ios-square-fit-temp">${formattedCurrent}</div>
+            <div class="ios-square-fit-condition">${friendlyCondition}</div>
+            ${conditionNote ? html`<div class="ios-square-fit-note">${conditionNote}</div>` : ''}
+          </div>
+          <div class="ios-square-fit-icon-col">
+            <ios27-weather-icon .condition=${condition} .isNight=${isNight} .size=${62}></ios27-weather-icon>
+          </div>
+        </div>
 
-      <!-- Mini Hourly Row (5 columns) -->
-      ${hourlyItems.length > 0 ? html`
+        <!-- Quick Stats Pills Row (Feels Like, Wind, Humidity) -->
+        <div class="ios-square-fit-stats-row">
+          ${apparentTemp !== null ? html`
+            <div class="ios-square-fit-stat-pill">
+              <span class="ios-square-fit-stat-label">${d.feels_like}</span>
+              <span class="ios-square-fit-stat-val">${apparentTemp}°</span>
+            </div>
+          ` : ''}
+          ${windSpeed !== null ? html`
+            <div class="ios-square-fit-stat-pill">
+              <span class="ios-square-fit-stat-label">${d.wind}</span>
+              <span class="ios-square-fit-stat-val">${windSpeed} <small>${windUnit}</small></span>
+            </div>
+          ` : ''}
+          ${humidity !== null ? html`
+            <div class="ios-square-fit-stat-pill">
+              <span class="ios-square-fit-stat-label">${d.humidity}</span>
+              <span class="ios-square-fit-stat-val">${t.format_percent ? t.format_percent(humidity) : `${humidity}%`}</span>
+            </div>
+          ` : ''}
+        </div>
+
+        <!-- Frosted Glass Hourly Strip (5 Columns) -->
         <div class="ios-square-fit-forecast-box">
           <div class="ios-square-fit-hourly-row">
-            ${hourlyItems.map(item => {
-              const dt = DateTime.fromISO(item.datetime);
-              const hourLabel = dt.isValid ? dt.toFormat('H') : '--';
-              const temp = hassService.formatTemperature(item.temperature);
+            ${hourlyCols.map(col => {
+              const popVal = Math.round(col.pop || 0);
               return html`
                 <div class="ios-square-fit-hour-col">
-                  <span class="ios-square-fit-time">${hourLabel}</span>
-                  <ios27-weather-icon .condition=${item.condition || condition} .isNight=${isNight} size="18"></ios27-weather-icon>
-                  <span class="ios-square-fit-hour-temp">${temp}</span>
+                  <span class="ios-square-fit-hour-time">${col.label}</span>
+                  <div class="ios-square-fit-hour-icon-wrap">
+                    <ios27-weather-icon .condition=${col.condition} .isNight=${col.isNight} .size=${24}></ios27-weather-icon>
+                    ${popVal >= 20 ? html`
+                      <span class="ios-square-fit-hour-pop">
+                        ${t.format_percent ? t.format_percent(popVal) : `${popVal}%`}
+                      </span>
+                    ` : ''}
+                  </div>
+                  <span class="ios-square-fit-hour-temp">${col.temp}</span>
                 </div>
               `;
             })}
           </div>
         </div>
-      ` : ''}
+      </div>
     `;
   }
 
@@ -689,7 +770,9 @@ export class Ios27WeatherCard extends LitElement {
     highTemp: number | null,
     lowTemp: number | null,
     isNight: boolean,
-    locale: string
+    locale: string,
+    windUnit?: string,
+    entityState?: any
   ): TemplateResult {
     const t = translationService.get(locale);
     const formattedCurrent = hassService.formatTemperature(currentTemp);
@@ -700,28 +783,46 @@ export class Ios27WeatherCard extends LitElement {
     let highLowText = '';
     if (highTemp !== null && lowTemp !== null) {
       highLowText = t.format_high_low(formattedHigh, formattedLow);
+    } else if (highTemp !== null) {
+      highLowText = t.format_high ? t.format_high(formattedHigh) : `H:${formattedHigh}`;
     }
 
+    const rawPop = this._hourlyForecasts[0]?.precipitation_probability ?? this._dailyForecasts[0]?.precipitation_probability ?? 0;
+    const pop = Math.round(rawPop);
+    const windSpeed = entityState?.attributes?.wind_speed !== undefined ? Math.round(Number(entityState.attributes.wind_speed)) : null;
+
     return html`
-      <div class="ios-mini-container">
+      <div class="ios-mini-content">
         <div class="ios-mini-left">
-          <div class="ios-mini-location">
-            <span>${friendlyName}</span>
-            <svg class="ios-nav-arrow" viewBox="0 0 24 24" style="width: 12px; height: 12px; opacity: 0.8; fill: currentColor;">
+          <div class="ios-mini-loc-row">
+            <span class="ios-mini-loc">${friendlyName}</span>
+            <svg class="ios-nav-arrow" viewBox="0 0 24 24">
               <path d="M12 2L4.5 20.29l.71.71L12 18l6.79 3 .71-.71z" />
             </svg>
           </div>
           <div class="ios-mini-condition">${friendlyCondition}</div>
-          <div class="ios-mini-highlow">
-            ${highLowText ? html`
-              <span class="ios-highlow">${highLowText}</span>
+          <div class="ios-mini-meta-row">
+            ${highLowText ? html`<span class="ios-mini-highlow">${highLowText}</span>` : ''}
+            ${pop >= 20 ? html`
+              <span class="ios-mini-pill">
+                <svg width="9" height="9" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z" />
+                </svg>
+                ${t.format_percent ? t.format_percent(pop) : `${pop}%`}
+              </span>
+            ` : windSpeed !== null && windSpeed >= 15 ? html`
+              <span class="ios-mini-pill">
+                ${windSpeed} ${windUnit || 'km/h'}
+              </span>
             ` : ''}
           </div>
         </div>
 
         <div class="ios-mini-right">
           <div class="ios-mini-temp">${formattedCurrent}</div>
-          <ios27-weather-icon .condition=${condition} .isNight=${isNight} size="42"></ios27-weather-icon>
+          <div class="ios-mini-icon-wrap">
+            <ios27-weather-icon .condition=${condition} .isNight=${isNight} .size=${48}></ios27-weather-icon>
+          </div>
         </div>
       </div>
     `;
@@ -770,7 +871,45 @@ export class Ios27WeatherCard extends LitElement {
   }
 
   public getCardSize(): number {
+    const layout = this._config?.card_layout || 'square-scroll';
+    if (layout === 'mini') return 2;
+    if (layout === 'compact') return 4;
+    if (layout === 'square-fit' || layout === 'square-scroll' || layout === 'square') return 5;
     return 7;
+  }
+
+  public getGridOptions() {
+    const layout = this._config?.card_layout || 'square-scroll';
+    if (layout === 'mini') {
+      return {
+        columns: 12,
+        min_columns: 6,
+        rows: 2,
+        min_rows: 2,
+      };
+    }
+    if (layout === 'square-fit' || layout === 'square-scroll' || layout === 'square') {
+      return {
+        columns: 12,
+        min_columns: 6,
+        rows: 6,
+        min_rows: 4,
+      };
+    }
+    if (layout === 'compact') {
+      return {
+        columns: 12,
+        min_columns: 6,
+        rows: 4,
+        min_rows: 3,
+      };
+    }
+    return {
+      columns: 12,
+      min_columns: 6,
+      rows: 8,
+      min_rows: 5,
+    };
   }
 }
 

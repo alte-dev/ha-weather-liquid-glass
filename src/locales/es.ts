@@ -49,6 +49,7 @@ export const es: TranslationSchema = {
     'hail': 'Granizo',
     'lightning': 'Tormenta eléctrica',
     'lightning-rainy': 'Tormenta con lluvia',
+    'thunderstorm': 'Tormenta eléctrica',
     'pouring': 'Lluvia fuerte',
     'rainy': 'Lluvioso',
     'snowy': 'Nieve',

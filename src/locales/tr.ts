@@ -49,6 +49,7 @@ export const tr: TranslationSchema = {
     'hail': 'Dolu',
     'lightning': 'Gök Gürültülü Fırtına',
     'lightning-rainy': 'Fırtına ve Yağış',
+    'thunderstorm': 'Gök Gürültülü Fırtına',
     'pouring': 'Şiddetli Yağmur',
     'rainy': 'Yağmurlu',
     'snowy': 'Karlı',

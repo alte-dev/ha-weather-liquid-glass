@@ -6,6 +6,38 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ---
 
+## [v1.0.9] - 2026-11-14
+
+### 🇬🇧 English
+- **Redesigned Square Fitted Widget (`square-fit`)**:
+  - Upgraded from a sparse miniature layout into a rich, full-bodied 1:1 widget (`min-height: 310px`) that fills the square cleanly without empty gaps.
+  - Added prominent `64px` hero temperature, localized weather condition title, smart forecast summary note, and `62px` weather icon.
+  - Added a 3-column frosted glass quick-stats pill row (**Feels Like**, **Wind**, **Humidity**).
+  - Enhanced the 5-column frosted glass hourly forecast strip (**Now** + next 4 hours) with precipitation probability badges (`%`).
+- **Fixed Mini Widget (`mini`) Clipping & Layout**:
+  - Fixed zero-padding inheritance caused by `.is-scrollable` being applied to non-scrollable `mini` and `square-fit` layouts, preventing text and numbers from getting clipped at the rounded corners (`border-radius: 28px`).
+  - Aligned DOM classes (`.ios-mini-content`, `.ios-mini-loc-row`, `.ios-mini-loc`, `.ios-mini-meta-row`, `.ios-mini-pill`, `.ios-mini-icon-wrap`) with `card-styles.ts` for balanced padding, proper text truncation (`ellipsis`), and a frosted glass precipitation/wind badge.
+- **Home Assistant Grid & Sections Compatibility**:
+  - Added dynamic `getCardSize()` and `getGridOptions()` methods tailored per `card_layout` (`mini`, `compact`, `square-fit`, `square-scroll`, `default`) for seamless sizing in Lovelace Masonry and Sections dashboards.
+- **Localization Fix**:
+  - Added missing `thunderstorm` condition key across all 5 supported languages (`tr`, `en`, `de`, `es`, `fr`).
+
+### 🇹🇷 Türkçe
+- **Kare Tam Sığan (`square-fit`) Görünümü Baştan Tasarlandı**:
+  - Küçük ve boş kalan eski yapı yerine, 1:1 kare alanı dolu dolu kullanan zengin bir widget (`min-height: 310px`) tasarlandı.
+  - `64px` büyük ana sıcaklık, yerelleştirilmiş hava durumu başlığı, akıllı tahmin özeti notu ve `62px` hava durumu ikonu eklendi.
+  - Orta bölüme 3 sütunlu buzlu cam hızlı bilgi hapları (**Hissedilen**, **Rüzgar**, **Nem**) eklendi.
+  - Alt bölüme yağış ihtimali (`%`) rozetli, **Şimdi** + sonraki 4 saati gösteren 5 sütunlu buzlu cam saatlik tahmin şeridi yerleştirildi.
+- **Mini Görünüm (`mini`) Yazı Taşması ve Kesilme Sorunu Düzeltildi**:
+  - Kaydırılamayan `mini` ve `square-fit` düzenlerine yanlışlıkla `.is-scrollable` sınıfının eklenmesiyle oluşan `padding: 0` sıfırlaması giderildi; metinlerin ve derecenin yuvarlatılmış köşelerden (`border-radius: 28px`) kesilmesi tamamen önlendi.
+  - Mini görünüm HTML sınıfları (`.ios-mini-content`, `.ios-mini-loc`, `.ios-mini-meta-row`, `.ios-mini-pill`) stil dosyasıyla eşleştirildi; esnek metin kısaltma (`ellipsis`) ve buzlu cam yağış/rüzgar rozeti eklendi.
+- **Home Assistant Grid & Sections Uyumluluğu**:
+  - Her görünüm tipine (`mini`, `compact`, `square-fit`, `square-scroll`, `default`) özel dinamik `getCardSize()` ve `getGridOptions()` desteği eklenerek Home Assistant panel ızgaralarında tam boyutta görünmesi sağlandı.
+- **Dil Desteği Düzeltmesi**:
+  - Tüm 5 dil paketine (`tr`, `en`, `de`, `es`, `fr`) eksik olan `thunderstorm` hava durumu anahtarı eklendi.
+
+---
+
 ## [v1.0.5] - 2026-11-08
 
 ### 🇬🇧 English

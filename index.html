@@ -184,13 +184,19 @@
       { datetime: new Date(Date.now() + 86400000 * 9).toISOString(), condition: 'sunny', temperature: 26, templow: 16, precipitation_probability: 0 }
     ];
 
-    let currentCondition = 'sunny';
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('hideControls') === 'true') {
+      const panel = document.querySelector('.controls-panel');
+      if (panel) panel.style.display = 'none';
+    }
+
+    let currentCondition = urlParams.get('condition') || 'sunny';
     let currentDayNight = 'auto';
     let currentMoonPhase = 'full_moon';
-    let currentLang = 'tr';
+    let currentLang = urlParams.get('lang') || 'tr';
     let currentDailyCount = 10;
-    let currentLayout = 'default';
-    let currentView = 'condition';
+    let currentLayout = urlParams.get('layout') || 'default';
+    let currentView = urlParams.get('view') || 'condition';
 
     function createMockHass(condition = 'sunny', isNight = false, lang = 'tr', moonPhase = 'full_moon') {
       let temp = 20;

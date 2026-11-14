@@ -49,6 +49,7 @@ export const de: TranslationSchema = {
     'hail': 'Hagel',
     'lightning': 'Gewitter',
     'lightning-rainy': 'Gewitter mit Regen',
+    'thunderstorm': 'Gewitter',
     'pouring': 'Starker Regen',
     'rainy': 'Regnerisch',
     'snowy': 'Schneefall',

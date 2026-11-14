@@ -6,7 +6,7 @@
 </p>
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/icon.png?v=1.0.7" width="128" height="128" alt="Liquid Glass Weather Card Icon">
+  <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/icon.png?v=1.0.9" width="128" height="128" alt="Liquid Glass Weather Card Icon">
 </p>
 
 <h1 align="center">🌤️ Liquid Glass Weather Card for Home Assistant</h1>
@@ -28,17 +28,17 @@ Apple iOS 27 inspired glassmorphic weather card for Home Assistant Lovelace dash
 ### 1. 🔀 3 Interactive Modes
 | ⛅ Condition & 10-Day Temp | 💧 24h Rain Timeline & Gauge | 💨 Wind Speed & Waves |
 |:---:|:---:|:---:|
-| <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/preview-default.png?v=1.0.7" width="240" alt="Condition Mode" /> | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/preview-rain.png?v=1.0.7" width="240" alt="Precipitation Mode" /> | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/preview-wind.png?v=1.0.7" width="240" alt="Wind Mode" /> |
+| <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/preview-default.png?v=1.0.9" width="240" alt="Condition Mode" /> | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/preview-rain.png?v=1.0.9" width="240" alt="Precipitation Mode" /> | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/preview-wind.png?v=1.0.9" width="240" alt="Wind Mode" /> |
 
 ### 2. 📐 5 Distinct Card Layouts
 
 | Layout | Screenshot | Description |
 |:---|:---:|:---|
-| **Default (Full)**<br>`card_layout: default` | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/preview-default.png?v=1.0.7" width="200" /> | Full vertical iOS phone style with header, smart highlights, hourly strip, 10-day forecast, and bottom bar. Supports `scrollable: true` and `card_height`. |
-| **Square (Fitted Widget)**<br>`card_layout: square-fit` | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/preview-square-fit.png?v=1.0.7" width="200" /> | 1:1 Square widget with **zero scrolling**! Large temperature, animated icon, mini 3-way switcher, and 5-hour micro forecast box. |
-| **Square (Scrollable)**<br>`card_layout: square-scroll` | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/preview-square-scroll.png?v=1.0.7" width="200" /> | 1:1 Square box with **smooth internal scrolling**! Access the entire rich forecast inside a compact square footprint. |
-| **Compact (Horizontal)**<br>`card_layout: compact` | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/preview-compact.png?v=1.0.7" width="240" /> | Horizontal card (~240px). Side-by-side header with 24h hourly strip, ideal for multi-column dashboards. |
-| **Mini Widget**<br>`card_layout: mini` | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/preview-mini.png?v=1.0.7" width="220" /> | Ultra-clean minimal glanceable widget (~130px). City, big temp, condition, high/low, and rain chance badge. |
+| **Default (Full)**<br>`card_layout: default` | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/preview-default.png?v=1.0.9" width="200" /> | Full vertical iOS phone style with header, smart highlights, hourly strip, 10-day forecast, and bottom bar. Supports `scrollable: true` and `card_height`. |
+| **Square (Fitted Widget)**<br>`card_layout: square-fit` | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/preview-square-fit.png?v=1.0.9" width="200" /> | 1:1 Square widget with **zero scrolling**! Large temperature, condition summary, 3 frosted quick-stat pills (Feels Like, Wind, Humidity), and 5-hour forecast strip. |
+| **Square (Scrollable)**<br>`card_layout: square-scroll` | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/preview-square-scroll.png?v=1.0.9" width="200" /> | 1:1 Square box with **smooth internal scrolling**! Access the entire rich forecast inside a compact square footprint. |
+| **Compact (Horizontal)**<br>`card_layout: compact` | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/preview-compact.png?v=1.0.9" width="240" /> | Horizontal card (~240px). Side-by-side header with 24h hourly strip, ideal for multi-column dashboards. |
+| **Mini Widget**<br>`card_layout: mini` | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/preview-mini.png?v=1.0.9" width="220" /> | Ultra-clean minimal glanceable widget (~130px). City, big temp, condition, high/low, and rain chance badge. |
 
 ### 3. 🎨 Dynamic Atmospheric Weather Backgrounds
 
@@ -46,9 +46,9 @@ Dynamic Apple Weather gradients and sky animations adapted to weather states:
 
 | ☀️ Sunny | ⛅ Cloudy / Overcast | 🌧️ Rainy |
 |:---:|:---:|:---:|
-| <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/theme-sunny.png?v=1.0.7" width="220" alt="Sunny Theme" /> | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/theme-cloudy.png?v=1.0.7" width="220" alt="Cloudy Theme" /> | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/theme-rainy.png?v=1.0.7" width="220" alt="Rainy Theme" /> |
+| <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/theme-sunny.png?v=1.0.9" width="220" alt="Sunny Theme" /> | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/theme-cloudy.png?v=1.0.9" width="220" alt="Cloudy Theme" /> | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/theme-rainy.png?v=1.0.9" width="220" alt="Rainy Theme" /> |
 | **❄️ Snowy** | **⚡ Thunderstorm** | **🌙 Clear Night** |
-| <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/theme-snowy.png?v=1.0.7" width="220" alt="Snowy Theme" /> | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/theme-thunderstorm.png?v=1.0.7" width="220" alt="Thunderstorm Theme" /> | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/theme-night.png?v=1.0.7" width="220" alt="Clear Night Theme" /> |
+| <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/theme-snowy.png?v=1.0.9" width="220" alt="Snowy Theme" /> | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/theme-thunderstorm.png?v=1.0.9" width="220" alt="Thunderstorm Theme" /> | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/theme-night.png?v=1.0.9" width="220" alt="Clear Night Theme" /> |
 
 ---
 
@@ -188,6 +188,12 @@ Privacy is a fundamental consideration:
 ## 📋 Changelog
 
 Full version history is available in [CHANGELOG.md](CHANGELOG.md).
+
+### [v1.0.9] - 2026-11-14
+- **📐 Redesigned Square Fitted Widget (`square-fit`) & Fixed Mini Widget (`mini`):**
+  - Rebuilt `square-fit` into a rich 1:1 widget (`310px` min-height) with a `64px` hero temperature, localized condition title & summary note, 3 frosted-glass quick stat pills (**Feels Like**, **Wind**, **Humidity**), and a 5-column hourly forecast strip with rain probability badges.
+  - Resolved text/number clipping at rounded corners in `mini` and `square-fit` layouts by isolating non-scrollable layouts from `.is-scrollable` zero-padding overrides and aligning `.ios-mini-content` / `.ios-mini-loc` classes.
+  - Added dynamic `getCardSize()` and `getGridOptions()` for Home Assistant Sections & Masonry grids, plus `thunderstorm` condition localization across all 5 languages.
 
 ### [v1.0.3] - 2026-11-04
 - **🎨 Visual & Contrast Improvements:**

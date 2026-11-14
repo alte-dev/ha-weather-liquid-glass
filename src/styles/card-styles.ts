@@ -161,16 +161,15 @@ export const cardStyles = css`
      LAYOUT: SQUARE SCROLLABLE & SQUARE FIT (Strict 1:1 Aspect Ratio)
      ---------------------------------------------------- */
   .ios27-container.layout-square-scroll,
-  .ios27-container.layout-square,
-  .ios27-container.layout-square-fit {
+  .ios27-container.layout-square {
     aspect-ratio: 1 / 1 !important;
-    min-height: 0 !important;
+    min-height: 320px !important;
     height: auto !important;
     max-height: none !important;
     padding: 0 !important;
   }
 
-  .ios27-container.is-scrollable:not(.layout-square-scroll):not(.layout-square):not(.layout-square-fit) {
+  .ios27-container.is-scrollable:not(.layout-square-scroll):not(.layout-square):not(.layout-square-fit):not(.layout-mini) {
     padding: 0 !important;
   }
 
@@ -591,12 +590,26 @@ export const cardStyles = css`
      LAYOUT: SQUARE FIT (1:1 Widget, Perfectly Fitted, Zero Scroll)
      ---------------------------------------------------- */
   .ios27-container.layout-square-fit {
-    aspect-ratio: 1 / 1;
-    min-height: auto;
-    max-height: 420px;
-    padding: 16px 18px !important;
+    aspect-ratio: 1 / 1 !important;
+    min-height: 310px !important;
+    height: auto !important;
+    max-height: none !important;
+    padding: 18px 20px !important;
     justify-content: space-between;
     gap: 10px;
+  }
+
+  .ios-square-fit-wrapper {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+    height: 100%;
+    flex: 1;
+    gap: 10px;
+    box-sizing: border-box;
   }
 
   .ios-square-fit-header {
@@ -604,30 +617,46 @@ export const cardStyles = css`
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    z-index: 2;
+    gap: 8px;
   }
 
   .ios-square-fit-loc-group {
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap: 6px;
+    min-width: 0;
   }
 
   .ios-square-fit-loc {
-    font-size: 20px;
+    font-size: 22px;
     font-weight: 600;
-    color: var(--ios-text-secondary);
-    letter-spacing: -0.3px;
+    color: var(--ios-text-primary);
+    letter-spacing: -0.4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .ios-square-fit-loc-group .ios-nav-arrow {
+    width: 14px;
+    height: 14px;
+    fill: currentColor;
+    opacity: 0.9;
+    flex-shrink: 0;
   }
 
   .ios-square-fit-highlow {
     font-size: 13px;
-    font-weight: 500;
-    color: var(--ios-text-secondary);
+    font-weight: 600;
+    color: var(--ios-text-primary);
     background: var(--ios-glass-bg-sub);
-    padding: 3px 9px;
-    border-radius: 12px;
-    border: var(--ios-glass-border);
+    backdrop-filter: var(--ios-glass-blur);
+    -webkit-backdrop-filter: var(--ios-glass-blur);
+    padding: 4px 11px;
+    border-radius: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    white-space: nowrap;
+    flex-shrink: 0;
   }
 
   .ios-square-fit-main {
@@ -635,56 +664,117 @@ export const cardStyles = css`
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    z-index: 2;
     padding: 2px 0;
+    gap: 12px;
   }
 
   .ios-square-fit-temp-col {
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: 4px;
+    min-width: 0;
   }
 
   .ios-square-fit-temp {
-    font-size: 58px;
+    font-size: 64px;
     font-weight: 200;
-    line-height: 1;
-    letter-spacing: -2px;
+    line-height: 0.95;
+    letter-spacing: -2.5px;
     color: var(--ios-text-primary);
   }
 
   .ios-square-fit-condition {
-    font-size: 15px;
-    font-weight: 500;
+    font-size: 16px;
+    font-weight: 600;
     color: var(--ios-text-primary);
-    opacity: 0.95;
+    opacity: 0.96;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .ios-square-fit-note {
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--ios-text-secondary);
+    opacity: 0.9;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 220px;
   }
 
   .ios-square-fit-icon-col {
     display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.2));
+  }
+
+  /* Quick Stat Pills Row in Square Fit */
+  .ios-square-fit-stats-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    width: 100%;
+  }
+
+  .ios-square-fit-stat-pill {
+    background: var(--ios-glass-bg-sub);
+    backdrop-filter: var(--ios-glass-blur);
+    -webkit-backdrop-filter: var(--ios-glass-blur);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 16px;
+    padding: 7px 10px;
+    display: flex;
     flex-direction: column;
-    align-items: flex-end;
-    gap: 6px;
+    align-items: flex-start;
+    gap: 2px;
+    min-width: 0;
+  }
+
+  .ios-square-fit-stat-label {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    color: var(--ios-text-secondary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+  }
+
+  .ios-square-fit-stat-val {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--ios-text-primary);
+    white-space: nowrap;
+  }
+
+  .ios-square-fit-stat-val small {
+    font-size: 11px;
+    font-weight: 500;
+    opacity: 0.8;
   }
 
   .ios-square-fit-forecast-box {
     background: var(--ios-glass-bg);
     backdrop-filter: var(--ios-glass-blur);
     -webkit-backdrop-filter: var(--ios-glass-blur);
-    border: 1px solid var(--ios-glass-border);
-    border-radius: 20px;
-    padding: 10px 8px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 22px;
+    padding: 12px 10px;
     box-shadow: none;
-    z-index: 2;
     display: flex;
     flex-direction: column;
-    gap: 8px;
   }
 
   .ios-square-fit-hourly-row {
     display: flex;
     align-items: center;
-    justify-content: space-around;
+    justify-content: space-between;
     width: 100%;
   }
 
@@ -692,27 +782,40 @@ export const cardStyles = css`
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 4px;
+    justify-content: space-between;
+    gap: 6px;
     text-align: center;
     flex: 1;
+    min-width: 0;
   }
 
   .ios-square-fit-hour-time {
-    font-size: 11px;
-    font-weight: 500;
+    font-size: 12px;
+    font-weight: 600;
     color: var(--ios-text-secondary);
+    white-space: nowrap;
+  }
+
+  .ios-square-fit-hour-icon-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 30px;
+    gap: 1px;
   }
 
   .ios-square-fit-hour-temp {
-    font-size: 13px;
+    font-size: 15px;
     font-weight: 600;
     color: var(--ios-text-primary);
   }
 
   .ios-square-fit-hour-pop {
     font-size: 10px;
-    font-weight: 600;
+    font-weight: 700;
     color: var(--ios-blue-accent);
+    line-height: 1;
   }
 
   /* ----------------------------------------------------
@@ -799,13 +902,15 @@ export const cardStyles = css`
   }
 
   /* ----------------------------------------------------
-     LAYOUT: MINI (Minimalist Widget, ~130px)
+     LAYOUT: MINI (Minimalist Widget, ~110px-125px)
      ---------------------------------------------------- */
   .ios27-container.layout-mini {
-    min-height: auto;
-    padding: 16px 20px !important;
+    min-height: 0 !important;
+    height: auto !important;
+    padding: 18px 22px !important;
     border-radius: var(--ios-glass-radius);
-    box-shadow: var(--ios-glass-shadow);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.22);
+    justify-content: center;
   }
 
   .ios-mini-content {
@@ -815,26 +920,51 @@ export const cardStyles = css`
     align-items: center;
     justify-content: space-between;
     width: 100%;
+    gap: 16px;
+    box-sizing: border-box;
   }
 
   .ios-mini-left {
     display: flex;
     flex-direction: column;
     gap: 4px;
+    min-width: 0;
+    flex: 1 1 auto;
+  }
+
+  .ios-mini-loc-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    min-width: 0;
   }
 
   .ios-mini-loc {
-    font-size: 20px;
+    font-size: 21px;
     font-weight: 600;
     letter-spacing: -0.3px;
-    color: var(--ios-text-secondary);
+    color: var(--ios-text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .ios-mini-loc-row .ios-nav-arrow {
+    width: 13px;
+    height: 13px;
+    fill: currentColor;
+    opacity: 0.9;
+    flex-shrink: 0;
   }
 
   .ios-mini-condition {
-    font-size: 14px;
+    font-size: 14.5px;
     font-weight: 500;
     color: var(--ios-text-primary);
-    opacity: 0.95;
+    opacity: 0.92;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .ios-mini-meta-row {
@@ -842,12 +972,14 @@ export const cardStyles = css`
     align-items: center;
     gap: 8px;
     margin-top: 2px;
+    flex-wrap: nowrap;
   }
 
   .ios-mini-highlow {
     font-size: 13px;
     font-weight: 500;
     color: var(--ios-text-secondary);
+    white-space: nowrap;
   }
 
   .ios-mini-pill {
@@ -855,18 +987,23 @@ export const cardStyles = css`
     font-weight: 600;
     color: var(--ios-blue-accent);
     background: var(--ios-glass-bg-sub);
-    border: var(--ios-glass-border);
-    padding: 2px 7px;
+    backdrop-filter: var(--ios-glass-blur);
+    -webkit-backdrop-filter: var(--ios-glass-blur);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    padding: 2px 8px;
     border-radius: 10px;
     display: inline-flex;
     align-items: center;
-    gap: 3px;
+    gap: 4px;
+    white-space: nowrap;
+    flex-shrink: 0;
   }
 
   .ios-mini-right {
     display: flex;
     align-items: center;
     gap: 12px;
+    flex-shrink: 0;
   }
 
   .ios-mini-temp {
@@ -875,6 +1012,13 @@ export const cardStyles = css`
     line-height: 1;
     letter-spacing: -2px;
     color: var(--ios-text-primary);
+  }
+
+  .ios-mini-icon-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    filter: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.22));
   }
 
   /* Centered Apple Header */

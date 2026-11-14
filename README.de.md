@@ -6,7 +6,7 @@
 </p>
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/icon.png?v=1.0.7" width="128" height="128" alt="Liquid Glass Weather Card Icon">
+  <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/icon.png?v=1.0.9" width="128" height="128" alt="Liquid Glass Weather Card Icon">
 </p>
 
 <h1 align="center">🌤️ Liquid Glass Wetterkarte für Home Assistant</h1>
@@ -28,17 +28,17 @@ Von Apple iOS 27 inspirierte Wetterkarte im Glasmorphismus-Design für Home Assi
 ### 1. 🔀 3 Interaktive Modi
 | ⛅ Bedingungen & 10-Tage-Temp | 💧 24h Regenzeitachse & Pegel | 💨 Windgeschwindigkeit & Wellen |
 |:---:|:---:|:---:|
-| <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/preview-default.png?v=1.0.7" width="240" alt="Bedingungsmodus" /> | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/preview-rain.png?v=1.0.7" width="240" alt="Niederschlagsmodus" /> | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/preview-wind.png?v=1.0.7" width="240" alt="Windmodus" /> |
+| <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/preview-default.png?v=1.0.9" width="240" alt="Bedingungsmodus" /> | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/preview-rain.png?v=1.0.9" width="240" alt="Niederschlagsmodus" /> | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/preview-wind.png?v=1.0.9" width="240" alt="Windmodus" /> |
 
 ### 2. 📐 5 Verschiedene Kartenlayouts
 
 | Layout | Screenshot | Beschreibung |
 |:---|:---:|:---|
-| **Standard (Vollansicht)**<br>`card_layout: default` | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/preview-default.png?v=1.0.7" width="200" /> | Vollständige vertikale iOS-Smartphone-Ansicht mit Kopfzeile, Highlights, 24h-Stundenleiste, 10-Tage-Vorhersage und Fußzeile. Unterstützt `scrollable: true` und `card_height`. |
-| **Quadrat (Angepasstes Widget)**<br>`card_layout: square-fit` | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/preview-square-fit.png?v=1.0.7" width="200" /> | 1:1 Quadratisches Widget mit **Null Scrollen**! Große Temperatur, animiertes Symbol, 3-Wege-Umschalter und 5-Stunden-Kompaktleiste. |
-| **Quadrat (Scrollbar)**<br>`card_layout: square-scroll` | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/preview-square-scroll.png?v=1.0.7" width="200" /> | 1:1 Quadratisches Feld mit **flüssigem vertikalen Scrollen**! Alle Vorhersagen in kompakter quadratischer Größe mit dezenten Regen- und Schnee-Hintergrundanimationen. |
-| **Kompakt (Horizontal)**<br>`card_layout: compact` | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/preview-compact.png?v=1.0.7" width="240" /> | Horizontale Rechteckkarte (~240px). Nebeneinanderliegende Kopfzeile mit 24h-Stundenleiste, ideal für Spalten-Dashboards. |
-| **Mini-Widget**<br>`card_layout: mini` | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/preview-mini.png?v=1.0.7" width="220" /> | Minimalistisches Widget (~130px). Stadt, große Temperatur, Wetterzustand, Höchst-/Tiefstwert und Regenwahrscheinlichkeitsplakette. |
+| **Standard (Vollansicht)**<br>`card_layout: default` | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/preview-default.png?v=1.0.9" width="200" /> | Vollständige vertikale iOS-Smartphone-Ansicht mit Kopfzeile, Highlights, 24h-Stundenleiste, 10-Tage-Vorhersage und Fußzeile. Unterstützt `scrollable: true` und `card_height`. |
+| **Quadrat (Angepasstes Widget)**<br>`card_layout: square-fit` | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/preview-square-fit.png?v=1.0.9" width="200" /> | 1:1 Quadratisches Widget mit **Null Scrollen**! Große Temperatur, animiertes Symbol, 3-Wege-Umschalter und 5-Stunden-Kompaktleiste. |
+| **Quadrat (Scrollbar)**<br>`card_layout: square-scroll` | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/preview-square-scroll.png?v=1.0.9" width="200" /> | 1:1 Quadratisches Feld mit **flüssigem vertikalen Scrollen**! Alle Vorhersagen in kompakter quadratischer Größe mit dezenten Regen- und Schnee-Hintergrundanimationen. |
+| **Kompakt (Horizontal)**<br>`card_layout: compact` | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/preview-compact.png?v=1.0.9" width="240" /> | Horizontale Rechteckkarte (~240px). Nebeneinanderliegende Kopfzeile mit 24h-Stundenleiste, ideal für Spalten-Dashboards. |
+| **Mini-Widget**<br>`card_layout: mini` | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/preview-mini.png?v=1.0.9" width="220" /> | Minimalistisches Widget (~130px). Stadt, große Temperatur, Wetterzustand, Höchst-/Tiefstwert und Regenwahrscheinlichkeitsplakette. |
 
 ### 3. 🎨 Dynamische atmosphärische Wetterhintergründe
 
@@ -46,9 +46,9 @@ Automatische Apple Weather-Farbverläufe und lebendige Himmelsanimationen angepa
 
 | ☀️ Sonnig | ⛅ Bewölkt / Bedeckt | 🌧️ Regen (Subtile Animation) |
 |:---:|:---:|:---:|
-| <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/theme-sunny.png?v=1.0.7" width="220" alt="Sonniges Thema" /> | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/theme-cloudy.png?v=1.0.7" width="220" alt="Bewölktes Thema" /> | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/theme-rainy.png?v=1.0.7" width="220" alt="Regen-Thema" /> |
+| <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/theme-sunny.png?v=1.0.9" width="220" alt="Sonniges Thema" /> | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/theme-cloudy.png?v=1.0.9" width="220" alt="Bewölktes Thema" /> | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/theme-rainy.png?v=1.0.9" width="220" alt="Regen-Thema" /> |
 | **❄️ Schnee (Sanfte Flocken)** | **⚡ Gewitter / Blitz** | **🌙 Klare Nacht** |
-| <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/theme-snowy.png?v=1.0.7" width="220" alt="Schnee-Thema" /> | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/theme-thunderstorm.png?v=1.0.7" width="220" alt="Gewitter-Thema" /> | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/theme-night.png?v=1.0.7" width="220" alt="Klare Nacht-Thema" /> |
+| <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/theme-snowy.png?v=1.0.9" width="220" alt="Schnee-Thema" /> | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/theme-thunderstorm.png?v=1.0.9" width="220" alt="Gewitter-Thema" /> | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/theme-night.png?v=1.0.9" width="220" alt="Klare Nacht-Thema" /> |
 
 ---
 
