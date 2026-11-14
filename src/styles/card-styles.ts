@@ -650,11 +650,12 @@ export const cardStyles = css`
     font-weight: 600;
     color: var(--ios-text-primary);
     background: var(--ios-glass-bg-sub);
-    backdrop-filter: var(--ios-glass-blur);
-    -webkit-backdrop-filter: var(--ios-glass-blur);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
     padding: 4px 11px;
     border-radius: 14px;
-    border: 1px solid rgba(255, 255, 255, 0.14);
+    border: var(--ios-glass-border);
+    box-shadow: var(--ios-glass-shadow);
     white-space: nowrap;
     flex-shrink: 0;
   }
@@ -697,11 +698,11 @@ export const cardStyles = css`
     font-size: 12px;
     font-weight: 400;
     color: var(--ios-text-secondary);
-    opacity: 0.9;
+    opacity: 0.95;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 220px;
+    max-width: 100%;
   }
 
   .ios-square-fit-icon-col {
@@ -722,11 +723,12 @@ export const cardStyles = css`
 
   .ios-square-fit-stat-pill {
     background: var(--ios-glass-bg-sub);
-    backdrop-filter: var(--ios-glass-blur);
-    -webkit-backdrop-filter: var(--ios-glass-blur);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    border-radius: 16px;
-    padding: 7px 10px;
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border: var(--ios-glass-border);
+    box-shadow: var(--ios-glass-shadow);
+    border-radius: 18px;
+    padding: 8px 11px;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -761,12 +763,12 @@ export const cardStyles = css`
 
   .ios-square-fit-forecast-box {
     background: var(--ios-glass-bg);
-    backdrop-filter: var(--ios-glass-blur);
-    -webkit-backdrop-filter: var(--ios-glass-blur);
-    border: 1px solid rgba(255, 255, 255, 0.14);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border: var(--ios-glass-border);
+    box-shadow: var(--ios-glass-shadow);
     border-radius: 22px;
     padding: 12px 10px;
-    box-shadow: none;
     display: flex;
     flex-direction: column;
   }

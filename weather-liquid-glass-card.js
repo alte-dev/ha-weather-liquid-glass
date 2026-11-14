@@ -7703,11 +7703,12 @@ const cardStyles = i$3`
     font-weight: 600;
     color: var(--ios-text-primary);
     background: var(--ios-glass-bg-sub);
-    backdrop-filter: var(--ios-glass-blur);
-    -webkit-backdrop-filter: var(--ios-glass-blur);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
     padding: 4px 11px;
     border-radius: 14px;
-    border: 1px solid rgba(255, 255, 255, 0.14);
+    border: var(--ios-glass-border);
+    box-shadow: var(--ios-glass-shadow);
     white-space: nowrap;
     flex-shrink: 0;
   }
@@ -7750,11 +7751,11 @@ const cardStyles = i$3`
     font-size: 12px;
     font-weight: 400;
     color: var(--ios-text-secondary);
-    opacity: 0.9;
+    opacity: 0.95;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 220px;
+    max-width: 100%;
   }
 
   .ios-square-fit-icon-col {
@@ -7775,11 +7776,12 @@ const cardStyles = i$3`
 
   .ios-square-fit-stat-pill {
     background: var(--ios-glass-bg-sub);
-    backdrop-filter: var(--ios-glass-blur);
-    -webkit-backdrop-filter: var(--ios-glass-blur);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    border-radius: 16px;
-    padding: 7px 10px;
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border: var(--ios-glass-border);
+    box-shadow: var(--ios-glass-shadow);
+    border-radius: 18px;
+    padding: 8px 11px;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -7814,12 +7816,12 @@ const cardStyles = i$3`
 
   .ios-square-fit-forecast-box {
     background: var(--ios-glass-bg);
-    backdrop-filter: var(--ios-glass-blur);
-    -webkit-backdrop-filter: var(--ios-glass-blur);
-    border: 1px solid rgba(255, 255, 255, 0.14);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border: var(--ios-glass-border);
+    box-shadow: var(--ios-glass-shadow);
     border-radius: 22px;
     padding: 12px 10px;
-    box-shadow: none;
     display: flex;
     flex-direction: column;
   }
@@ -12699,10 +12701,9 @@ let Ios27SkyAnimation = class extends i {
     const softCloudSvg = `url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 260' fill='rgba(255,255,255,0.7)'><circle cx='140' cy='180' r='90'/><circle cx='280' cy='140' r='110'/><circle cx='460' cy='160' r='100'/><circle cx='640' cy='130' r='120'/><circle cx='800' cy='170' r='90'/><circle cx='980' cy='150' r='110'/></svg>")`;
     return b`
       <div class="sky-stage">
-        <div class="sky-vignette"></div>
-        <div class="sun-halo" style="opacity: 0.4; top: -85px;"></div>
-        <div class="cloud-canvas cloud-back" style="background-image: ${softCloudSvg}; opacity: 0.18; top: 15px;"></div>
-        <div class="cloud-canvas cloud-front" style="background-image: ${softCloudSvg}; opacity: 0.24; top: 30px;"></div>
+        <div class="sun-halo" style="opacity: 0.55; top: -110px;"></div>
+        <div class="cloud-canvas cloud-back" style="background-image: ${softCloudSvg}; opacity: 0.16; top: 15px;"></div>
+        <div class="cloud-canvas cloud-front" style="background-image: ${softCloudSvg}; opacity: 0.22; top: 30px;"></div>
       </div>
     `;
   }
@@ -14387,7 +14388,7 @@ let Ios27WeatherCard = class extends i {
     if (cond.includes("rain") || cond.includes("pouring") || cond.includes("lightning") || cond.includes("thunder")) {
       return "rainy";
     }
-    if (cond.includes("cloud") || cond.includes("overcast") || cond.includes("fog")) {
+    if (cond === "cloudy" || cond === "overcast" || cond.includes("fog") || cond.includes("snow") || cond.includes("sleet") || cond.includes("hail")) {
       return "cloudy";
     }
     return "sunny";

@@ -864,9 +864,10 @@ export class Ios27WeatherCard extends LitElement {
     if (cond.includes('rain') || cond.includes('pouring') || cond.includes('lightning') || cond.includes('thunder')) {
       return 'rainy';
     }
-    if (cond.includes('cloud') || cond.includes('overcast') || cond.includes('fog')) {
+    if (cond === 'cloudy' || cond === 'overcast' || cond.includes('fog') || cond.includes('snow') || cond.includes('sleet') || cond.includes('hail')) {
       return 'cloudy';
     }
+    // Sunny, clear-day, partlycloudy, partly-cloudy all share the bright daytime blue sky theme
     return 'sunny';
   }
 

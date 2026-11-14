@@ -433,10 +433,9 @@ export class Ios27SkyAnimation extends LitElement {
 
     return html`
       <div class="sky-stage">
-        <div class="sky-vignette"></div>
-        <div class="sun-halo" style="opacity: 0.4; top: -85px;"></div>
-        <div class="cloud-canvas cloud-back" style="background-image: ${softCloudSvg}; opacity: 0.18; top: 15px;"></div>
-        <div class="cloud-canvas cloud-front" style="background-image: ${softCloudSvg}; opacity: 0.24; top: 30px;"></div>
+        <div class="sun-halo" style="opacity: 0.55; top: -110px;"></div>
+        <div class="cloud-canvas cloud-back" style="background-image: ${softCloudSvg}; opacity: 0.16; top: 15px;"></div>
+        <div class="cloud-canvas cloud-front" style="background-image: ${softCloudSvg}; opacity: 0.22; top: 30px;"></div>
       </div>
     `;
   }
