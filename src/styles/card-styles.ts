@@ -751,10 +751,12 @@ export const cardStyles = css`
   }
 
   .ios-square-fit-stat-val {
-    font-size: 15px;
+    font-size: 16px;
     font-weight: 600;
     color: var(--ios-text-primary);
     white-space: nowrap;
+    width: 100%;
+    text-align: center;
   }
 
   .ios-square-fit-stat-val small {

@@ -6,6 +6,22 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ---
 
+## [v1.1.1] - 2026-11-14
+
+### 🇬🇧 English
+- **Square Fitted (`square-fit`) Visual Polish & Humidity Fallback**:
+  - Unified frosted glass pill and hourly forecast box backgrounds (`var(--ios-glass-bg)` + `var(--ios-glass-blur)`) and scaled sky gradient height (`background-size: 100% 155%`) to match `default` and `square-scroll` brightness.
+  - Centered the metric values (**Feels Like**, **Wind**, **Humidity**) inside the 3 quick-stat pills while keeping the labels top-left aligned.
+  - Added multi-source humidity/wind/apparent temperature fallbacks (`sensor_humidity` → `entity.attributes.humidity` → hourly forecast → daily forecast → `--`) so the Humidity pill never disappears when a weather integration omits the attribute.
+
+### 🇹🇷 Türkçe
+- **Kare Tam Sığan (`square-fit`) Görsel İyileştirme ve Nem Oranı Düzeltmesi**:
+  - Bilgi haplarının ve saatlik tahmin kutusunun arka planları `default` ve `square-scroll` görünümleriyle tamamen eşitlendi (`var(--ios-glass-bg)`, `var(--ios-glass-blur)` ve `background-size: 100% 155%`).
+  - **Hissedilen**, **Rüzgar** ve **Nem Oranı** kutularındaki metrik değerler kutu içinde ortalandı.
+  - Hava durumu entegrasyonu `humidity` özniteliğini boş bıraksa bile Nem Oranı kutusunun kaybolmaması için çoklu yedekleme (`sensor_humidity` → `entity.attributes.humidity` → saatlik tahmin → günlük tahmin → `--`) eklendi.
+
+---
+
 ## [v1.1.0] - 2026-11-14
 
 ### 🇬🇧 English
