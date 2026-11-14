@@ -13681,7 +13681,7 @@ if (!window.customCards.some((card) => card.type === "weather-liquid-glass-card"
   });
 }
 console.info(
-  "%c  LIQUID GLASS WEATHER CARD  \n%c Version: 1.0.9 · Apple iOS Design ",
+  "%c  LIQUID GLASS WEATHER CARD  \n%c Version: 1.1.0 · Apple iOS Design ",
   "color: #38bdf8; font-weight: bold; background: #0f172a; padding: 4px 8px; border-radius: 4px 4px 0 0;",
   "color: #ffffff; font-weight: normal; background: #1e293b; padding: 4px 8px; border-radius: 0 0 4px 4px;"
 );

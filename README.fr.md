@@ -6,7 +6,7 @@
 </p>
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/icon.png?v=1.0.9" width="128" height="128" alt="Liquid Glass Weather Card Icon">
+  <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/icon.png?v=1.1.0" width="128" height="128" alt="Liquid Glass Weather Card Icon">
 </p>
 
 <h1 align="center">🌤️ Carte Météo Liquid Glass pour Home Assistant</h1>
@@ -28,17 +28,17 @@ Carte météo glassmorphique inspirée d'Apple iOS 27 pour les tableaux de bord 
 ### 1. 🔀 3 Modes interactifs
 | ⛅ Conditions & 10 jours | 💧 24h Précipitations & Intensité | 💨 Vitesse du vent & Ondes |
 |:---:|:---:|:---:|
-| <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/preview-default.png?v=1.0.9" width="240" alt="Mode Conditions" /> | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/preview-rain.png?v=1.0.9" width="240" alt="Mode Précipitations" /> | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/preview-wind.png?v=1.0.9" width="240" alt="Mode Vent" /> |
+| <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/preview-default.png?v=1.1.0" width="240" alt="Mode Conditions" /> | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/preview-rain.png?v=1.1.0" width="240" alt="Mode Précipitations" /> | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/preview-wind.png?v=1.1.0" width="240" alt="Mode Vent" /> |
 
 ### 2. 📐 5 Dispositions de carte
 
 | Disposition | Capture | Description |
 |:---|:---:|:---|
-| **Défaut (Complet)**<br>`card_layout: default` | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/preview-default.png?v=1.0.9" width="200" /> | Vue verticale complète style iPhone avec en-tête, points forts, prévisions horaires, liste sur 10 jours et barre inférieure. Prend en charge `scrollable: true` et `card_height`. |
-| **Carré (Widget Ajusté)**<br>`card_layout: square-fit` | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/preview-square-fit.png?v=1.0.9" width="200" /> | Widget carré 1:1 avec **zéro défilement**! Grande température, icône animée, sélecteur à 3 modes et boîte de prévisions sur 5 heures. |
-| **Carré (Avec Défilement)**<br>`card_layout: square-scroll` | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/preview-square-scroll.png?v=1.0.9" width="200" /> | Carte carrée 1:1 avec **défilement vertical fluide**! Toutes les informations avec de subtiles animations de pluie et de neige en arrière-plan. |
-| **Compact (Horizontal)**<br>`card_layout: compact` | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/preview-compact.png?v=1.0.9" width="240" /> | Carte rectangulaire (~240px). En-tête côte à côte avec prévisions sur 24 heures, idéale pour les tableaux de bord à colonnes multiples. |
-| **Mini Widget**<br>`card_layout: mini` | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/preview-mini.png?v=1.0.9" width="220" /> | Widget minimaliste épuré (~130px). Ville, température, condition, maximales/minimales et badge de probabilité de pluie. |
+| **Défaut (Complet)**<br>`card_layout: default` | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/preview-default.png?v=1.1.0" width="200" /> | Vue verticale complète style iPhone avec en-tête, points forts, prévisions horaires, liste sur 10 jours et barre inférieure. Prend en charge `scrollable: true` et `card_height`. |
+| **Carré (Widget Ajusté)**<br>`card_layout: square-fit` | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/preview-square-fit.png?v=1.1.0" width="200" /> | Widget carré 1:1 avec **zéro défilement**! Grande température, icône animée, sélecteur à 3 modes et boîte de prévisions sur 5 heures. |
+| **Carré (Avec Défilement)**<br>`card_layout: square-scroll` | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/preview-square-scroll.png?v=1.1.0" width="200" /> | Carte carrée 1:1 avec **défilement vertical fluide**! Toutes les informations avec de subtiles animations de pluie et de neige en arrière-plan. |
+| **Compact (Horizontal)**<br>`card_layout: compact` | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/preview-compact.png?v=1.1.0" width="240" /> | Carte rectangulaire (~240px). En-tête côte à côte avec prévisions sur 24 heures, idéale pour les tableaux de bord à colonnes multiples. |
+| **Mini Widget**<br>`card_layout: mini` | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/preview-mini.png?v=1.1.0" width="220" /> | Widget minimaliste épuré (~130px). Ville, température, condition, maximales/minimales et badge de probabilité de pluie. |
 
 ### 3. 🎨 Arrières-plans météo atmosphériques dynamiques
 
@@ -46,9 +46,9 @@ Dégradés Apple Weather adaptés automatiquement selon les conditions météoro
 
 | ☀️ Ensoleillé | ⛅ Nuageux / Couvert | 🌧️ Pluie (Effet subtil) |
 |:---:|:---:|:---:|
-| <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/theme-sunny.png?v=1.0.9" width="220" alt="Thème Ensoleillé" /> | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/theme-cloudy.png?v=1.0.9" width="220" alt="Thème Nuageux" /> | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/theme-rainy.png?v=1.0.9" width="220" alt="Thème Pluie" /> |
+| <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/theme-sunny.png?v=1.1.0" width="220" alt="Thème Ensoleillé" /> | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/theme-cloudy.png?v=1.1.0" width="220" alt="Thème Nuageux" /> | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/theme-rainy.png?v=1.1.0" width="220" alt="Thème Pluie" /> |
 | **❄️ Neige (Flocons légers)** | **⚡ Orage / Éclairs** | **🌙 Nuit claire** |
-| <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/theme-snowy.png?v=1.0.9" width="220" alt="Thème Neige" /> | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/theme-thunderstorm.png?v=1.0.9" width="220" alt="Thème Orage" /> | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/theme-night.png?v=1.0.9" width="220" alt="Thème Nuit Claire" /> |
+| <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/theme-snowy.png?v=1.1.0" width="220" alt="Thème Neige" /> | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/theme-thunderstorm.png?v=1.1.0" width="220" alt="Thème Orage" /> | <img src="https://raw.githubusercontent.com/alte-dev/ha-weather-liquid-glass/main/images/theme-night.png?v=1.1.0" width="220" alt="Thème Nuit Claire" /> |
 
 ---
 
